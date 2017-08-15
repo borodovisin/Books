@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<!-- saved from url=(0105)https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/ -->
+<html lang="es-ES" class="js"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	
+	<meta name="viewport" content="initial-scale=1.0001, minimum-scale=1.0001">
+	<title>Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql | Eliezerfot123 </title>
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="https://fulljed123.wordpress.com/xmlrpc.php">
+
+	<script async="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/beacon.js"></script><script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+<meta name="google-site-verification" content="https://fulljed123.wordpress.com/">
+<link rel="dns-prefetch" href="https://s2.wp.com/">
+<link rel="dns-prefetch" href="https://s1.wp.com/">
+<link rel="dns-prefetch" href="https://s0.wp.com/">
+<link rel="dns-prefetch" href="https://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="https://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Eliezerfot123  » Feed" href="https://fulljed123.wordpress.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Eliezerfot123  » RSS de los comentarios" href="https://fulljed123.wordpress.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Eliezerfot123  » Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql RSS de los comentarios" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/feed/">
+	<script type="text/javascript">
+		/* <![CDATA[ */
+		function addLoadEvent(func) {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+				window.onload = func;
+			} else {
+				window.onload = function () {
+					oldonload();
+					func();
+				}
+			}
+		}
+		/* ]]> */
+	</script>
+			<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s0.wp.com\/wp-content\/mu-plugins\/wpcom-smileys\/twemoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/s1.wp.com\/wp-includes\/js\/wp-emoji-release.min.js?m=1473172720h&ver=4.6.1-RC1-38499"}};
+			!function(a,b,c){function d(a){var c,d,e,f,g,h=b.createElement("canvas"),i=h.getContext&&h.getContext("2d"),j=String.fromCharCode;if(!i||!i.fillText)return!1;switch(i.textBaseline="top",i.font="600 32px Arial",a){case"flag":return i.fillText(j(55356,56806,55356,56826),0,0),!(h.toDataURL().length<3e3)&&(i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,65039,8205,55356,57096),0,0),c=h.toDataURL(),i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,55356,57096),0,0),d=h.toDataURL(),c!==d);case"diversity":return i.fillText(j(55356,57221),0,0),e=i.getImageData(16,16,1,1).data,f=e[0]+","+e[1]+","+e[2]+","+e[3],i.fillText(j(55356,57221,55356,57343),0,0),e=i.getImageData(16,16,1,1).data,g=e[0]+","+e[1]+","+e[2]+","+e[3],f!==g;case"simple":return i.fillText(j(55357,56835),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode8":return i.fillText(j(55356,57135),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode9":return i.fillText(j(55358,56631),0,0),0!==i.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity","unicode9"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="all-css-0" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource" type="text/css" media="all">
+<link rel="stylesheet" id="eighties-header-css" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="eighties-headings-css" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/css(1)" type="text/css" media="all">
+<link rel="stylesheet" id="eighties-body-css" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/css(2)" type="text/css" media="all">
+<link rel="stylesheet" id="all-css-6" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(1)" type="text/css" media="all">
+<link rel="stylesheet" id="print-css-7" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/global-print.css" type="text/css" media="print">
+<link rel="stylesheet" id="all-css-8" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(2)" type="text/css" media="all">
+<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(3)"></script>
+<link rel="stylesheet" id="all-css-0" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/style.css" type="text/css" media="all">
+<!--[if lt IE 8]>
+<link rel='stylesheet' id='highlander-comments-ie7-css'  href='https://s1.wp.com/wp-content/mu-plugins/highlander-comments/style-ie7.css?m=1351637563h&#038;ver=20110606' type='text/css' media='all' />
+<![endif]-->
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://fulljed123.wordpress.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="https://s1.wp.com/wp-includes/wlwmanifest.xml"> 
+<link rel="prev" title="Como enviar mensajes con gammu y python" href="https://fulljed123.wordpress.com/2013/09/11/como-enviar-mensajes-con-gammu-y-python/">
+<link rel="next" title="Establecer tiempo de sesión en django" href="https://fulljed123.wordpress.com/2014/01/31/establecer-tiempo-de-sesion-en-django/">
+<meta name="generator" content="WordPress.com">
+<link rel="canonical" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/">
+<link rel="shortlink" href="http://wp.me/p1tG2O-3D">
+<link rel="alternate" type="application/json+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=json&amp;url=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F&amp;for=wpcom-auto-discovery"><link rel="alternate" type="application/xml+oembed" href="https://public-api.wordpress.com/oembed/1.0/?format=xml&amp;url=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F&amp;for=wpcom-auto-discovery">
+<!-- Jetpack Open Graph Tags -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql">
+<meta property="og:url" content="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/">
+<meta property="og:description" content="Django es un framework de desarrollo de aplicaciones web eficiente, versátil y evolucionando de forma dinámica. Cuando Django inicialmente ganó popularidad, la configuración recomendada para el fun…">
+<meta property="article:published_time" content="2014-01-29T02:44:37+00:00">
+<meta property="article:modified_time" content="2014-01-29T14:00:44+00:00">
+<meta property="og:site_name" content="Eliezerfot123 ">
+<meta property="og:image" content="https://fulljed123.files.wordpress.com/2014/01/django-gunicorn-nginx.png">
+<meta property="og:locale" content="es_ES">
+<meta name="twitter:site" content="@eliezerfot123">
+<meta name="twitter:image" content="https://fulljed123.files.wordpress.com/2014/01/django-gunicorn-nginx.png?w=240">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@eliezerfot123">
+<meta property="fb:app_id" content="249643311490">
+<meta property="article:publisher" content="https://www.facebook.com/WordPresscom">
+<link rel="shortcut icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/ce1dfd41720ae9d0c0f47cd6906924a4?s=32" sizes="16x16">
+<link rel="icon" type="image/x-icon" href="https://secure.gravatar.com/blavatar/ce1dfd41720ae9d0c0f47cd6906924a4?s=32" sizes="16x16">
+<link rel="apple-touch-icon-precomposed" href="https://secure.gravatar.com/blavatar/ce1dfd41720ae9d0c0f47cd6906924a4?s=114">
+<link rel="openid.server" href="https://fulljed123.wordpress.com/?openidserver=1">
+<link rel="openid.delegate" href="https://fulljed123.wordpress.com/">
+<link rel="search" type="application/opensearchdescription+xml" href="https://fulljed123.wordpress.com/osd.xml" title="Eliezerfot123 ">
+<link rel="search" type="application/opensearchdescription+xml" href="https://s1.wp.com/opensearch.xml" title="WordPress.com">
+		<style type="text/css">
+			.recentcomments a {
+				display: inline !important;
+				padding: 0 !important;
+				margin: 0 !important;
+			}
+
+			table.recentcommentsavatartop img.avatar, table.recentcommentsavatarend img.avatar {
+				border: 0px;
+				margin: 0;
+			}
+
+			table.recentcommentsavatartop a, table.recentcommentsavatarend a {
+				border: 0px !important;
+				background-color: transparent !important;
+			}
+
+			td.recentcommentsavatarend, td.recentcommentsavatartop {
+				padding: 0px 0px 1px 0px;
+				margin: 0px;
+			}
+
+			td.recentcommentstextend {
+				border: none !important;
+				padding: 0px 0px 2px 10px;
+			}
+
+			.rtl td.recentcommentstextend {
+				padding: 0px 10px 2px 0px;
+			}
+
+			td.recentcommentstexttop {
+				border: none;
+				padding: 0px 0px 0px 10px;
+			}
+
+			.rtl td.recentcommentstexttop {
+				padding: 0px 10px 0px 0px;
+			}
+		</style>
+		<style type="text/css">
+.widget_twitter li {
+	word-wrap: break-word;
+}
+</style>
+<meta name="application-name" content="Eliezerfot123 "><meta name="msapplication-window" content="width=device-width;height=device-height"><meta name="msapplication-tooltip" content="Somos lo que somos es por alguien Dios..."><meta name="msapplication-task" content="name=Suscríbete;action-uri=https://fulljed123.wordpress.com/feed/;icon-uri=https://secure.gravatar.com/blavatar/ce1dfd41720ae9d0c0f47cd6906924a4?s=16"><meta name="msapplication-task" content="name=Regístrate para crear un blog gratis;action-uri=http://wordpress.com/signup/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Asistencia de WordPress.com;action-uri=http://support.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="msapplication-task" content="name=Foros de WordPress.com;action-uri=http://forums.wordpress.com/;icon-uri=https://s2.wp.com/i/favicon.ico"><meta name="title" content="Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql | Eliezerfot123  en WordPress.com">
+<meta name="description" content="Django es un framework de desarrollo de aplicaciones web eficiente, versátil y evolucionando de forma dinámica. Cuando Django inicialmente ganó popularidad, la configuración recomendada para el funcionamiento de aplicaciones Django se basa en Apache con mod_wsgi. El arte de correr Django avanzó y en estos días la configuración recomendada es más eficiente y flexible, pero…">
+	<style type="text/css">
+			.site-title a,
+		.site-description {
+			color: #ffffff;
+		}
+	
+			#masthead {
+			background-image: url('https://fulljed123.files.wordpress.com/2015/04/cropped-15760281797_f417955cc1_o.jpg');
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+	
+						.site-branding {
+				padding: 11.71875em 0;
+			}
+			
+	</style>
+			<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/amzn_ads.js"></script>
+		<script type="text/javascript">
+		try { amznads.getAds("3033"); } catch(e) { /* ignore */ }
+		</script><script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/bid"></script>
+		<script type="text/javascript">
+		try {
+			var a9_p = amznads.getKeys(),
+			_ipw_custom = {
+				wordAds: '0',
+				adSafe: '0',
+				domain: 'fulljed123.wordpress.com',
+				pageURL: 'https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/'
+			};
+			if("undefined"!=typeof a9_p&&""!=a9_p&&null!==a9_p&&"[object Array]"===Object.prototype.toString.call(a9_p)){var a="",b=0,c=a9_p.length;a9_p.sort();for(var d=0;d<c;d++){a9_p[d-b]=a9_p[d-b].replace(/a1x6p/,"a160x600p");var e=a9_p[d-b].split("p");e[0]==a&&(a9_p.splice(d-b,1),b++);a=e[0]}_ipw_custom.amznPay=a9_p};document.close();
+		} catch(e) {}
+		</script>		<!-- Criteo AdBlock Plus script-->
+		<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/publishertag.js"></script>
+		<!-- IPONWEB header script -->
+		<script type="text/javascript">
+			window.__ATA = {
+				scriptSrc: '//s.pubmine.com/showad.js',
+				slotPrefix: 'automattic-id-',
+				initAd: function(o) {
+					var o = o || {},
+						g = window,
+						d = g.document,
+						wr = d.write,
+						id = g.__ATA.id();
+					wr.call(d, '<div id="' + id + '" data-section="' + (o.sectionId || 0) + '"' + (o.type ? ('data-type="' + o.type + '"') : '') + ' ' + (o.forcedUrl ? ('data-forcedurl="' + o.forcedUrl + '"') : '') + ' style="width:' + (o.width || 0) + 'px; height:' + (o.height || 0) + 'px;">');
+					g.__ATA.displayAd(id);
+					wr.call(d, '</div>');
+					g.__ATA.displayAdBlockedAd( id, o );
+				},
+				displayAd: function(id) {
+					window.__ATA.ids = window.__ATA.ids || {};
+					window.__ATA.ids[id] = 1;
+				},
+				customParams: _ipw_custom,
+				id: function() {
+					return window.__ATA.slotPrefix + (parseInt(Math.random() * 10000, 10) + 1 + (new Date()).getMilliseconds());
+				},
+				displayAdBlockedAd: function( id, t ) {
+					if ( false !== true ) {
+						return;
+					}
+
+					if ( typeof Criteo !== 'object' ) {
+						return;
+					}
+
+					// Only works with 300x250 ads
+					if ( 300 === parseInt( t.width ) && 250 === parseInt( t.height ) ) {
+						// AdBlock sometimes hides these elements, lets show them
+						var wpa = document.getElementsByClassName( 'wpa' );
+						for( var i = 0; i < wpa.length; i++ ) {
+							wpa[i].style.setProperty( 'visibility', 'visible', 'important' );
+							wpa[i].style.setProperty( 'display', 'inline-block', 'important' );
+						}
+
+						// Ask Criteo to display some ads if AdBlock is blocking them.
+						// Will be inerted into the same element on the page where the blocked ads would have been (id="automattic-id-####").
+						// Possible params: zoneid|containerid|width|height|callbacksuccess|callbackerror|callifnotadblocked|passbackcode|layout|publisherurl|ct0|overridezonefloor|collapsecontainerifnotadblocked
+						Criteo.DisplayAcceptableAdIfAdblocked( {
+							zoneid: 388248,
+							containerid: id,
+							collapsecontainerifnotadblocked: false
+						});
+					}
+				}
+			};
+			(function(d, ata) {
+				var pr = "https:" === d.location.protocol ? "https:" : "http:",
+					src = pr + ata.scriptSrc,
+					st = "text/javascript";
+				d.write('<scr' + 'ipt type="' + st + '" src="' + src + '"><\/scr' + 'ipt>');
+			})(window.document, window.__ATA);
+		</script><script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/showad.js"></script>
+		<script type="text/javascript">
+		jQuery(window).ready(function () {
+			jQuery("a.wpa-about").text("Acerca de estos anuncios");
+		});
+		</script><link rel="amphtml" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/amp/"><style type="text/css" id="syntaxhighlighteranchor"></style>
+<script type="text/javascript">
+	window.google_analytics_uacct = "UA-52447-2";
+</script>
+
+<script type="text/javascript">
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-52447-2']);
+	_gaq.push(['_setDomainName', 'wordpress.com']);
+	_gaq.push(['_initData']);
+	_gaq.push(['_trackPageview']);
+
+	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ga);
+	})();
+</script><script type="text/javascript" async="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ga.js"></script>
+<script charset="utf-8" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/rate.php"></script><script type="text/javascript" async="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(4)"></script><link rel="stylesheet" type="text/css" id="gravatar-card-css" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/hovercard.css"><link rel="stylesheet" type="text/css" id="gravatar-card-services-css" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/services.css"><script type="text/javascript" async="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(5)"></script><style type="text/css" id="pd_popup_holder_style_4250262_post_225">#pd_popup_holder_4250262_post_225 { position:absolute; display:none; width:350px; height:auto; top:0px; left:0px; z-index:10000; border:solid 1px #CCC; background-color:white; padding:0px 15px;font-family:Arial,Sans;box-shadow: -10px 10px 20px rgba(0, 0, 0, .5);-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, .25);-moz-box-shadow: 0px 0px 6px rgba(0, 0, 0, .25); }</style></head>
+
+<body class="single single-post postid-225 single-format-standard mp6 customizer-styles-applied widgets-hidden highlander-enabled highlander-light">
+	<div id="page" class="hfeed site">
+		<div class="site-toggles">
+			<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" class="main-navigation-toggle"><i class="fa fa-bars"></i></a>
+							<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/" class="widget-area-toggle"><i class="fa fa-align-right"></i></a>
+					</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation" style="display: block;">
+			<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" class="main-navigation-toggle"><i class="fa fa-times"></i></a>
+			<h4 class="main-navigation-title">Menú</h4>
+			<div class="menu"><ul><li><a href="https://fulljed123.wordpress.com/">Inicio</a></li><li class="page_item page-item-2"><a href="https://fulljed123.wordpress.com/contac/">Contacto</a></li><li class="page_item page-item-169"><a href="https://fulljed123.wordpress.com/python/">Python</a></li></ul></div>
+			<div class="menu-item menu-item-search">
+				<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#"><i class="fa fa-search"></i></a>
+				
+<form role="search" method="get" class="search-form" action="https://fulljed123.wordpress.com/">
+	<label>
+		<span class="screen-reader-text">Buscar:</span>
+		<input type="search" class="search-field" placeholder="Buscar …" value="" name="s">
+	</label>
+</form>
+			</div>
+					</nav><!-- #site-navigation -->
+
+					<header id="masthead" class="site-header" role="banner" style="position: relative; z-index: 0; height: 359px; overflow: hidden; background: none;">
+				<a class="skip-link screen-reader-text" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#content" data-backstretch="https://fulljed123.files.wordpress.com/2015/04/cropped-15760281797_f417955cc1_o.jpg">Skip to content</a>
+				<div class="site-branding" style="opacity: 0.0041958;">
+					<h1 class="site-title"><a href="https://fulljed123.wordpress.com/" rel="home">Eliezerfot123 </a></h1>
+					<h2 class="site-description">Somos lo que somos es por alguien Dios…</h2>
+				</div>
+									<a href="https://fulljed123.wordpress.com/" rel="home" class="home-link"></a>
+							<div class="backstretch" style="left: 0px; top: 0px; overflow: hidden; margin: 0px; padding: 0px; height: 359px; width: 1351px; z-index: -999998; position: absolute;"><img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/cropped-15760281797_f417955cc1_o.jpg" style="position: absolute; margin: 0px; padding: 0px; border: none; width: 1351px; height: 675.5px; max-height: none; max-width: none; z-index: -999999; top: -158.25px; left: 0px;"></div></header><!-- #masthead -->
+		
+		<div id="content" class="site-content">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+		
+							
+<article id="post-225" class="post-225 post type-post status-publish format-standard hentry category-generales category-gnulinux category-postgresql category-python tag-configurar-django-con-nginx tag-configure-django-with-nginx tag-django tag-django-and-nginx tag-gunicorn tag-linux tag-python tag-supervisor tag-supervisor-and-postgresql tag-unicorn tag-unix">
+	
+	<header class="entry-header">
+					<span class="entry-meta entry-meta-categories"><a href="https://fulljed123.wordpress.com/category/generales/" rel="category tag">Generales</a>, <a href="https://fulljed123.wordpress.com/category/gnulinux/" rel="category tag">Gnu/Linux</a>, <a href="https://fulljed123.wordpress.com/category/postgresql/" rel="category tag">Postgresql</a>, <a href="https://fulljed123.wordpress.com/category/python/" rel="category tag">Python</a></span>
+				<h1 class="entry-title">Django con Nginx, Gunicorn, virtualenv, supervisor y&nbsp;postgresql</h1>		<p class="entry-meta entry-meta-time">
+						<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/"><span class="posted-on"><span class="screen-reader-text">Posted on </span><time class="entry-date published" datetime="enero 29, 2014"><i class="fa fa-clock-o"></i>enero 29, 2014</time></span></a> <span class="byline">by <span class="author vcard"><a class="url fn n" href="https://fulljed123.wordpress.com/author/eliezerfot123/">eliezerfot123</a></span></span>		</p>
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<div class="pd-rating" id="pd_rating_holder_4250262_post_225" style="display: inline-block;"><div class="rating-icons" id="pd_rate_4250262_post_225" style="float:left;"><div class="rating-star-icon" onmouseout="PDRTJS_4250262_post_225.rebuild();" onclick="PDRTJS_4250262_post_225.rate(1);" onmouseover="PDRTJS_4250262_post_225.hover(1);" id="PDRTJS_4250262_post_225_stars_1" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_4250262_post_225.rebuild();" onclick="PDRTJS_4250262_post_225.rate(2);" onmouseover="PDRTJS_4250262_post_225.hover(2);" id="PDRTJS_4250262_post_225_stars_2" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_4250262_post_225.rebuild();" onclick="PDRTJS_4250262_post_225.rate(3);" onmouseover="PDRTJS_4250262_post_225.hover(3);" id="PDRTJS_4250262_post_225_stars_3" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_4250262_post_225.rebuild();" onclick="PDRTJS_4250262_post_225.rate(4);" onmouseover="PDRTJS_4250262_post_225.hover(4);" id="PDRTJS_4250262_post_225_stars_4" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div><div class="rating-star-icon" onmouseout="PDRTJS_4250262_post_225.rebuild();" onclick="PDRTJS_4250262_post_225.rate(5);" onmouseover="PDRTJS_4250262_post_225.hover(5);" id="PDRTJS_4250262_post_225_stars_5" style="background-size: 32px 48px !important; cursor: pointer; width: 16px; height: 16px; line-height: 16px; background: url(https://polldaddy.com/images/ratings/star-yellow-sml.png) top left; float: left; padding: 0px; margin: 0px; margin-right: 1px;">&nbsp;</div></div><span style="float:left;">&nbsp;</span><div id="rating_info_4250262_post_225" style="display:block;float:left;background:url(https://polldaddy.com/images/ratings/info.png) no-repeat 3px 2px;width:16px;height:16px;cursor:pointer; null " onclick="javascript:PDRTJS_4250262_post_225.togglePopup();return false;"><span style="display:none;">i</span></div><div class="pd_popup_holder" id="pd_popup_holder_4250262_post_225">&nbsp;</div><div class="rating-msg" id="PDRTJS_4250262_post_225_msg" style="float:left; padding-left: 5px; text-align: left; font:normal normal /16px ; color: #;">3 Votes</div><p style="padding: 0px; margin: 0px; clear: both;"></p></div><br><p><a href="https://fulljed123.files.wordpress.com/2014/01/django-gunicorn-nginx.png"><img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/django-gunicorn-nginx.png" alt="django-gunicorn-nginx" class="aligncenter size-full wp-image-236"></a></p>
+<p>Django es un framework de desarrollo de aplicaciones web eficiente, versátil y evolucionando de forma dinámica. Cuando Django inicialmente ganó popularidad, la configuración recomendada para el funcionamiento de aplicaciones Django se basa en Apache con mod_wsgi. El arte de correr Django avanzó y en estos días la configuración recomendada es más eficiente y flexible, pero también más complejo e incluye herramientas tales como: Nginx, Gunicorn, virtualenv, supervisord y PostgreSQL. </p>
+<p>En este texto voy a explicar cómo combinar todos estos componentes en un servidor Django en linux. </p>
+<p><strong>Lo primero es tener actualizado nuestro sistema</strong><br>
+<code><br>
+#aptitude update<br>
+#aptitude upgrade<br>
+</code></p>
+<p><strong>POSTGRESQL</strong></p>
+<p>Para instalar PostgreSQL en un sistema basado en Debian ejecute este comando:</p>
+<p><code><br>
+$ sudo apt-get install postgresql postgresql-contrib<br>
+</code></p>
+<p>Cree un usuario de base de datos y una nueva base de datos para la aplicación</p>
+<p><code><br>
+$ sudo su - postgres<br>
+postgres@django:~$ createuser -P<br>
+Enter name of role to add: tu_usuario<br>
+Enter password for new role:<br>
+Enter it again:<br>
+Shall the new role be a superuser? (y/n) n<br>
+Shall the new role be allowed to create databases? (y/n) n<br>
+Shall the new role be allowed to create more new roles? (y/n) n<br>
+postgres@django:~$</code></p><code>
+</code><p><code>postgres@django:~$ createdb base_de_datos -O tu_usuario<br>
+postgres@django:~$ logout<br>
+$<br>
+</code></p>
+<p>Si quieres saber como instalar y configurar correctamente postgresq visita mi post <a href="https://fulljed123.wordpress.com/2013/03/04/instalar-y-configurar-postgresql/" title="Aquí" target="_blank">Aquí</a></p>
+<p><strong>Instalar virtualenv y crear un ambiente(environment) para la aplicación:</strong></p>
+<p>Virtualenv es una herramienta que te permite crear entornos Python separados en su sistema. Esto le permite ejecutar aplicaciones con diferentes conjuntos de requisitos concurrente (por ejemplo uno basado en Django 1.5, otro basado en 1.6). virtualenv es fácil de instalar en Debian:</p>
+<p><code>$ sudo apt-get install python-virtualenv</code></p>
+<p><strong>Crear y activar un ambiente(environment) para su aplicación:</strong></p>
+<p><code>$ virtualenv --system-site-packages nombre_maquina_virtual </code></p><code>
+<p>New python executable in nombre_maquina_virtual/bin/python<br>
+Installing distribute..............done.<br>
+Installing pip.....................done.</p>
+</code><p><code>$ cd nombre_maquina_virtual<br>
+$ source bin/activate<br>
+(nombre_maquina_virtual) $</code></p>
+<p>Su ambiente(environment esta activado y ahora puedes proceder a instalar django:</p>
+<p><code>(nombre_maquina_virtual) $ pip install django</code></p><code>
+</code><p><code>Downloading/unpacking django<br>
+(...)<br>
+Installing collected packages: django<br>
+(...)<br>
+Successfully installed django<br>
+Cleaning up...</code></p>
+<p>Su ambiente con django esta listo para su uso. Ahora crearemos un un proyecto de django nuevo: Anímate vamos empezando.. xD</p>
+<p><code>(nombre_maquina_virtual) $ django-admin.py startproject hello</code></p>
+<p><strong>Tu puedes probar la aplicación en modo desarrollo:</strong></p>
+<p><code>(nombre_maquina_virtual) $ cd hello<br>
+(nombre_maquina_virtual) $ python manage.py runserver 127.0.0.1:8000<br>
+Validating models...</code></p><code>
+</code><p><code>0 errors found<br>
+June 09, 2013 - 06:12:00<br>
+Django version 1.5.1, using settings 'hello.settings'<br>
+Development server is running at <a href="http://127.0.0.1:8000/" rel="nofollow">http://127.0.0.1:8000/</a><br>
+Quit the server with CONTROL-C.</code></p>
+<p><strong>Configuramos postgresql para que trabaje con django</strong></p>
+<p>Para utilizar Django con PostgreSQL usted tendrá que instalar el adaptador de la base de datos psycopg2 en su entorno virtual. Este paso requiere la compilación de una extensión nativa (escrito en C). La compilación fallará si no puede encontrar los archivos de cabecera y las bibliotecas estáticas necesarias para vincular los programas en C con libpq (la biblioteca para la comunicación con Postgres) y módulos de construcción de Python (paquete python-dev). Tenemos que instalar estos dos paquetes primero, y luego podemos instalar psycopg2 usando PIP.</p>
+<p>Instalamos algunas dependencias necesarias:</p>
+<p><code><br>
+$ sudo apt-get install libpq-dev python-dev<br>
+</code></p>
+<p>Instalamos ahora el adaptador de la base de datos:</p>
+<p><code>(nombre_maquina_virtual) $ pip install psycopg2</code></p>
+<p>Tu puedes configurar la base de datos dentro del <span class="skimlinks-unlinked">settings.py</span></p>
+<p><code><br>
+DATABASES = {<br>
+    'default': {<br>
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',<br>
+        'NAME': 'nombre_base_de_datos',<br>
+        'USER': 'tu_usuario',<br>
+        'PASSWORD': 'arpacuatroymaraca',<br>
+        'HOST': 'localhost',<br>
+        'PORT': '',                      # Set to empty string for default.<br>
+    }<br>
+}</code></p>
+<p>Y finalmente podemos sincronizar ahora la base de datos para django:</p>
+<p><code>(nombre_maquina_virtual) $ ./manage.py syncdb </code></p>
+<p><strong>GUNICORN</strong></p>
+<p>En la producción no va a utilizar el servidor de desarrollo de un único subproceso de Django, pero un servidor de aplicaciones dedicado llamados <a href="http://gunicorn.org/" title="gunicorn" target="_blank"> gunicorn. </a></p>
+<p>Instale gunicorn en el entorno virtual de la aplicación:</p>
+<p><code>(nombre_maquina_virtual) $ pip install gunicorn<br>
+Downloading/unpacking gunicorn<br>
+  Downloading gunicorn-0.17.4.tar.gz (372Kb): 372Kb downloaded<br>
+  Running setup.py egg_info for package gunicorn</code></p><code>
+<p>Installing collected packages: gunicorn<br>
+  Running setup.py install for gunicorn</p>
+</code><p><code>    Installing gunicorn_paster script to /webapps/hello_django/bin<br>
+    Installing gunicorn script to /webapps/hello_django/bin<br>
+    Installing gunicorn_django script to /webapps/hello_django/bin<br>
+Successfully installed gunicorn<br>
+Cleaning up...</code></p>
+<p>Ahora que tenemos gunicorn instalado podemos probara que tal se comporta la aplicación con django ejecutando el siguiente comando:</p>
+<p><code>(nombre_maquina_virtual) $ gunicorn hello.wsgi:application --bind 127.0.0.1:8001</code></p>
+<p>Ahora deberíamos ser capaz de acceder al servidor de Gunicorn <a href="http://127.0.0.1:8001/" rel="nofollow">http://127.0.0.1:8001</a>. He cambiado intencionalmente puerto 8000-8001 para forzar su navegador para establecer una nueva conexión. </p>
+<p>Gunicorn está instalado y listo para servir a su aplicación. Estableceremos algunas opciones de configuración para que sea más útil. Me gusta establecer una serie de parámetros, así que vamos a poner a todos en un pequeño script BASH, que guardo como bin/ gunicorn_start o el nombre como diríamos en Maracaibo (COMO VOS QUERAIS) </p>
+<p><code><br>
+#!/bin/bash</code></p><code>
+<p>NAME="hello"                                  # Nombre de la aplicación<br>
+DJANGODIR=/direcion/de/la/aplicacion/hello             # Ubicación de donde esta tu proyecto django<br>
+SOCKFILE=/direcion/de/la/aplicacion/run/gunicorn.sock  # Nos comunicaremos usando unix socket<br>
+USER=usuario                                        # Usuario que tiene los superpoderes<br>
+GROUP=grupo_del_usuario                                     # El grupo al que pertenece<br>
+NUM_WORKERS=3                                     # Cuantos procesos debería trabajar Gunicorn spawn<br>
+DJANGO_SETTINGS_MODULE=hello.settings             # El archivo de configuración donde esta<br>
+DJANGO_WSGI_MODULE=hello.wsgi                     # WSGI module name</p>
+<p># Activamos el entorno virtual<br>
+cd $DJANGODIR<br>
+source ../bin/activate<br>
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE<br>
+export PYTHONPATH=$DJANGODIR:$PYTHONPATH</p>
+<p># Creando el directorio run si por casualidad no existe.<br>
+RUNDIR=$(dirname $SOCKFILE)<br>
+test -d $RUNDIR || mkdir -p $RUNDIR</p>
+</code><p><code># Corremos nuestra aplicación django<br>
+# Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)<br>
+exec ../bin/gunicorn ${DJANGO_WSGI_MODULE}:application \<br>
+  --name $NAME \<br>
+  --workers $NUM_WORKERS \<br>
+  --user=$USER --group=$GROUP \<br>
+  --log-level=debug \<br>
+  --bind=unix:$SOCKFILE</code></p>
+<p>gunicorn_start será capaz de corre la aplicación con el usuario. Nosotros deberíamos tener propiedad de acceder al directorio con el usuario que hemos asignado. </p>
+<p>Establezcamos la ejecución de gunicorn_start para ver si el mango verde mancha(Haber si dicha aplicación corre):</p>
+<p>Pero primero debemos darle permiso a la aplicación. </p>
+<p><code>$ sudo chmod u+x bin/gunicorn_start</code></p>
+<p><code><br>
+$ bin/gunicorn_start<br>
+Starting hello as usuario<br>
+2013-06-09 14:21:45 [10724] [INFO] Starting gunicorn 18.0<br>
+2013-06-09 14:21:45 [10724] [DEBUG] Arbiter booted<br>
+2013-06-09 14:21:45 [10724] [INFO] Listening at: unix:/webapps/hello_django/run/gunicorn.sock (10724)<br>
+2013-06-09 14:21:45 [10724] [INFO] Using worker: sync<br>
+2013-06-09 14:21:45 [10735] [INFO] Booting worker with pid: 10735<br>
+2013-06-09 14:21:45 [10736] [INFO] Booting worker with pid: 10736<br>
+2013-06-09 14:21:45 [10737] [INFO] Booting worker with pid: 10737</code></p><code>
+<p>^C (CONTROL-C to kill Gunicorn)</p>
+</code><p><code>2013-06-09 14:21:48 [10736] [INFO] Worker exiting (pid: 10736)<br>
+2013-06-09 14:21:48 [10735] [INFO] Worker exiting (pid: 10735)<br>
+2013-06-09 14:21:48 [10724] [INFO] Handling signal: int<br>
+2013-06-09 14:21:48 [10737] [INFO] Worker exiting (pid: 10737)<br>
+2013-06-09 14:21:48 [10724] [INFO] Shutting down: Master<br>
+$ exit<br>
+</code></p>
+<p>Podemos ver la aplicación correr aquí:<br>
+<code><br>
+$ ps aux<br>
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND<br>
+(...)<br>
+hello    11588  0.7  0.2  58400 11568 ?        S    14:52   0:00 gunicorn: master [hello_app]<br>
+hello    11602  0.5  0.3  66584 16040 ?        S    14:52   0:00 gunicorn: worker [hello_app]<br>
+hello    11603  0.5  0.3  66592 16044 ?        S    14:52   0:00 gunicorn: worker [hello_app]<br>
+hello    11604  0.5  0.3  66604 16052 ?        S    14:52   0:00 gunicorn: worker [hello_app]<br>
+</code></p>
+<p><strong>Ahora comenzaremos el monitoreo con SUPERVISOR:</strong></p>
+<p>Su guión gunicorn_start debe estar listo y funcionando. Tenemos que asegurarnos de que se inicie automáticamente con el sistema y que se puede reiniciar automáticamente si por alguna razón se cierra inesperadamente. Estas tareas pueden ser fácilmente manejadas por un servicio llamado supervisord. La instalación es simple:</p>
+<p><code>$ sudo apt-get install supervisor</code></p>
+<p>Cuando se instala Supervisor le puedes dar para iniciar programas y ver mediante la creación de archivos de configuración en el directorio /etc/supervisor/conf.d. Para nuestra aplicación hello vamos a crear un archivo llamado /etc/supervisor​/conf.d/ <span class="skimlinks-unlinked">hello.conf</span> con este contenido:</p>
+<p><code><br>
+[program:hello]<br>
+command = /direccion/donde/esta/la/maquina/virtual/bin/gunicorn_start                    ; Comando para iniciar la aplicación<br>
+user = usuario                                                          ; Usuario que corre la aplicación<br>
+stdout_logfile = /donde/quieres/guardar/los/logs/gunicorn_supervisor.log   ; Donde se escribira la aplicación<br>
+redirect_stderr = true<br>
+autostart=true<br>
+autorestart=true</code></p><code>
+</code><p><code></code> </p>
+<p>Puede <a href="http://supervisord.org/configuration.html#program-x-section-settings" title="configurar muchas mas otras opciones" target="_blank">configurar muchas otras opciones</a>, pero esta configuración básica debe ser suficiente. </p>
+<p>Cree el archivo para almacenar los mensajes de registro de la aplicación:  </p>
+<p><code><br>
+$ mkdir -p /donde/se/guardaron/los/logs/<br>
+$ touch /donde/pusistes/los/logs/gunicorn_supervisor.log<br>
+</code></p>
+<p>Después de guardar el archivo de configuración para el programa usted puede pedir supervisor para releer archivos de configuración y actualización (que se iniciará la aplicación).</p>
+<p><code><br>
+# supervisorctl reread<br>
+hello: available<br>
+#supervisorctl update<br>
+hello: added process group<br>
+</code></p>
+<p>TU puedes entonces ver el estatus de tu aplicación o iniciarla, detenerla, reiniciarla con el uso del supervisor. (YA ESTAMOS CASI LISTOS PARA LA DIVERSIÓN)<br>
+<code><br>
+$ sudo supervisorctl status hello<br>
+hello                            RUNNING    pid 18020, uptime 0:00:50<br>
+$ sudo supervisorctl stop hello<br>
+hello: stopped<br>
+$ sudo supervisorctl start hello<br>
+hello: started<br>
+$ sudo supervisorctl restart hello<br>
+hello: stopped<br>
+hello: started</code></p>
+<p>Su aplicación ahora debe iniciarse automáticamente después de un reinicio del sistema y se reinicia automáticamente si es que alguna vez se estrelló por alguna razón.<img draggable="false" class="emoji" alt="😄" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/1f604.svg"></p>
+<p><strong>AHORA CONFIGURAREMOS NGINX </strong></p>
+<p>Ahora disponemos el tiempo para configurar Nginx como un servidor para la aplicación y sus archivos estáticos. Instale e inicie Nginx:</p>
+<p><code><br>
+$ sudo apt-get install nginx<br>
+$ sudo service nginx start</code></p>
+<p>Ahora podemos navegar en su servidor <a href="http://localhost/" rel="nofollow">http://localhost/</a> y sencillamente tendremos (“Welcome to nginx!”).</p>
+<p>Crearemos una configuración virtual para django en nginx</p>
+<p>(OHHH ES DIFICIL?) No, no es difícil:</p>
+<p>Cada servidor virtual Nginx debe ser descrito por un archivo en el directorio /etc/nginx/sites-available. Usted habilita los enlances simbolicos a el directorio /etc/nginx/sites-enable/</p>
+<p>Crear un nuevo archivo de configuración del servidor nginx para su aplicación Django ejecuta en localhost en /etc/nginx/sites-available/default. El archivo debe contener algo parecido a lo siguiente: </p>
+<p><code><br>
+upstream hello_app_server {<br>
+  # fail_timeout=0 means we always retry an upstream even if it failed<br>
+  # to return a good HTTP response (in case the Unicorn master nukes a<br>
+  # single worker for timing out).</code></p><code>
+<p>  server unix:/webapps/hello_django/run/gunicorn.sock fail_timeout=0;<br>
+}</p>
+<p>server {</p>
+<p>    listen   80;<br>
+    server_name example.com;</p>
+<p>    client_max_body_size 4G;</p>
+<p>    access_log /webapps/hello_django/logs/nginx-access.log;<br>
+    error_log /webapps/hello_django/logs/nginx-error.log;</p>
+<p>    location /static/ {<br>
+        alias   /webapps/hello_django/static/;<br>
+    }</p>
+<p>    location /media/ {<br>
+        alias   /webapps/hello_django/media/;<br>
+    }</p>
+<p>    location / {<br>
+        # an HTTP header important enough to have its own Wikipedia entry:<br>
+        #   <a href="http://en.wikipedia.org/wiki/X-Forwarded-For" rel="nofollow">http://en.wikipedia.org/wiki/X-Forwarded-For</a><br>
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</p>
+<p>        # enable this if and only if you use HTTPS, this helps Rack<br>
+        # set the proper protocol for doing redirects:<br>
+        # proxy_set_header X-Forwarded-Proto https;</p>
+<p>        # pass the Host: header from the client right along so redirects<br>
+        # can be set properly within the Rack application<br>
+        proxy_set_header Host $http_host;</p>
+<p>        # we don't want nginx trying to do something clever with<br>
+        # redirects, we set the Host: header above already.<br>
+        proxy_redirect off;</p>
+<p>        # set "proxy_buffering off" *only* for Rainbows! when doing<br>
+        # Comet/long-poll stuff.  It's also safe to set if you're<br>
+        # using only serving fast clients with Unicorn + nginx.<br>
+        # Otherwise you _want_ nginx to buffer responses to slow<br>
+        # clients, really.<br>
+        # proxy_buffering off;</p>
+<p>        # Try to serve static files from nginx, no point in making an<br>
+        # *application* server like Unicorn/Rainbows! serve static files.<br>
+        if (!-f $request_filename) {<br>
+            proxy_pass <a href="http://hello_app_server/" rel="nofollow">http://hello_app_server</a>;<br>
+            break;<br>
+        }<br>
+    }</p>
+</code><p><code>    # Error pages<br>
+    error_page 500 502 503 504 /500.html;<br>
+    location = /500.html {<br>
+        root /webapps/hello_django/static/;<br>
+    }<br>
+}<br>
+</code></p>
+<p>Luego de configurar nuestro archivo con los datos pertenecientes entonces podemos hacer el enlace simbólico</p>
+<p><code>$ sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default </code></p>
+<p>Ahora reiniciamos nuestro nginx</p>
+<p><code># service nginx restart </code></p>
+<p>Si se desplaza a su sitio, usted debe ahora ver su bienvenida de las páginas de Django funciona con Nginx y Gunicorn. Ahora es momento de seguir adelante y desarrollar el contenido que desees.</p>
+<p>A la fina podriamos tener un directorio parecido a esto. Aunque usted puede configurarlo y establecerlo como mejor le parezca:<br>
+<code><br>
+/webapps/hello_django/<br>
+├── bin                          &lt;= Directory created by virtualenv<br>
+│   ├── activate                 &lt;= Environment activation script<br>
+│   ├── django-admin.py<br>
+│   ├── gunicorn<br>
+│   ├── gunicorn_django<br>
+│   ├── gunicorn_start           &lt;= Script to start application with Gunicorn<br>
+│   └── python<br>
+├── hello                        &lt;= Django project directory, add this to PYTHONPATH<br>
+│   ├── manage.py<br>
+│   ├── project_application_1<br>
+│   ├── project_application_2<br>
+│   └── hello                    &lt;= Project settings directory<br>
+│       ├── __init__.py<br>
+│       ├── settings.py          &lt;= hello.settings - settings module Gunicorn will use<br>
+│       ├── urls.py<br>
+│       └── wsgi.py               /usr/include/python2.7<br>
+├── lib<br>
+│   └── python2.7<br>
+├── lib64 -&gt; /webapps/hello_django/lib<br>
+├── logs                         &lt;= Application logs directory<br>
+│   ├── gunicorn_supervisor.log<br>
+│   ├── nginx-access.log<br>
+│   └── nginx-error.log<br>
+├── media                        &lt;= User uploaded files folder<br>
+├── run<br>
+│   └── gunicorn.sock<br>
+└── static                       &lt;= Collect and serve static files from here</code></p>
+<p>Write For: @eliezerfot123 by: <a href="http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/" title="http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/" target="_blank">http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/</a></p>
+<p>Estamos listos compañeros ahora: Enjoy!</p>
+<p>Este video muestra un poco que es django: </p>
+<div class="jetpack-video-wrapper"><span class="embed-youtube" style="text-align:center; display: block;"><iframe class="youtube-player" type="text/html" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/j2hp2-u0cHU.html" allowfullscreen="true" style="border: 0px; display: block; margin: 0px; width: 760px; height: 450.68px;" data-ratio="0.593" data-width="1000" data-height="593"></iframe></span></div>
+<p>Nos vemos pronto…</p>
+		<div class="wpcnt">
+			<div class="wpa wpmrec">
+				<a class="wpa-about" href="https://wordpress.com/about-these-ads/" rel="nofollow">Acerca de estos anuncios</a>
+				<div class="u">
+					<script type="text/javascript">
+					(function(g){g.__ATA.initAd({sectionId:26942, width:300, height:250});})(window);
+					</script><div id="automattic-id-6543" data-section="26942" style="width:300px; height:250px;"><iframe width="300" height="250" style="border:none;width:300px;height:250px;" frameborder="0" scrolling="no" name="fif_slot_automattic-id-_automattic-id-6543" id="fif_slot_automattic-id-_automattic-id-6543" src="javascript:&quot;&lt;html&gt;&lt;body style=&#39;background:transparent;margin:0%;&#39;&gt;&lt;/body&gt;&lt;/html&gt;&quot;" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource.html"></iframe></div>
+				</div>
+			</div>
+		</div><div id="jp-post-flair" class="sharedaddy sd-rating-enabled sd-like-enabled sd-sharing-enabled"><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon-text sd-sharing"><h3 class="sd-title">Share this:</h3><div class="sd-content"><ul><li><a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" class="sharing-anchor sd-button share-more"><span>Compartir</span></a></li><li class="share-end"></li></ul><div class="sharing-hidden"><div class="inner" style="display: none;"><ul><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-225" class="share-twitter sd-button share-icon" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/?share=twitter&amp;nb=1" target="_blank" title="Haz clic para compartir en Twitter"><span>Twitter</span></a></li><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-225" class="share-facebook sd-button share-icon" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/?share=facebook&amp;nb=1" target="_blank" title="Comparte en Facebook"><span>Facebook<span class="share-count">4</span></span></a></li><li class="share-end"></li><li class="share-end"></li></ul></div></div></div></div></div><div class="sharedaddy sd-block sd-like jetpack-likes-widget-wrapper jetpack-likes-widget-loaded" id="like-post-wrapper-21849470-225-57ed80fcc508c" data-src="//widgets.wp.com/likes/#blog_id=21849470&amp;post_id=225&amp;origin=fulljed123.wordpress.com&amp;obj_id=21849470-225-57ed80fcc508c" data-name="like-post-frame-21849470-225-57ed80fcc508c"><h3 class="sd-title">Me gusta:</h3><div class="likes-widget-placeholder post-likes-widget-placeholder" style="height: 55px; display: none;"><span class="button"><span>Me gusta</span></span> <span class="loading">Cargando...</span></div><iframe class="post-likes-widget jetpack-likes-widget" name="like-post-frame-21849470-225-57ed80fcc508c" height="55px" width="100%" frameborder="0" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(10).html"></iframe><span class="sd-text-color"></span><a class="sd-link-color"></a></div>
+<div id="jp-relatedposts" class="jp-relatedposts" style="display: block;">
+	<h3 class="jp-relatedposts-headline"><em>Relacionado</em></h3>
+<div class="jp-relatedposts-items jp-relatedposts-items-minimal"><p class="jp-relatedposts-post jp-relatedposts-post0" data-post-id="75" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://fulljed123.wordpress.com/2011/07/29/instalar-django-en-linux/" title="Instalar Django en Linux
+
+Muchas veces nos preguntamos como instalar django en nuestro sistema, cabe destacar que en los repositorios de debian estan incluido pero la version vieja jeje xD, por lo tanto hoy aqui la nueva alternativa y sumamente fácil... Paso 1: Descargamos DJANGO de la página oficial Descargar. Paso 2: lo extraemos…" rel="nofollow" data-origin="225" data-position="0">Instalar Django en Linux</a></span><span class="jp-relatedposts-post-context">En "Gnu/Linux"</span></p><p class="jp-relatedposts-post jp-relatedposts-post1" data-post-id="158" data-post-format="false"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://fulljed123.wordpress.com/2013/03/04/instalar-y-configurar-postgresql/" title="Instalar y configurar Postgresql
+
+Primero, debemos tener instalado postgreSQL, por lo que ejecutamos como superusuario: aptitude  install postgresql Ahora, debemos entrar al intérprete de postgreSQL. Para ello debemos acceder primero como súper usuario: su Contraseña: Y para entrar al intérprete de postgreSQL: su postgres Con esto, en la cónsola debemos tener un usuario distinto,…" rel="nofollow" data-origin="225" data-position="1">Instalar y configurar Postgresql</a></span><span class="jp-relatedposts-post-context">En "Postgresql"</span></p><p class="jp-relatedposts-post jp-relatedposts-post2" data-post-id="314" data-post-format="image"><span class="jp-relatedposts-post-title"><a class="jp-relatedposts-post-a" href="https://fulljed123.wordpress.com/2015/07/30/auditando-nuestros-sistemas-con-lynis/" title="Auditando nuestros sistemas con LYNIS
+
+Lynis es una herramienta de auditoria de código abierto. Es usado por administradores, profesionales y auditores para evaluar la seguridad en los sistemas basados en Linux/Unix. Lynis escanea las posibles vulnerabilidades de sus sistema y da un reporte de los posibles fallos. Cabe destacar que Lynis no corrige los fallos…" rel="nofollow" data-origin="225" data-position="2">Auditando nuestros sistemas con LYNIS</a></span><span class="jp-relatedposts-post-context">En "Generales"</span></p></div></div></div>					</div><!-- .entry-content -->
+
+	<footer class="entry-footer"><div class="entry-meta entry-meta-tags"><a href="https://fulljed123.wordpress.com/tag/configurar-django-con-nginx/" rel="tag">configurar django con nginx</a> <a href="https://fulljed123.wordpress.com/tag/configure-django-with-nginx/" rel="tag">Configure django with nginx</a> <a href="https://fulljed123.wordpress.com/tag/django/" rel="tag">Django</a> <a href="https://fulljed123.wordpress.com/tag/django-and-nginx/" rel="tag">django and nginx</a> <a href="https://fulljed123.wordpress.com/tag/gunicorn/" rel="tag">gunicorn</a> <a href="https://fulljed123.wordpress.com/tag/linux/" rel="tag">linux.</a> <a href="https://fulljed123.wordpress.com/category/python/" rel="tag">Python</a> <a href="https://fulljed123.wordpress.com/tag/supervisor/" rel="tag">supervisor</a> <a href="https://fulljed123.wordpress.com/tag/supervisor-and-postgresql/" rel="tag">supervisor and postgresql</a> <a href="https://fulljed123.wordpress.com/tag/unicorn/" rel="tag">unicorn</a> <a href="https://fulljed123.wordpress.com/tag/unix/" rel="tag">unix</a></div></footer><!-- .entry-footer --></article><!-- #post-## -->
+			
+				<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Navegación de entradas</h1>
+		<div class="nav-links">
+			<div class="nav-previous"><a href="https://fulljed123.wordpress.com/2013/09/11/como-enviar-mensajes-con-gammu-y-python/" rel="prev">Como enviar mensajes con gammu y&nbsp;python</a></div><div class="nav-next"><a href="https://fulljed123.wordpress.com/2014/01/31/establecer-tiempo-de-sesion-en-django/" rel="next">Establecer tiempo de sesión en&nbsp;django</a></div>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+			<div id="comments" class="discussion">
+
+			<div class="comments-area content-comments">
+			<h2 class="comments-header">
+				4 comments			</h2>
+			<ol class="commentlist">
+				
+		<li id="comment-19" class="pingback even thread-even depth-1 highlander-comment">
+			Pingback: <a href="http://www.dbrunas.com.ar/2014/01/30/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/" rel="external nofollow" class="url">Django con Nginx, Gunicorn, Virtualenv, Supervisor y Postgresql » DbRunas</a>
+	<ul class="children">
+
+		<li id="comment-20" class="comment byuser comment-author-eliezerfot123 bypostauthor odd alt depth-2 highlander-comment">
+			<img alt="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/b546847ea27555d6353024e5d1e9f5a4" class="avatar avatar-180 grav-hashed grav-hijack" height="180" width="180" id="grav-b546847ea27555d6353024e5d1e9f5a4-0">			<div class="comment-wrap">
+				<div class="comment-top">
+					<span class="comment-author author vcard">
+						<cite class="fn"><a href="https://fulljed123.wordpress.com/" rel="external nofollow" class="url">eliezerfot123</a></cite> 					</span>
+					<span class="comment-meta comment-time">
+						 · enero 30, 2014					</span>
+				</div>
+				<div id="comment-body-20" class="comment-body">
+										<p>Muchas gracias por publicar este post. Estamos para servir… Saludos</p>
+				</div>
+				<div class="reply">
+					<a rel="nofollow" class="comment-reply-link" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/?replytocom=20#respond" onclick="return addComment.moveForm( &quot;comment-body-20&quot;, &quot;20&quot;, &quot;respond&quot;, &quot;225&quot; )" aria-label="Responder a eliezerfot123">Responder</a>									</div>
+			</div>
+	</li><!-- #comment-## -->
+</ul><!-- .children -->
+</li><!-- #comment-## -->
+
+		<li id="comment-32" class="comment even thread-odd thread-alt depth-1 highlander-comment">
+			<img alt="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/2cf83ae8d1f3ca1b5b881ab2a07bf722" class="avatar avatar-180 grav-hashed grav-hijack" height="180" width="180" id="grav-2cf83ae8d1f3ca1b5b881ab2a07bf722-0">			<div class="comment-wrap">
+				<div class="comment-top">
+					<span class="comment-author author vcard">
+						<cite class="fn">David</cite> 					</span>
+					<span class="comment-meta comment-time">
+						 · agosto 24, 2014					</span>
+				</div>
+				<div id="comment-body-32" class="comment-body">
+										<p>Muy bueno!</p>
+				</div>
+				<div class="reply">
+					<a rel="nofollow" class="comment-reply-link" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/?replytocom=32#respond" onclick="return addComment.moveForm( &quot;comment-body-32&quot;, &quot;32&quot;, &quot;respond&quot;, &quot;225&quot; )" aria-label="Responder a David">Responder</a>									</div>
+			</div>
+	</li><!-- #comment-## -->
+
+		<li id="comment-38" class="comment odd alt thread-even depth-1 highlander-comment">
+			<img alt="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/photo.jpg" class="avatar avatar-180" height="180" width="180">			<div class="comment-wrap">
+				<div class="comment-top">
+					<span class="comment-author author vcard">
+						<cite class="fn"><a href="https://plus.google.com/114002455312610395907" rel="external nofollow" class="url">Stivenson Rincón</a></cite> 					</span>
+					<span class="comment-meta comment-time">
+						 · noviembre 11, 2014					</span>
+				</div>
+				<div id="comment-body-38" class="comment-body">
+										<p>Excelente. Todo open-source, conciso, funcional y bien explicado. Gracias amigo.</p>
+				</div>
+				<div class="reply">
+					<a rel="nofollow" class="comment-reply-link" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/?replytocom=38#respond" onclick="return addComment.moveForm( &quot;comment-body-38&quot;, &quot;38&quot;, &quot;respond&quot;, &quot;225&quot; )" aria-label="Responder a Stivenson Rincón">Responder</a>									</div>
+			</div>
+	</li><!-- #comment-## -->
+			</ol>
+
+					</div>
+	
+	
+					<div id="respond" class="comment-respond js">
+			<h3 id="reply-title" class="comment-reply-title">Deja un comentario <small><a rel="nofollow" id="cancel-comment-reply-link" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#respond" style="display:none;">Cancelar respuesta</a></small></h3>				<form action="https://fulljed123.wordpress.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate="">
+					<input type="hidden" id="highlander_comment_nonce" name="highlander_comment_nonce" value="3ca8e7aba1"><input type="hidden" name="_wp_http_referer" value="/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/">
+<input type="hidden" name="hc_post_as" id="hc_post_as" value="guest">
+
+<div class="comment-form-field comment-textarea">
+	
+	<div id="comment-form-comment"><textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Arial, Helvetica, Tahoma, Verdana, sans-serif; font-size: 14px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; text-decoration: none; word-spacing: 0px; text-indent: 0px; line-height: 24.5px; width: 738px;" class="autosizejs "></textarea><textarea id="comment" name="comment" title="Introduce aquí tu comentario..." placeholder="Introduce aquí tu comentario..." style="height: 44px; overflow: hidden; word-wrap: break-word; resize: none;"></textarea></div>
+</div>
+
+<div id="comment-form-identity" style="display: none;">
+
+	<div id="comment-form-nascar">
+		<p>Introduce tus datos o haz clic en un icono para iniciar sesión:</p>
+		<ul>
+			<li class="selected" style="display:none;">
+				<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#comment-form-guest" id="postas-guest" title="Invitado">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#comment-form-load-service:WordPress.com" id="postas-wordpress" title="WordPress.com">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#comment-form-load-service:Twitter" id="postas-twitter" title="Twitter">
+					<span></span>
+				</a>
+			</li>
+			<li>
+				<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#comment-form-load-service:Facebook" id="postas-facebook" title="Facebook">
+					<span></span>
+				</a>
+			</li>
+			<li>
+			<iframe id="googleplus-sign-in" name="googleplus-sign-in" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(11).html" width="24" height="24" scrolling="no" allowtransparency="true" seamless="seamless" frameborder="0"></iframe>
+			</li>
+		</ul>
+	</div>
+
+	<div id="comment-form-guest" class="comment-form-service selected">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+<a href="https://gravatar.com/site/signup/" target="_blank">				<img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ad516503a11cd5ca435acc9bb6523536" alt="Gravatar" width="25" class="no-grav">
+</a>			</div>
+
+				<div class="comment-form-fields">
+				<div class="comment-form-field comment-form-email">
+					<label for="email">Correo electrónico <span class="required">(necesario)</span> <span class="nopublish">(La dirección no se hará pública)</span></label>
+					<div class="comment-form-input"><input id="email" name="email" type="email" value=""></div>
+				</div>
+				<div class="comment-form-field comment-form-author">
+					<label for="author">Nombre <span class="required">(necesario)</span></label>
+					<div class="comment-form-input"><input id="author" name="author" type="text" value=""></div>
+				</div>
+				<div class="comment-form-field comment-form-url">
+					<label for="url">Web</label>
+					<div class="comment-form-input"><input id="url" name="url" type="text" value=""></div>
+				</div>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-wordpress" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ad516503a11cd5ca435acc9bb6523536" alt="Logo de WordPress.com" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="wp_avatar" id="wordpress-avatar" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_user_id" id="wordpress-user_id" class="comment-meta-wordpress" value="">
+				<input type="hidden" name="wp_access_token" id="wordpress-access_token" class="comment-meta-wordpress" value="">
+				<p class="comment-form-posting-as pa-wordpress"><strong></strong> Estás comentando usando tu cuenta de <span class="skimlinks-unlinked">WordPress.com</span>. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;wordpress&#39; );">Cerrar&nbsp;sesión</a>&nbsp;/&nbsp;<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Cambiar</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-twitter" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ad516503a11cd5ca435acc9bb6523536" alt="Imagen de Twitter" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="twitter_avatar" id="twitter-avatar" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_user_id" id="twitter-user_id" class="comment-meta-twitter" value="">
+				<input type="hidden" name="twitter_access_token" id="twitter-access_token" class="comment-meta-twitter" value="">
+				<p class="comment-form-posting-as pa-twitter"><strong></strong> Estás comentando usando tu cuenta de Twitter. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;twitter&#39; );">Cerrar&nbsp;sesión</a>&nbsp;/&nbsp;<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Cambiar</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-facebook" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ad516503a11cd5ca435acc9bb6523536" alt="Foto de Facebook" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="fb_avatar" id="facebook-avatar" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_user_id" id="facebook-user_id" class="comment-meta-facebook" value="">
+				<input type="hidden" name="fb_access_token" id="facebook-access_token" class="comment-meta-facebook" value="">
+				<p class="comment-form-posting-as pa-facebook"><strong></strong> Estás comentando usando tu cuenta de Facebook. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;facebook&#39; );">Cerrar&nbsp;sesión</a>&nbsp;/&nbsp;<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Cambiar</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+	<div id="comment-form-googleplus" class="comment-form-service">
+		<div class="comment-form-padder">
+			<div class="comment-form-avatar">
+				<img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ad516503a11cd5ca435acc9bb6523536" alt="Google+ photo" width="25" class="no-grav">
+			</div>
+
+				<div class="comment-form-fields">
+				<input type="hidden" name="googleplus_avatar" id="googleplus-avatar" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_user_id" id="googleplus-user_id" class="comment-meta-googleplus" value="">
+				<input type="hidden" name="googleplus_access_token" id="googleplus-access_token" class="comment-meta-googleplus" value="">
+				<p class="comment-form-posting-as pa-googleplus"><strong></strong> Estás comentando usando tu cuenta de Google+. <span class="comment-form-log-out">(&nbsp;<a href="javascript:HighlanderComments.doExternalLogout( &#39;googleplus&#39; );">Cerrar&nbsp;sesión</a>&nbsp;/&nbsp;<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#" onclick="javascript:HighlanderComments.switchAccount();return false;">Cambiar</a>&nbsp;)</span></p>
+			</div>
+	
+		</div>
+	</div>
+
+
+	<div id="comment-form-load-service" class="comment-form-service">
+		<div class="comment-form-posting-as-cancel"><a href="javascript:HighlanderComments.cancelExternalWindow();">Cancelar</a></div>
+		<p>Conectando a %s</p>
+	</div>
+
+</div>
+
+<script type="text/javascript">
+var highlander_expando_javascript = function(){
+	var input = document.createElement( 'input' ),
+	    comment = jQuery( '#comment' );
+
+	if ( 'placeholder' in input ) {
+		comment.attr( 'placeholder', jQuery( '.comment-textarea label' ).remove().text() );
+	}
+
+	// Expando Mode: start small, then auto-resize on first click + text length
+	jQuery( '#comment-form-identity' ).hide();
+	jQuery( '#comment-form-subscribe' ).hide();
+	jQuery( '#commentform .form-submit' ).hide();
+
+	comment.css( { 'height':'10px' } ).one( 'focus', function() {
+		var timer = setInterval( HighlanderComments.resizeCallback, 10 )
+		jQuery( this ).animate( { 'height': HighlanderComments.initialHeight } ).delay( 100 ).queue( function(n) { clearInterval( timer ); HighlanderComments.resizeCallback(); n(); } );
+		jQuery( '#comment-form-identity' ).slideDown();
+		jQuery( '#comment-form-subscribe' ).slideDown();
+		jQuery( '#commentform .form-submit' ).slideDown();
+	});
+}
+jQuery(document).ready( highlander_expando_javascript );
+</script>
+
+<div id="comment-form-subscribe" style="display: none;">
+	<p class="comment-subscription-form"><input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;"> <label class="subscribe-label" id="subscribe-label" for="subscribe" style="display: inline;">Notificarme los nuevos comentarios por correo electrónico.</label></p><p class="post-subscription-form"><input type="checkbox" name="subscribe_blog" id="subscribe_blog" value="subscribe" style="width: auto;"> <label class="subscribe-label" id="subscribe-blog-label" for="subscribe_blog" style="display: inline;">Recibir nuevas entradas por email.</label></p></div>
+
+
+
+
+<p class="form-submit" style="display: none;"><input name="submit" type="submit" id="comment-submit" class="submit" value="Publicar comentario"> <input type="hidden" name="comment_post_ID" value="225" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="a86e45d5e0"></p>
+<input type="hidden" name="genseq" value="1475182844">
+<p style="display: none;"></p>				<input type="hidden" id="ak_js" name="ak_js" value="1475182847450"></form>
+					</div><!-- #respond -->
+		<div style="clear: both"></div></div>
+
+		
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+	<div id="secondary" class="widget-area column2" role="complementary" style="display: block;">
+		<a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/" class="widget-area-toggle"><i class="fa fa-times"></i></a>
+		<div class="widgets-wrapper">
+			<aside id="search-3" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="https://fulljed123.wordpress.com/">
+	<label>
+		<span class="screen-reader-text">Buscar:</span>
+		<input type="search" class="search-field" placeholder="Buscar …" value="" name="s">
+	</label>
+</form>
+</aside><aside id="categories-2" class="widget widget_categories"><h4 class="widget-title">Categorías</h4>		<ul>
+	<li class="cat-item cat-item-1667556"><a href="https://fulljed123.wordpress.com/category/canaima/" title="Entra y comparte">Canaima</a> (4)
+</li>
+	<li class="cat-item cat-item-7522"><a href="https://fulljed123.wordpress.com/category/generales/">Generales</a> (21)
+</li>
+	<li class="cat-item cat-item-701"><a href="https://fulljed123.wordpress.com/category/gnulinux/" title="Tutoriales Sobre el SO GNU/LINUX">Gnu/Linux</a> (17)
+</li>
+	<li class="cat-item cat-item-458"><a href="https://fulljed123.wordpress.com/category/php/">PHP</a> (3)
+</li>
+	<li class="cat-item cat-item-15989"><a href="https://fulljed123.wordpress.com/category/postgresql/">Postgresql</a> (4)
+</li>
+	<li class="cat-item cat-item-832"><a href="https://fulljed123.wordpress.com/category/python/">Python</a> (5)
+</li>
+	<li class="cat-item cat-item-69024"><a href="https://fulljed123.wordpress.com/category/servidores/">Servidores</a> (2)
+</li>
+		</ul>
+</aside>		<aside id="recent-posts-2" class="widget widget_recent_entries">		<h4 class="widget-title">Entradas Recientes de interes</h4>		<ul>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2015/07/30/auditando-nuestros-sistemas-con-lynis/">Auditando nuestros sistemas con&nbsp;LYNIS</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2015/07/10/gente-sin-oficio/">GENTE SIN OFICIO…</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2015/04/27/bonding-con-xen-en-debian-wheezy-jessie/">Bonding con xen en Debian “Wheezy –&nbsp;Jessie”</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2014/12/29/como-hacer-jaulas-chroot/">Como hacer Jaulas&nbsp;CHROOT</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2014/09/13/como-instalar-pyqt4-en-un-entorno-virtualenv/">Como instalar PyQt4 en un entorno&nbsp;Virtualenv.</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2014/08/10/restaurar-un-respaldo-img-en-postgresql/">Restaurar un respaldo “.img” en&nbsp;postgresql</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2014/05/28/instalar-y-configurar-un-servidor-ssh/">Instalar y configurar un servidor&nbsp;SSH</a>
+						</li>
+					<li>
+				<a href="https://fulljed123.wordpress.com/2014/05/23/gits/">Gits</a>
+						</li>
+				</ul>
+		</aside>		<aside id="twitter-4" class="widget widget_twitter"><h4 class="widget-title"><a href="http://twitter.com/eliezerfot123">Twitter de Eliezerfot123</a></h4><p>Error: Por favor, asegúrate de que la cuenta de Twitter es <a href="http://support.twitter.com/forums/10711/entries/14016">pública</a>.</p></aside><aside id="linkcat-167302" class="widget widget_links"><h4 class="widget-title">Enlances</h4>
+	<ul class="xoxo blogroll">
+<li><a href="http://www.ajaxrain.com/" title="Herramientas web utiles">AJaxRain</a>
+Herramientas web utiles</li>
+<li><a href="http://canaima.softwarelibre.gob.ve/" title="Venezolano hasta los Huesos">Canaima GNU/LINUX</a>
+Venezolano hasta los Huesos</li>
+<li><a href="http://humitos.homelinux.net/django-book-sphinx/" title="Util y practico libro de django">Libro de Django</a>
+Util y practico libro de django</li>
+<li><a href="http://www.debian.org/">Proyecto debian</a></li>
+
+	</ul>
+</aside>
+<aside id="blog-stats-2" class="widget widget_blog-stats"><h4 class="widget-title">Blog Stats</h4>		<ul>
+			<li>16,452 hits</li>
+		</ul>
+		</aside><aside id="calendar-4" class="widget widget_calendar"><div id="calendar_wrap" class="calendar_wrap"><table id="wp-calendar">
+	<caption>enero 2014</caption>
+	<thead>
+	<tr>
+		<th scope="col" title="Lunes">L</th>
+		<th scope="col" title="Martes">M</th>
+		<th scope="col" title="Miércoles">X</th>
+		<th scope="col" title="Jueves">J</th>
+		<th scope="col" title="Viernes">V</th>
+		<th scope="col" title="Sábado">S</th>
+		<th scope="col" title="Domingo">D</th>
+	</tr>
+	</thead>
+
+	<tfoot>
+	<tr>
+		<td colspan="3" id="prev"><a href="https://fulljed123.wordpress.com/2013/09/">« Sep</a></td>
+		<td class="pad">&nbsp;</td>
+		<td colspan="3" id="next"><a href="https://fulljed123.wordpress.com/2014/02/">Feb »</a></td>
+	</tr>
+	</tfoot>
+
+	<tbody>
+	<tr>
+		<td colspan="2" class="pad">&nbsp;</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td>
+	</tr>
+	<tr>
+		<td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td>
+	</tr>
+	<tr>
+		<td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td>
+	</tr>
+	<tr>
+		<td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td>
+	</tr>
+	<tr>
+		<td>27</td><td>28</td><td><a href="https://fulljed123.wordpress.com/2014/01/29/" aria-label="Entradas publicadas el 29 January, 2014">29</a></td><td>30</td><td><a href="https://fulljed123.wordpress.com/2014/01/31/" aria-label="Entradas publicadas el 31 January, 2014">31</a></td>
+		<td class="pad" colspan="2">&nbsp;</td>
+	</tr>
+	</tbody>
+	</table></div></aside><aside id="wp_tag_cloud-3" class="widget wp_widget_tag_cloud"><h4 class="widget-title">Etiquetas</h4><div style="overflow:hidden"><a href="https://fulljed123.wordpress.com/tag/img/" class="tag-link-118934 tag-link-position-1" title="1 tema" style="font-size: 8pt;">.img</a>
+<a href="https://fulljed123.wordpress.com/tag/aptitude/" class="tag-link-214974 tag-link-position-2" title="1 tema" style="font-size: 8pt;">aptitude</a>
+<a href="https://fulljed123.wordpress.com/tag/auditoria-de-sistemas/" class="tag-link-5485145 tag-link-position-3" title="1 tema" style="font-size: 8pt;">auditoria de sistemas</a>
+<a href="https://fulljed123.wordpress.com/tag/bug/" class="tag-link-1621 tag-link-position-4" title="1 tema" style="font-size: 8pt;">bug</a>
+<a href="https://fulljed123.wordpress.com/tag/cambiar-palabras-en-postgresql-con-replace/" class="tag-link-154623692 tag-link-position-5" title="1 tema" style="font-size: 8pt;">cambiar palabras en postgresql con replace</a>
+<a href="https://fulljed123.wordpress.com/tag/cargar-csv/" class="tag-link-154623630 tag-link-position-6" title="1 tema" style="font-size: 8pt;">cargar csv</a>
+<a href="https://fulljed123.wordpress.com/tag/como-instalar-un-ssh/" class="tag-link-237880458 tag-link-position-7" title="1 tema" style="font-size: 8pt;">como instalar un ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/como-instalar-y-configurar-ssh/" class="tag-link-237880461 tag-link-position-8" title="1 tema" style="font-size: 8pt;">como instalar y configurar ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/comprobar-en-python-url/" class="tag-link-180410341 tag-link-position-9" title="1 tema" style="font-size: 8pt;">comprobar en python url</a>
+<a href="https://fulljed123.wordpress.com/tag/comprobar-url/" class="tag-link-180410340 tag-link-position-10" title="1 tema" style="font-size: 8pt;">comprobar url</a>
+<a href="https://fulljed123.wordpress.com/tag/conexiones/" class="tag-link-23028 tag-link-position-11" title="1 tema" style="font-size: 8pt;">conexiones</a>
+<a href="https://fulljed123.wordpress.com/tag/configurar-django-con-nginx/" class="tag-link-211547937 tag-link-position-12" title="1 tema" style="font-size: 8pt;">configurar django con nginx</a>
+<a href="https://fulljed123.wordpress.com/tag/configurar-ssh/" class="tag-link-122616805 tag-link-position-13" title="1 tema" style="font-size: 8pt;">configurar ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/configuration-of-security-shell/" class="tag-link-237880480 tag-link-position-14" title="1 tema" style="font-size: 8pt;">configuration of security shell</a>
+<a href="https://fulljed123.wordpress.com/tag/configuration-of-ssh-in-linux/" class="tag-link-237880488 tag-link-position-15" title="1 tema" style="font-size: 8pt;">configuration of ssh in linux</a>
+<a href="https://fulljed123.wordpress.com/tag/configure-django-with-nginx/" class="tag-link-211547938 tag-link-position-16" title="1 tema" style="font-size: 8pt;">Configure django with nginx</a>
+<a href="https://fulljed123.wordpress.com/tag/corregir-errores-en-mi-pc/" class="tag-link-380271346 tag-link-position-17" title="1 tema" style="font-size: 8pt;">corregir errores en mi pc</a>
+<a href="https://fulljed123.wordpress.com/tag/csv/" class="tag-link-602178 tag-link-position-18" title="1 tema" style="font-size: 8pt;">csv</a>
+<a href="https://fulljed123.wordpress.com/tag/django/" class="tag-link-15988 tag-link-position-19" title="2 temas" style="font-size: 16.4pt;">Django</a>
+<a href="https://fulljed123.wordpress.com/tag/django-and-nginx/" class="tag-link-211547940 tag-link-position-20" title="1 tema" style="font-size: 8pt;">django and nginx</a>
+<a href="https://fulljed123.wordpress.com/tag/e/" class="tag-link-10175 tag-link-position-21" title="1 tema" style="font-size: 8pt;">e</a>
+<a href="https://fulljed123.wordpress.com/tag/figlet/" class="tag-link-5183976 tag-link-position-22" title="1 tema" style="font-size: 8pt;">figlet</a>
+<a href="https://fulljed123.wordpress.com/tag/generales/" class="tag-link-7522 tag-link-position-23" title="1 tema" style="font-size: 8pt;">Generales</a>
+<a href="https://fulljed123.wordpress.com/tag/gnulinux-2/" class="tag-link-35165485 tag-link-position-24" title="1 tema" style="font-size: 8pt;">gnu/linux</a>
+<a href="https://fulljed123.wordpress.com/tag/gunicorn/" class="tag-link-54663684 tag-link-position-25" title="1 tema" style="font-size: 8pt;">gunicorn</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-apache/" class="tag-link-5327264 tag-link-position-26" title="1 tema" style="font-size: 8pt;">instalar apache</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-mysql/" class="tag-link-12400386 tag-link-position-27" title="1 tema" style="font-size: 8pt;">instalar mysql</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-php/" class="tag-link-12400385 tag-link-position-28" title="1 tema" style="font-size: 8pt;">instalar php</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-ssh/" class="tag-link-27466469 tag-link-position-29" title="1 tema" style="font-size: 8pt;">Instalar ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-un-servidor-ssh/" class="tag-link-237880453 tag-link-position-30" title="1 tema" style="font-size: 8pt;">instalar un servidor ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-utilizar-figlet/" class="tag-link-178866381 tag-link-position-31" title="1 tema" style="font-size: 8pt;">instalar utilizar figlet</a>
+<a href="https://fulljed123.wordpress.com/tag/instalar-y-configurar-ssh/" class="tag-link-237880436 tag-link-position-32" title="1 tema" style="font-size: 8pt;">Instalar y configurar ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/librerias/" class="tag-link-197984 tag-link-position-33" title="1 tema" style="font-size: 8pt;">librerias</a>
+<a href="https://fulljed123.wordpress.com/tag/linux/" class="tag-link-610 tag-link-position-34" title="3 temas" style="font-size: 22pt;">linux.</a>
+<a href="https://fulljed123.wordpress.com/tag/linux-figlet/" class="tag-link-178866383 tag-link-position-35" title="1 tema" style="font-size: 8pt;">linux figlet</a>
+<a href="https://fulljed123.wordpress.com/tag/linux-y-ssh/" class="tag-link-237880468 tag-link-position-36" title="1 tema" style="font-size: 8pt;">linux y ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/lt/" class="tag-link-371611 tag-link-position-37" title="1 tema" style="font-size: 8pt;">lt</a>
+<a href="https://fulljed123.wordpress.com/tag/lynis/" class="tag-link-6091127 tag-link-position-38" title="1 tema" style="font-size: 8pt;">lynis</a>
+<a href="https://fulljed123.wordpress.com/tag/nuestra-base/" class="tag-link-60337527 tag-link-position-39" title="1 tema" style="font-size: 8pt;">nuestra base</a>
+<a href="https://fulljed123.wordpress.com/tag/nuevo-usuario/" class="tag-link-9728018 tag-link-position-40" title="1 tema" style="font-size: 8pt;">nuevo usuario</a>
+<a href="https://fulljed123.wordpress.com/tag/openssh/" class="tag-link-592340 tag-link-position-41" title="1 tema" style="font-size: 8pt;">openssh</a>
+<a href="https://fulljed123.wordpress.com/tag/personalizar-terminal/" class="tag-link-178866382 tag-link-position-42" title="1 tema" style="font-size: 8pt;">personalizar terminal</a>
+<a href="https://fulljed123.wordpress.com/tag/postgresql-2/" class="tag-link-35335785 tag-link-position-43" title="2 temas" style="font-size: 16.4pt;">postgresql</a>
+<a href="https://fulljed123.wordpress.com/tag/postgresql-tips/" class="tag-link-1279058 tag-link-position-44" title="2 temas" style="font-size: 16.4pt;">postgresql tips</a>
+<a href="https://fulljed123.wordpress.com/tag/python/" class="tag-link-832 tag-link-position-45" title="3 temas" style="font-size: 22pt;">Python</a>
+<a href="https://fulljed123.wordpress.com/tag/registradores/" class="tag-link-808255 tag-link-position-46" title="1 tema" style="font-size: 8pt;">registradores</a>
+<a href="https://fulljed123.wordpress.com/tag/restore-your-data/" class="tag-link-257405437 tag-link-position-47" title="1 tema" style="font-size: 8pt;">restore your data</a>
+<a href="https://fulljed123.wordpress.com/tag/security-shell/" class="tag-link-237880473 tag-link-position-48" title="1 tema" style="font-size: 8pt;">security shell</a>
+<a href="https://fulljed123.wordpress.com/tag/seguridad-en-mi-servidor/" class="tag-link-380271336 tag-link-position-49" title="1 tema" style="font-size: 8pt;">seguridad en mi servidor</a>
+<a href="https://fulljed123.wordpress.com/tag/seguridad-informatica/" class="tag-link-17116 tag-link-position-50" title="1 tema" style="font-size: 8pt;">seguridad informática</a>
+<a href="https://fulljed123.wordpress.com/tag/sencillo/" class="tag-link-2150557 tag-link-position-51" title="1 tema" style="font-size: 8pt;">sencillo</a>
+<a href="https://fulljed123.wordpress.com/tag/server-query/" class="tag-link-25324368 tag-link-position-52" title="1 tema" style="font-size: 8pt;">server query</a>
+<a href="https://fulljed123.wordpress.com/tag/server-status/" class="tag-link-730127 tag-link-position-53" title="2 temas" style="font-size: 16.4pt;">server status</a>
+<a href="https://fulljed123.wordpress.com/tag/servidores-2/" class="tag-link-34966721 tag-link-position-54" title="1 tema" style="font-size: 8pt;">servidores</a>
+<a href="https://fulljed123.wordpress.com/tag/servidor-web/" class="tag-link-1652929 tag-link-position-55" title="1 tema" style="font-size: 8pt;">servidor web</a>
+<a href="https://fulljed123.wordpress.com/tag/session-en-django/" class="tag-link-212139118 tag-link-position-56" title="1 tema" style="font-size: 8pt;">session en django</a>
+<a href="https://fulljed123.wordpress.com/tag/session-with-django/" class="tag-link-212139122 tag-link-position-57" title="1 tema" style="font-size: 8pt;">session with django</a>
+<a href="https://fulljed123.wordpress.com/tag/socket-connection/" class="tag-link-16186928 tag-link-position-58" title="1 tema" style="font-size: 8pt;">socket connection</a>
+<a href="https://fulljed123.wordpress.com/tag/socket-socket/" class="tag-link-37289415 tag-link-position-59" title="1 tema" style="font-size: 8pt;">socket socket</a>
+<a href="https://fulljed123.wordpress.com/tag/ssh/" class="tag-link-49320 tag-link-position-60" title="1 tema" style="font-size: 8pt;">ssh</a>
+<a href="https://fulljed123.wordpress.com/tag/ssh-en-linux/" class="tag-link-237880466 tag-link-position-61" title="1 tema" style="font-size: 8pt;">ssh en linux</a>
+<a href="https://fulljed123.wordpress.com/tag/standard-for-my-system/" class="tag-link-380271359 tag-link-position-62" title="1 tema" style="font-size: 8pt;">standard for my system</a>
+<a href="https://fulljed123.wordpress.com/tag/supervisor/" class="tag-link-127463 tag-link-position-63" title="1 tema" style="font-size: 8pt;">supervisor</a>
+<a href="https://fulljed123.wordpress.com/tag/supervisor-and-postgresql/" class="tag-link-211547939 tag-link-position-64" title="1 tema" style="font-size: 8pt;">supervisor and postgresql</a>
+<a href="https://fulljed123.wordpress.com/tag/system-of-security/" class="tag-link-380271354 tag-link-position-65" title="1 tema" style="font-size: 8pt;">system of security</a>
+<a href="https://fulljed123.wordpress.com/tag/tiempo-de-session-en-django/" class="tag-link-212139120 tag-link-position-66" title="1 tema" style="font-size: 8pt;">tiempo de session en django</a>
+<a href="https://fulljed123.wordpress.com/tag/time-of-session-with-django/" class="tag-link-212139143 tag-link-position-67" title="1 tema" style="font-size: 8pt;">time of session with django</a>
+<a href="https://fulljed123.wordpress.com/tag/ttyttler/" class="tag-link-192098676 tag-link-position-68" title="1 tema" style="font-size: 8pt;">ttyttler</a>
+<a href="https://fulljed123.wordpress.com/tag/unicorn/" class="tag-link-203176 tag-link-position-69" title="1 tema" style="font-size: 8pt;">unicorn</a>
+<a href="https://fulljed123.wordpress.com/tag/unix/" class="tag-link-9203 tag-link-position-70" title="2 temas" style="font-size: 16.4pt;">unix</a>
+<a href="https://fulljed123.wordpress.com/tag/url-en-python/" class="tag-link-180410342 tag-link-position-71" title="1 tema" style="font-size: 8pt;">url en python</a>
+<a href="https://fulljed123.wordpress.com/tag/utilizar-figlet/" class="tag-link-178866380 tag-link-position-72" title="1 tema" style="font-size: 8pt;">utilizar figlet</a>
+<a href="https://fulljed123.wordpress.com/tag/whois-domain/" class="tag-link-555022 tag-link-position-73" title="1 tema" style="font-size: 8pt;">whois domain</a>
+<a href="https://fulljed123.wordpress.com/tag/whois-en-python/" class="tag-link-177801762 tag-link-position-74" title="1 tema" style="font-size: 8pt;">whois en python</a>
+<a href="https://fulljed123.wordpress.com/tag/whois-in-python/" class="tag-link-177801763 tag-link-position-75" title="1 tema" style="font-size: 8pt;">whois in python</a></div></aside><aside id="tag_cloud-3" class="widget widget_tag_cloud"><h4 class="widget-title">Nube de categorías</h4><div style="overflow: hidden;"><a href="https://fulljed123.wordpress.com/category/canaima/" style="font-size: 118.42105263158%; padding: 1px; margin: 1px;" title="Canaima (4)">Canaima</a> <a href="https://fulljed123.wordpress.com/category/generales/" style="font-size: 275%; padding: 1px; margin: 1px;" title="Generales (21)">Generales</a> <a href="https://fulljed123.wordpress.com/category/gnulinux/" style="font-size: 238.15789473684%; padding: 1px; margin: 1px;" title="Gnu/Linux (17)">Gnu/Linux</a> <a href="https://fulljed123.wordpress.com/category/php/" style="font-size: 109.21052631579%; padding: 1px; margin: 1px;" title="PHP (3)">PHP</a> <a href="https://fulljed123.wordpress.com/category/postgresql/" style="font-size: 118.42105263158%; padding: 1px; margin: 1px;" title="Postgresql (4)">Postgresql</a> <a href="https://fulljed123.wordpress.com/category/python/" style="font-size: 127.63157894737%; padding: 1px; margin: 1px;" title="Python (5)">Python</a> <a href="https://fulljed123.wordpress.com/category/servidores/" style="font-size: 100%; padding: 1px; margin: 1px;" title="Servidores (2)">Servidores</a> </div></aside>		</div>
+	</div><!-- #secondary -->
+
+	</div><!-- #content -->
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+			<div id="site-supplementary" class="widget-area column-wrapper column2" role="complementary">
+			<div class="widget-area-content column">
+			<aside id="authors-5" class="widget widget_authors"><h4 class="widget-title">Eliezer J Romero C (eliezerfot123)</h4><ul><li><a href="https://fulljed123.wordpress.com/author/eliezerfot123/"> <img alt="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/b546847ea27555d6353024e5d1e9f5a4(1)" class="avatar avatar-48 grav-hashed" height="48" width="48" id="grav-b546847ea27555d6353024e5d1e9f5a4-1"> <strong>eliezerfot123</strong></a></li></ul></aside>		</div><!-- .widget-area-content -->
+					<div class="widget-area-content column">
+			<aside id="search-5" class="widget widget_search">
+<form role="search" method="get" class="search-form" action="https://fulljed123.wordpress.com/">
+	<label>
+		<span class="screen-reader-text">Buscar:</span>
+		<input type="search" class="search-field" placeholder="Buscar …" value="" name="s">
+	</label>
+</form>
+</aside>		</div><!-- .widget-area-content -->
+		</div>
+
+		<div class="site-info">
+			<a href="https://wordpress.com/?ref=footer_website">Crea un blog o un sitio web gratuitos con WordPress.com.</a>
+			
+					</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+
+<!-- wpcom_wp_footer -->
+<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/gprofiles.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var WPGroHo = {"my_hash":""};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/wpgroho.js"></script>
+
+	<script>
+		//initialize and attach hovercards to all gravatars
+		jQuery( document ).ready( function( $ ) {
+
+			if (typeof Gravatar === "undefined"){
+				return;
+			}
+
+			if ( typeof Gravatar.init !== "function" ) {
+				return;
+			}			
+
+			Gravatar.profile_cb = function( hash, id ) {
+				WPGroHo.syncProfileData( hash, id );
+			};
+			Gravatar.my_hash = WPGroHo.my_hash;
+			Gravatar.init( 'body', '#wp-admin-bar-my-account' );
+		});
+	</script>
+
+		<div style="display:none">
+	<div class="grofile-hash-map-b546847ea27555d6353024e5d1e9f5a4">
+	</div>
+	<div class="grofile-hash-map-2cf83ae8d1f3ca1b5b881ab2a07bf722">
+	</div>
+	<div class="grofile-hash-map-f313b77899bb307f89a6483d53807d33">
+	</div>
+	</div>
+<script type="text/javascript">
+/* <![CDATA[ */
+var HighlanderComments = {"loggingInText":"Iniciando sesi\u00f3n\u2026","submittingText":"Publicando comentario\u2026","postCommentText":"Publicar comentario","connectingToText":"Conectando a %s","commentingAsText":"%1$s: Est\u00e1s comentando usando tu cuenta de %2$s.","logoutText":"Cerrar sesi\u00f3n","loginText":"Acceder","connectURL":"https:\/\/fulljed123.wordpress.com\/public.api\/connect\/?action=request","logoutURL":"https:\/\/fulljed123.wordpress.com\/wp-login.php?action=logout&_wpnonce=25e5ef4b85","homeURL":"https:\/\/fulljed123.wordpress.com\/","postID":"225","gravDefault":"wavatar","enterACommentError":"Por favor, introduce un comentario","enterEmailError":"Por favor introduce tu direcci\u00f3n de correo electr\u00f3nico aqu\u00ed","invalidEmailError":"Direcci\u00f3n de correo electr\u00f3nico no v\u00e1lida","enterAuthorError":"Por favor, introduce tu nombre aqu\u00ed","gravatarFromEmail":"Esta imagen se mostrar\u00e1 cuando dejes un comentario. Haz clic para cambiarla.","logInToExternalAccount":"Inicia sesi\u00f3n para usar los datos de una de estas cuentas.","change":"Cambiar","changeAccount":"Cambiar cuenta","comment_registration":"","userIsLoggedIn":"","isJetpack":"0","text_direction":"ltr"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(6)"></script>
+<script type="text/javascript" charset="UTF-8" id="polldaddyRatings"><!--//--><![CDATA[//><!--
+PDRTJS_settings_4250262_post_225={"id":4250262,"unique_id":"wp-post-225","title":"Django%20con%20Nginx%2C%20Gunicorn%2C%20virtualenv%2C%20supervisor%20y%26nbsp%3Bpostgresql","permalink":"https:\/\/fulljed123.wordpress.com\/2014\/01\/29\/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql\/","item_id":"_post_225"}; if ( typeof PDRTJS_RATING !== 'undefined' ){if ( typeof PDRTJS_4250262_post_225 == 'undefined' ){PDRTJS_4250262_post_225 = new PDRTJS_RATING( PDRTJS_settings_4250262_post_225 );}}
+//--><!]]></script><script type="text/javascript" charset="UTF-8" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/rating.js"></script>
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"https:\/\/fulljed123.wordpress.com\/2014\/01\/29\/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql\/":225};
+	</script>
+		<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-twitter' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+				return false;
+			});
+		});
+		</script>
+				<script type="text/javascript">
+			var windowOpen;
+		jQuery(document).on( 'ready post-load', function(){
+			jQuery( 'a.share-facebook' ).on( 'click', function() {
+				if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+					windowOpen.close();
+				}
+				windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+				return false;
+			});
+		});
+		</script>
+		<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/form.js"></script>
+<link rel="stylesheet" id="all-css-0" href="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/responsive-videos.css" type="text/css" media="all">
+<script type="text/javascript">
+/* <![CDATA[ */
+var actionbardata = {"siteID":"21849470","siteName":"Eliezerfot123 ","siteURL":"http:\/\/fulljed123.wordpress.com","icon":"<img alt='' src='https:\/\/secure.gravatar.com\/blavatar\/ce1dfd41720ae9d0c0f47cd6906924a4?s=36' class='avatar avatar-36' height='36' width='36' \/>","canManageOptions":"","canCustomizeSite":"","isFollowing":"","themeSlug":"pub\/eighties","signupURL":"https:\/\/wordpress.com\/start\/","loginURL":"https:\/\/fulljed123.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F","themeURL":"https:\/\/wordpress.com\/themes\/eighties\/","xhrURL":"https:\/\/fulljed123.wordpress.com\/wp-admin\/admin-ajax.php","nonce":"30e9ce415b","isSingular":"1","isFolded":"","isLoggedIn":"","isMobile":"","subscribeNonce":"<input type=\"hidden\" id=\"_wpnonce\" name=\"_wpnonce\" value=\"8254c1e9ce\" \/>","referer":"https:\/\/fulljed123.wordpress.com\/2014\/01\/29\/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql\/","canFollow":"1","statusMessage":"","customizeLink":"https:\/\/fulljed123.wordpress.com\/wp-admin\/customize.php?url=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F","postID":"225","shortlink":"http:\/\/wp.me\/p1tG2O-3D","canEditPost":"","editLink":"https:\/\/wordpress.com\/post\/fulljed123.wordpress.com\/225","i18n":{"view":"Ver sitio","follow":"Seguir","following":"Siguiendo","edit":"Editar","login":"Acceder","signup":"Registrarse","customize":"Personalizar","report":"Denunciar este contenido","themeInfo":"Obtener el tema: Eighties","shortlink":"Copiar enlace corto","copied":"Copiado","followedText":"Las nuevas publicaciones de este sitio aparecer\u00e1n ahora en tu <a href=\"https:\/\/wordpress.com\/\">Lector<\/a>","foldBar":"Contraer esta barra","unfoldBar":"Expandir esta barra","editFollows":"Administrar los sitios que sigo","editSubs":"Gestionar suscripciones","viewReader":"Ver sitio en el Lector","subscribe":"Suscr\u00edbeme","enterEmail":"Introduce tu direcci\u00f3n de correo electr\u00f3nico","followers":"\u00danete a otros 327 seguidores","alreadyUser":"\u00bfYa tienes una cuenta de WordPress.com? <a href=\"https:\/\/fulljed123.wordpress.com\/wp-login.php?redirect_to=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F\">Accede ahora<\/a>."}};
+/* ]]> */
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"es","counts":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/saved_resource(7)"></script><div id="actionbar" class="actnbr-pub-eighties actnbr-has-follow"><ul><li class="actnbr-btn actnbr-hidden"> 			    	<a class="actnbr-action actnbr-actn-follow" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/"><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Seguir</span></a> 			    	<div class="actnbr-popover tip tip-top-left actnbr-notice"> 			    		<div class="tip-arrow"></div> 			    		<div class="tip-inner actnbr-follow-bubble"></div> 			    	</div> 			    </li><li class="actnbr-ellipsis actnbr-hidden"> 			  <svg class="gridicon gridicon__ellipsis" height="24" width="24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><circle cx="5" cy="12" r="2"></circle><circle cx="19" cy="12" r="2"></circle><circle cx="12" cy="12" r="2"></circle></g></svg> 			  <div class="actnbr-popover tip tip-top-left actnbr-more"> 			  	<div class="tip-arrow"></div> 			  	<div class="tip-inner"> 				  <ul> 				    <li class="actnbr-sitename actnbr-hidden"><a href="http://fulljed123.wordpress.com/"><img alt="" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/ce1dfd41720ae9d0c0f47cd6906924a4" class="avatar avatar-36" height="36" width="36"> Eliezerfot123 </a></li> 				   	<li class="actnbr-folded-customize actnbr-hidden"><a href="https://fulljed123.wordpress.com/wp-admin/customize.php?url=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F"><svg class="gridicon gridicon__customize" height="20px" width="20px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M2 6c0-1.505.78-3.08 2-4 0 .845.69 2 2 2 1.657 0 3 1.343 3 3 0 .386-.08.752-.212 1.09.74.594 1.476 1.19 2.19 1.81L8.9 11.98c-.62-.716-1.214-1.454-1.807-2.192C6.753 9.92 6.387 10 6 10c-2.21 0-4-1.79-4-4zm12.152 6.848l1.34-1.34c.607.304 1.283.492 2.008.492 2.485 0 4.5-2.015 4.5-4.5 0-.725-.188-1.4-.493-2.007L18 9l-2-2 3.507-3.507C18.9 3.188 18.225 3 17.5 3 15.015 3 13 5.015 13 7.5c0 .725.188 1.4.493 2.007L3 20l2 2 6.848-6.848c1.885 1.928 3.874 3.753 5.977 5.45l1.425 1.148 1.5-1.5-1.15-1.425c-1.695-2.103-3.52-4.092-5.448-5.977z" data-reactid=".2.1.1:0.1b.0"></path></g></svg><span>Personalizar<span></span></span></a></li> 				    <li class="actnbr-folded-follow actnbr-hidden"><a class="actnbr-action actnbr-actn-follow" href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/"><svg class="gridicon gridicon__follow" height="24px" width="24px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g><path d="M23 16v2h-3v3h-2v-3h-3v-2h3v-3h2v3h3zM20 2v9h-4v3h-3v4H4c-1.1 0-2-.9-2-2V2h18zM8 13v-1H4v1h4zm3-3H4v1h7v-1zm0-2H4v1h7V8zm7-4H4v2h14V4z"></path></g></svg><span>Seguir</span></a></li> 						<li class="actnbr-signup actnbr-hidden"><a href="https://wordpress.com/start/">Registrarse</a></li> 				    <li class="actnbr-login actnbr-hidden"><a href="https://fulljed123.wordpress.com/wp-login.php?redirect_to=https%3A%2F%2Ffulljed123.wordpress.com%2F2014%2F01%2F29%2Fdjango-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql%2F">Acceder</a></li> 				     				    <li class="actnbr-shortlink actnbr-hidden"><a href="http://wp.me/p1tG2O-3D">Copiar enlace corto</a></li> 				     				     				     				    <li class="actnbr-subs actnbr-hidden"><a href="https://subscribe.wordpress.com/">Gestionar suscripciones</a></li> 				    <li class="actnbr-fold actnbr-hidden"><a href="https://fulljed123.wordpress.com/2014/01/29/django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/">Contraer esta barra</a></li> 			      </ul> 			    </div> 		      </div> 		    </li> 	      </ul></div>
+<script type="text/javascript">
+// <![CDATA[
+(function() {
+try{
+  if ( window.external &&'msIsSiteMode' in window.external) {
+    if (window.external.msIsSiteMode()) {
+      var jl = document.createElement('script');
+      jl.type='text/javascript';
+      jl.async=true;
+      jl.src='/wp-content/plugins/ie-sitemode/custom-jumplist.php';
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(jl, s);
+    }
+  }
+}catch(e){}
+})();
+// ]]>
+</script>	<script type="text/javascript">
+	var skimlinks_pub_id = "725X584219"
+	var skimlinks_sitename = "fulljed123.wordpress.com";
+	</script>
+	<script type="text/javascript" src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/725X1342.skimlinks.js"></script>		<iframe src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/master.html" scrolling="no" id="likes-master" name="likes-master" style="display:none;"></iframe>
+		<div id="likes-other-gravatars"><div class="likes-text">A <span>%d</span> blogueros les gusta esto:</div><ul class="wpl-avatars sd-like-gravatars"></ul></div>
+		<script>
+			var _comscore = _comscore || [];
+			_comscore.push({
+				c1: "2",
+				c2: "7518284"
+			});
+			(function() {
+				var s = document.createElement("script"),
+					el = document.getElementsByTagName("script")[0];
+				s.async = true;
+				s.src = (document.location.protocol == "https:" ? "https://sb" : "http://b") + ".scorecardresearch.com/beacon.js";
+				el.parentNode.insertBefore(s, el);
+			})();
+		</script>
+		<noscript>
+			&lt;p class="robots-nocontent"&gt;&lt;img src="https://sb.scorecardresearch.com/p?c1=2&amp;c2=7518284&amp;c3=&amp;c4=&amp;c5=&amp;c6=&amp;c15=&amp;cv=2.0&amp;cj=1" alt="" style="display:none;" width="1" height="1" /&gt;&lt;/p&gt;
+		</noscript><script src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/w.js" type="text/javascript" async="" defer=""></script>
+<script type="text/javascript">
+_tkq = window._tkq || [];
+_stq = window._stq || [];
+_tkq.push(['storeContext', {'blog_id':'21849470','blog_tz':'0','user_lang':'es','blog_lang':'es','user_id':'0'}]);
+_stq.push(['view', {'blog':'21849470','v':'wpcom','tz':'0','user_id':'0','post':'225','subd':'fulljed123'}]);
+_stq.push(['extra', {'crypt':'UE5XaGUuOTlwaD85flAmcm1mcmZsaDhkV11YdTdvUG14Q2VDQTR4LlUsLi82dU1mai9BMl1dbDdlLTVHRC0/aU89ZkovNFB5VWZPS19ESnM3TVp4UFcxWjdTOXlVS1NEMGg9MW5faHlSSj91alpKLE1CUjNWM3pkd2ltWzU2eU1fbGxoWDRMRXw/ZmtnfE9mczFuMCtkT0NscCs3a3YwVDhiTFFXUENuNCVLTXhIRTNVejdkb1RWWjMrXy8wUDR5ak5adCtHSWtPLE5lenBpSGxEZGJiK2dMRnBrV3pYJTZZK0F2TitjWjlfT0lpWXglb3xkT09+cSVdWFh8RUZxNzU1TVZUWUJUY2FUV09SUDNsQnROalorQVptZlozei5+OVlEWHIsT3JZWFpmVHE1Yw=='}]);
+_stq.push([ 'clickTrackerInit', '21849470', '225' ]);
+	</script>
+<noscript>&lt;img src="https://pixel.wp.com/b.gif?v=noscript" style="height:0px;width:0px;overflow:hidden" alt="" /&gt;</noscript>
+<script>
+if ( 'object' === typeof wpcom_mobile_user_agent_info ) {
+
+	wpcom_mobile_user_agent_info.init();
+	var mobileStatsQueryString = "";
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedPlatformName )
+		mobileStatsQueryString += "&x_" + 'mobile_platforms' + '=' + wpcom_mobile_user_agent_info.matchedPlatformName;
+	
+	if( false !== wpcom_mobile_user_agent_info.matchedUserAgentName )
+		mobileStatsQueryString += "&x_" + 'mobile_devices' + '=' + wpcom_mobile_user_agent_info.matchedUserAgentName;
+	
+	if( wpcom_mobile_user_agent_info.isIPad() )
+		mobileStatsQueryString += "&x_" + 'ipad_views' + '=' + 'views';
+
+	if( "" != mobileStatsQueryString ) {
+		new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + mobileStatsQueryString + '&baba=' + Math.random();
+	}
+	
+}
+</script>
+
+
+<!--
+	generated in 0.593 seconds
+	92179 bytes batcached for 300 seconds
+-->
+<img src="./Django con Nginx, Gunicorn, virtualenv, supervisor y postgresql _ Eliezerfot123_files/g.gif" alt=":)" id="wpstats"></body></html>

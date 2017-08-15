@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<!-- saved from url=(0110)https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx -->
+<html class="no-js" lang="en"><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style>.hs-cta-wrapper p, .hs-cta-wrapper div { margin: 0; padding: 0; } a#cta_button_365_90a88f8d-9955-4c8f-806d-10380a7cf247 {
+  -webkit-font-smoothing:antialiased; 
+  cursor:pointer; 
+  -moz-user-select:none; 
+  -webkit-user-select:none; 
+  -o-user-select:none; 
+  user-select:none; 
+  display:inline-block; 
+  font-weight:bold; 
+  text-align:center; 
+  text-decoration:none; 
+  font-family:sans-serif; 
+  border-radius:6px; 
+  background-color:rgb(60,176,70); 
+  background-image:-webkit-linear-gradient(top, rgb(60,176,70), rgb(45,132,52)); 
+  background-image :-moz-linear-gradient(top, rgb(60,176,70), rgb(45,132,52)); 
+  box-shadow:inset 0px 1px rgb(75,220,87); 
+  -webkit-box-shadow:inset 0px 1px rgb(75,220,87); 
+  -moz-box-shadow:inset 0px 1px rgb(75,220,87); 
+  color:rgb(255, 255, 255); 
+  border:2px solid rgb(30,88,35); 
+  text-shadow:0px -1px rgb(18,52,21); 
+  line-height:1.5em; 
+  padding:6px 18px; 
+}
+a#cta_button_365_90a88f8d-9955-4c8f-806d-10380a7cf247:hover {
+background-color:rgb(66,193,77); 
+background-image:-webkit-linear-gradient(top, rgb(66,193,77), rgb(45,132,52)); 
+background-image :-moz-linear-gradient(top, rgb(66,193,77), rgb(45,132,52)); 
+box-shadow:inset 0px 1px rgb(81,237,94), 0px 1px 8px rgba(0, 0, 0, 0.3); 
+-webkit-box-shadow:inset 0px 1px rgb(81,237,94), 0px 1px 8px rgba(0, 0, 0, 0.3); 
+-moz-box-shadow:inset 0px 1px rgb(81,237,94), 0px 1px 8px rgba(0, 0, 0, 0.3); 
+color:rgb(255,255,255); 
+border:2px solid rgb(36,105,42); 
+}
+a#cta_button_365_90a88f8d-9955-4c8f-806d-10380a7cf247:active, #cta_button_365_90a88f8d-9955-4c8f-806d-10380a7cf247:active:hover {
+background-color:rgb(45,132,52); 
+background-image:-webkit-linear-gradient(top, rgb(45,132,52), rgb(60,176,70)); 
+background-image :-moz-linear-gradient(top, rgb(45,132,52), rgb(60,176,70)); 
+box-shadow:inset 0px 1px 10px rgba(0, 0, 0, 0.5); 
+-webkit-box-shadow:inset 0px 1px 10px rgba(0, 0, 0, 0.5); 
+-moz-box-shadow:inset 0px 1px 10px rgba(0, 0, 0, 0.5); 
+color:rgb(244,244,244); 
+}
+
+</style><style>.hs-cta-wrapper p, .hs-cta-wrapper div { margin: 0; padding: 0; } a#cta_button_365_b413955c-f711-4c93-8457-91185e27711a {
+  -webkit-font-smoothing:antialiased !important; 
+  cursor:pointer !important; 
+  -moz-user-select:none !important; 
+  -webkit-user-select:none !important; 
+  -o-user-select:none !important; 
+  user-select:none !important; 
+  display:inline-block !important; 
+  font-weight:bold !important; 
+  text-align:center !important; 
+  text-decoration:none !important; 
+  font-family:sans-serif !important; 
+  border-radius:7px !important; 
+  background-color:rgb(255,0,0) !important; 
+  background-image:-webkit-linear-gradient(top, rgb(255,0,0), rgb(191,0,0)) !important; 
+  background-image :-moz-linear-gradient(top, rgb(255,0,0), rgb(191,0,0)) !important; 
+  box-shadow:inset 0px 1px rgb(255,0,0) !important; 
+  -webkit-box-shadow:inset 0px 1px rgb(255,0,0) !important; 
+  -moz-box-shadow:inset 0px 1px rgb(255,0,0) !important; 
+  color:rgb(255, 255, 255) !important; 
+  border:2px solid rgb(127,0,0) !important; 
+  border-bottom:7px solid rgb(127,0,0) !important; 
+  text-shadow:0px -1px rgb(76,0,0) !important; 
+  position:relative !important; 
+  line-height:1.5em !important; 
+  padding:2px 10px !important; 
+}
+a#cta_button_365_b413955c-f711-4c93-8457-91185e27711a:hover {
+background-color:rgb(255,0,0) !important; 
+background-image:-webkit-linear-gradient(top, rgb(255,0,0), rgb(191,0,0)) !important; 
+background-image :-moz-linear-gradient(top, rgb(255,0,0), rgb(191,0,0)) !important; 
+color:rgb(255,255,255) !important; 
+}
+a#cta_button_365_b413955c-f711-4c93-8457-91185e27711a:active, #cta_button_365_b413955c-f711-4c93-8457-91185e27711a:active:hover {
+background-color:rgb(191,0,0) !important; 
+box-shadow:inset 0px 1px 10px rgba(0, 0, 0, 0.5) !important; 
+-webkit-box-shadow:inset 0px 1px 10px rgba(0, 0, 0, 0.5) !important; 
+-moz-box-shadow:inset 0px 1px 10px rgba(0, 0, 0, 0.5) !important; 
+color:rgb(244,244,244) !important; 
+margin-top:5px !important; 
+border-bottom:2px solid rgb(127,0,0) !important; 
+}
+
+a#cta_button_365_b413955c-f711-4c93-8457-91185e27711a:before {
+display:block !important; 
+position:absolute !important; 
+top:-7px !important; 
+bottom:-2px !important; 
+left:-2px !important; 
+right:-2px !important; 
+content:"" !important; 
+}
+
+</style><script type="text/javascript" async="" src="./Setting Up Git on Windows in Four Easy Steps_files/analytics.js"></script><script src="./Setting Up Git on Windows in Four Easy Steps_files/cb=gapi.loaded_1" async=""></script><script src="./Setting Up Git on Windows in Four Easy Steps_files/cb=gapi.loaded_0" async=""></script>
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="author" content="Adam Feber">
+    <meta name="description" content="Setting up Git on Windows can be intimidating but it&#39;s easier than you think. We will show you how to get up and running in minutes.">
+    <meta name="generator" content="HubSpot">
+    <title>Setting Up Git on Windows in Four Easy Steps</title>
+    <link rel="shortcut icon" href="https://cdn2.hubspot.net/hubfs/365/images/favicon-32x32.png?t=1468528418745">
+    
+
+    <script id="twitter-wjs" src="./Setting Up Git on Windows in Four Easy Steps_files/widgets.js"></script><script type="text/javascript" async="" src="./Setting Up Git on Windows in Four Easy Steps_files/platform.js" gapi_processed="true"></script><script id="facebook-jssdk" src="./Setting Up Git on Windows in Four Easy Steps_files/all.js"></script><script async="" src="./Setting Up Git on Windows in Four Easy Steps_files/gtm.js"></script><script id="hs-analytics" src="./Setting Up Git on Windows in Four Easy Steps_files/365.js"></script><script type="text/javascript" src="./Setting Up Git on Windows in Four Easy Steps_files/jquery-1.7.1.js"></script>
+    <script type="text/javascript">hsjQuery = window['jQuery']</script>
+    <link href="./Setting Up Git on Windows in Four Easy Steps_files/public_common.css" rel="stylesheet">
+    <meta property="og:description" content="Setting up Git on Windows can be intimidating but it&#39;s easier than you think. We will show you how to get up and running in minutes.">
+    <meta property="og:title" content="Setting Up Git on Windows in Four Easy Steps">
+    <meta name="twitter:description" content="Setting up Git on Windows can be intimidating but it&#39;s easier than you think. We will show you how to get up and running in minutes.">
+    <meta name="twitter:title" content="Setting Up Git on Windows in Four Easy Steps">
+
+    
+    
+
+
+    <!--[if lt IE 9]>
+    <script src="https://static.hsstatic.net/content_shared_assets/static-1.4020/js/css3-mediaqueries.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<meta property="og:image" content="https://cdn2.hubspot.net/hub/365/file-13163644-png/images/ssh-executable.png#keepProtocol">
+<meta name="twitter:image" content="https://cdn2.hubspot.net/hub/365/file-13163644-png/images/ssh-executable.png#keepProtocol">
+
+<meta property="og:url" content="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx">
+<meta name="twitter:creator" content="@adamfeber">
+
+<link rel="canonical" href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx">
+<script type="text/javascript">var switchTo5x=true;</script>
+<script type="text/javascript" src="https://w.sharethis.com/button/buttons.js"></script>
+<script type="text/javascript">stLight.options({publisher: "f728c199-5337-48bb-9030-7bce75dcd448"}); </script>
+
+<style>
+#TitleHeaderAnchor {
+display:none;
+}
+</style>
+<meta property="og:type" content="article">
+<link rel="alternate" type="application/rss+xml" href="https://blog.assembla.com/rss.xml">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:domain" content="blog.assembla.com">
+<meta name="twitter:site" content="@assembla">
+<script src="./Setting Up Git on Windows in Four Easy Steps_files/in.js" type="text/javascript">
+    lang: en_US
+</script><script src="./Setting Up Git on Windows in Four Easy Steps_files/secureAnonymousFramework"></script>
+
+<link href="./Setting Up Git on Windows in Four Easy Steps_files/layout.min.css" rel="stylesheet">
+<link href="./Setting Up Git on Windows in Four Easy Steps_files/hs_default_custom_style.min.css" rel="stylesheet">
+<link rel="stylesheet" href="./Setting Up Git on Windows in Four Easy Steps_files/Assembla-Jun2014-blog.min.css">
+<link rel="stylesheet" href="./Setting Up Git on Windows in Four Easy Steps_files/Assembla-blog-2015.min.css">
+
+
+    <!-- The style tag has been deprecated. Attached stylesheets are included in the required_head_tags page variable. -->
+
+<style type="text/css">.pika-single{z-index:9999;display:block;position:relative;color:#333;background:#fff;border:1px solid #ccc;border-bottom-color:#bbb;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif}.pika-single.is-hidden{display:none}.pika-single.is-bound{position:absolute;box-shadow:0 5px 15px -5px rgba(0,0,0,0.5)}.pika-single{*zoom:1}.pika-single:before,.pika-single:after{content:" ";display:table}.pika-single:after{clear:both}.pika-lendar{float:left;width:240px;margin:8px}.pika-title{position:relative;text-align:center}.pika-title select{cursor:pointer;position:absolute;z-index:9998;margin:0;left:0;top:5px;filter:alpha(opacity=0);opacity:0}.pika-label{display:inline-block;*display:inline;position:relative;z-index:9999;overflow:hidden;margin:0;padding:5px 3px;font-size:14px;line-height:20px;font-weight:bold;background-color:#fff}.pika-prev,.pika-next{display:block;cursor:pointer;position:relative;outline:none;border:0;padding:0;width:20px;height:30px;text-indent:20px;white-space:nowrap;overflow:hidden;background-color:transparent;background-position:center center;background-repeat:no-repeat;background-size:75% 75%;opacity:0.5;*position:absolute;*top:0}.pika-prev:hover,.pika-next:hover{opacity:1}.pika-prev.is-disabled,.pika-next.is-disabled{cursor:default;opacity:0.2}.pika-prev,.is-rtl .pika-next{float:left;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==");*left:0}.pika-next,.is-rtl .pika-prev{float:right;background-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=");*right:0}.pika-select{display:inline-block;*display:inline}.pika-table{width:100%;border-collapse:collapse;border-spacing:0;border:0}.pika-table th,.pika-table td{width:14.28571%;padding:0}.pika-table th{color:#999;font-size:12px;line-height:25px;font-weight:bold;text-align:center}.pika-table abbr{border-bottom:none;cursor:help}.pika-button{cursor:pointer;display:block;-moz-box-sizing:border-box;box-sizing:border-box;outline:none;border:0;margin:0;width:100%;padding:5px;color:#666;font-size:12px;line-height:15px;text-align:right;background:#f5f5f5}.is-today .pika-button{color:#3af;font-weight:bold}.is-selected .pika-button{color:#fff;font-weight:bold;background:#3af;box-shadow:inset 0 1px 3px #178fe5;border-radius:3px}.is-disabled .pika-button{pointer-events:none;cursor:default;color:#999;opacity:0.3}.pika-button:hover{color:#fff !important;background:#ff8000 !important;box-shadow:none !important;border-radius:3px !important}.pika-week{font-size:11px;color:#999}.hs-form fieldset{border:0;padding:0;margin:0;max-width:500px}.hs-form fieldset.form-columns-1 .hs-input{width:95%}.hs-form fieldset.form-columns-1 .input{margin-right:8px}.hs-form fieldset.form-columns-1 input[type="checkbox"],.hs-form fieldset.form-columns-1 input[type="radio"]{width:auto}.hs-form fieldset.form-columns-2 .hs-form-field{width:50%;float:left}.hs-form fieldset.form-columns-2 .input{margin-right:8px}.hs-form fieldset.form-columns-3 .hs-form-field{width:32.7%;float:left}.hs-form fieldset.form-columns-3 .input{margin-right:8px}.hs-form label.hs-hidden{visibility:hidden}.hsformerror{margin:0 0 2px;padding:2px 6px;height:auto;background-color:#fdd2d0;font-size:11px;border:1px solid #fcb3af;padding:4px 16px 4px 10px;color:#000;display:none;background-image:-webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #fefefe), color-stop(100%, #fdd2d0));background-image:-webkit-linear-gradient(#fefefe, #fdd2d0);background-image:-moz-linear-gradient(#fefefe, #fdd2d0);background-image:-o-linear-gradient(#fefefe, #fdd2d0);background-image:linear-gradient(#fefefe,#fdd2d0);-webkit-border-radius:4px;-moz-border-radius:4px;-ms-border-radius:4px;-o-border-radius:4px;border-radius:4px;-webkit-box-shadow:0 0 6px #ddd;-moz-box-shadow:0 0 6px #ddd;box-shadow:0 0 6px #ddd;z-index:99999}.hsformerror em{border:10px solid;border-color:#fdd2d0 transparent transparent;bottom:-17px;display:block;height:0;left:60px;position:absolute;width:0}.hsformerror p{font-family:Lucida Grande,Lucida Sans Unicode,bitstream vera sans,trebuchet ms,verdana,sans-serif;margin:0;float:left;margin-right:8px}.hsformerror:hover{cursor:default}.hsformerror .close-form-error{float:right;display:inline;top:3px;position:absolute;font-family:Verdana !important;color:#b17c79 !important;cursor:pointer !important;font-size:11px !important;font-weight:normal !important}.hsformerror .close-form-error:hover{color:#cc8884}@media (max-width: 400px), (min-device-width: 320px) and (max-device-width: 480px){form.hs-form .form-columns-2 .hs-form-field,form.hs-form .form-columns-3 .hs-form-field{float:none;width:100%}form.hs-form .form-columns-2 .hs-form-field .hs-input,form.hs-form .form-columns-3 .hs-form-field .hs-input{width:95%}}</style><style type="text/css">* html #li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link{height:1% !important;}#li_ui_li_gen_1468619314542_0{position:relative !important;overflow:visible !important;display:block !important;}#li_ui_li_gen_1468619314542_0 span{-webkit-box-sizing:content-box !important;-moz-box-sizing:content-box !important;box-sizing:content-box !important;}#li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link{border:0 !important;height:20px !important;text-decoration:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;}#li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link:link, #li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link:visited, #li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link:hover, #li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link:active{border:0 !important;text-decoration:none !important;}#li_ui_li_gen_1468619314542_0 a#li_ui_li_gen_1468619314542_0-link:after{content:"." !important;display:block !important;clear:both !important;visibility:hidden !important;line-height:0 !important;height:0 !important;}#li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-logo{background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-position:0px -593px !important;background-repeat:no-repeat !important;background-color:#0077b5 !important;background-size:initial !important;cursor:pointer !important;border:0 !important;border-right:1px solid #066094 !important;text-indent:-9999em !important;overflow:hidden !important;padding:0 !important;margin:0 !important;position:absolute !important;left:0px !important;top:0px !important;display:block !important;width:20px !important;height:20px !important;float:right !important;border-radius:2px !important;-webkit-border-radius:2px !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;}#li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title{color:#fff !important;cursor:pointer !important;display:block !important;white-space:nowrap !important;float:left !important;margin-left:1px !important;vertical-align:top !important;overflow:hidden !important;text-align:center !important;height:18px !important;padding:0 4px 0 23px !important;border:1px solid #000 !important;border-top-color:#0077b5 !important;border-right-color:#0077b5 !important;border-bottom-color:#0077b5 !important;border-left-color:#0077b5 !important;text-shadow:0 -1px #005887 !important;line-height:20px !important;border-radius:2px !important;-webkit-border-radius:2px !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-webkit-border-top-right-radius:2px !important;-webkit-border-bottom-right-radius:2px !important;background-color:#0077b5 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0077b5), color-stop(100%,#0077b5)) !important; background-image: -webkit-linear-gradient(top, #0077b5 0%, #0077b5 100%) !important;}#li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title{border:1px solid #000 !important;border-top-color:#0369a0 !important;border-right-color:#0369a0 !important;border-bottom-color:#0369a0 !important;border-left-color:#0369a0 !important;background-color:#0369a0 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0369a0), color-stop(100%,#0369a0)) !important; background-image: -webkit-linear-gradient(top, #0369a0 0%, #0369a0 100%) !important;}#li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title, #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title{color:#fff !important;border:1px solid #000 !important;border-top-color:#066094 !important;border-right-color:#066094 !important;border-bottom-color:#066094 !important;border-left-color:#066094 !important;background-color:#066094 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#066094), color-stop(100%,#066094)) !important; background-image: -webkit-linear-gradient(top, #066094 0%, #066094 100%) !important;}.IN-shadowed #li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title{}.IN-shadowed #li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title{}.IN-shadowed #li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title, .IN-shadowed #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title{}#li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title-text, #li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title-text *{color:#fff !important;font-size:11px !important;font-family:Arial, sans-serif !important;font-weight:bold !important;font-style:normal !important;-webkit-font-smoothing:antialiased !important;display:inline-block !important;background:transparent none !important;vertical-align:top !important;height:18px !important;line-height:20px !important;float:none !important;}#li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title-text strong{font-weight:bold !important;}#li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title-text em{font-style:italic !important;}#li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title-text, #li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title-text *{color:#fff !important;}#li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title-text, #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title-text, #li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title-text *, #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title-text *{color:#fff !important;}#li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title #li_ui_li_gen_1468619314542_0-mark{display:inline-block !important;width:0px !important;overflow:hidden !important;}.success #li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title{color:#fff !important;border-top-color:#0077b5 !important;border-right-color:#0077b5 !important;border-bottom-color:#0077b5 !important;border-left-color:#0077b5 !important;background-color:#0077b5 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0077b5), color-stop(100%,#0077b5)) !important; background-image: -webkit-linear-gradient(top, #0077b5 0%, #0077b5 100%) !important;}.success #li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title-text, .success #li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title-text *{color:#fff !important;}.IN-shadowed .success #li_ui_li_gen_1468619314542_0 #li_ui_li_gen_1468619314542_0-title{}.success #li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title{color:#fff !important;border-top-color:#0369a0 !important;border-right-color:#0369a0 !important;border-bottom-color:#0369a0 !important;border-left-color:#0369a0 !important;background-color:#0369a0 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#0369a0), color-stop(100%,#0369a0)) !important; background-image: -webkit-linear-gradient(top, #0369a0 0%, #0369a0 100%) !important;}.success #li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title-text, .success #li_ui_li_gen_1468619314542_0.hovered #li_ui_li_gen_1468619314542_0-title-text *{color:#fff !important;}.success #li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title, .success #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title{color:#fff !important;border-top-color:#066094 !important;border-right-color:#066094 !important;border-bottom-color:#066094 !important;border-left-color:#066094 !important;background-color:#066094 !important;background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%,#066094), color-stop(100%,#066094)) !important; background-image: -webkit-linear-gradient(top, #066094 0%, #066094 100%) !important;}.success #li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title-text, .success #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title-text, .success #li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title-text *, .success #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title-text *{color:#fff !important;}.IN-shadowed .success #li_ui_li_gen_1468619314542_0.clicked #li_ui_li_gen_1468619314542_0-title, .IN-shadowed .success #li_ui_li_gen_1468619314542_0.down #li_ui_li_gen_1468619314542_0-title{}#li_ui_li_gen_1468619314561_1-container.IN-right {display:inline-block !important;float:left !important;overflow:visible !important;position:relative !important;height:20px !important;padding-left:2px !important;line-height:1px !important;cursor:pointer !important;}#li_ui_li_gen_1468619314561_1.IN-right {display:block !important;float:left !important;height:20px !important;margin-right:4px !important;padding-right:4px !important;background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-color:transparent !important;background-repeat:no-repeat !important;background-position:right -447px !important;}#li_ui_li_gen_1468619314561_1-inner.IN-right {display:block !important;float:left !important;padding-left:8px !important;text-align:center !important;background-image:url(https://static.licdn.com/scds/common/u/images/apps/connect/sprites/sprite_connect_v14.png) !important;background-color:transparent !important;background-repeat:no-repeat !important;background-position:0px -426px !important;}#li_ui_li_gen_1468619314561_1-content.IN-right {display:inline !important;font-size:11px !important;color:#4e4e4e !important;font-weight:bold !important;font-family:Arial, sans-serif !important;line-height:20px !important;padding:0 5px 0 5px !important;}#li_ui_li_gen_1468619314561_1-container.IN-empty {display:none !important;}#li_ui_li_gen_1468619314561_1-container.IN-hidden #li_ui_li_gen_1468619314561_1 {display:none !important;}</style><script type="text/javascript" charset="utf-8" async="" src="./Setting Up Git on Windows in Four Easy Steps_files/button.552a34de542f2646ca0c08da6760c341.js"></script><style type="text/css">.comment-reply-to{background:url("https://static.hsappstatic.net/pictos_images/static-1.25/img/pictos-1-png/16/pictos-set1-21.png") no-repeat 5px;border:none;padding-left:25px;color:#333}.replying{padding-left:2em}.comment-from,.comment-date{display:inline-block}.comment-from h4{font-size:1.2em;font-weight:bold}.comment-date{font-size:0.8em;color:#666}#comment-form h4{font-size:1.4em}.comment.depth-0{border-top:2px solid #eee;padding-top:2em;margin-top:2em}.comment.depth-0:first-child{margin-top:0}.comment.depth-1{padding-left:2em}.comment.depth-2{padding-left:4em}.comment.depth-3{padding-left:6em}.comment.depth-4{padding-left:8em}.comment.depth-5{padding-left:10em}.comment.depth-6{padding-left:12em}.comment.depth-7{padding-left:14em}.comment.depth-8{padding-left:16em}.comment.depth-9{padding-left:18em}.shuffle{display:none}.hs_subscribe ul{padding-left:0}.hs_subscribe li{list-style:none}</style><script type="text/javascript" async="" src="./Setting Up Git on Windows in Four Easy Steps_files/loader-v2.js"></script><script type="text/javascript" async="" src="./Setting Up Git on Windows in Four Easy Steps_files/loader-v2(1).js"></script><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(https://static.xx.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(https://static.xx.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(https://static.xx.fbcdn.net/rsrc.php/v2/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f6f7f9;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #29487d;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f9;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v2/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://static.xx.fbcdn.net/rsrc.php/v2/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style></head>
+<body class="blog   hs-content-id-993070409 hs-blog-post hs-content-path-assemblablog-tabid-12618-bid-77264-setting-up-git- hs-content-name-setting-up-git-on-windows-in-four-easy-steps hs-blog-name-assembla-blog hs-blog-id-995394571" style="">
+    <div class="header-container-wrapper">
+    <div class="header-container container-fluid">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-global_group " style="" data-widget-type="global_group" data-x="0" data-w="12">
+<!-- start coded_template: id:2148067566 path:generated_global_groups/2148067551.html -->
+<div class="">        <div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+        <div class="row-fluid ">
+            <div class="span12 widget-span widget-type-global_widget blue-header" style="" data-widget-type="global_widget" data-x="0" data-w="12">
+                <div class="cell-wrapper layout-widget-wrapper">
+                    <span id="hs_cos_wrapper_blog_blue_header" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html" data-global-widget-id="2144916713"><div class="full-wrap header">
+  <div class="wrap">
+    <div class="row">
+      
+      <div class="site-logo-wrap">
+        <a class="home-logo" id="logo-link" href="http://www.assembla.com/">Assembla Inc.</a>
+      </div>
+      
+      <div class="sec-nav">
+        <ul class="right">
+          <li>
+            <a class="btn red" href="http://assembla.com/sign-up?ref=blog">Sign Up</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="main-nav">
+        <ul>
+          <li class="m-workspaces">
+            <a href="http://www.assembla.com/features?ref=blog">Workspaces<span></span></a>
+          </li>
+          <li class="m-portfolio">
+            <a href="http://www.assembla.com/portfolio?ref=blog">Portfolio<span></span></a>
+          </li>
+          <li class="m-pricing">
+            <a href="http://www.assembla.com/plans?ref=blog">Pricing<span></span></a>
+          </li>
+          <li class="m-company">
+            <a href="http://www.assembla.com/about?ref=blog">Company<span></span></a>
+          </li>
+          <li class="m-support">
+            <a href="http://helpdesk.assembla.com/?ref=blog">Support<span></span></a>
+          </li>
+          <li class="m-blog current">
+            <a href="https://blog.assembla.com/">Blog<span></span></a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <!--end .row-->
+  </div>
+  <!--end .wrap-->
+</div>
+<!--end .header-wrap-->
+</span>
+                </div><!--end layout-widget-wrapper -->
+            </div><!--end widget-span -->
+        </div><!--end row-->
+        </div><!--end row-wrapper -->
+</div><!-- end coded_template: id:2148067566 path:generated_global_groups/2148067551.html -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+    </div><!--end header -->
+</div><!--end header wrapper -->
+
+<div class="body-container-wrapper">
+    <div class="body-container container-fluid">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-cell page-center content-wrapper" style="" data-widget-type="cell" data-x="0" data-w="12">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-2 ">
+<div class="row-fluid ">
+<div class="span8 widget-span widget-type-cell blog-content" style="" data-widget-type="cell" data-x="0" data-w="8">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-3 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-blog_content " style="" data-widget-type="blog_content" data-x="0" data-w="12">
+<div class="blog-section">
+    <div class="blog-post-wrapper cell-wrapper">
+                <div class="section post-header">
+            <h1>
+                <a href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx" id="hubspot-name" class="link hubspot-editable" data-hubspot-form-id="name" data-hubspot-name="Blog Title"><span id="hs_cos_wrapper_name" class="hs_cos_wrapper hs_cos_wrapper_meta_field hs_cos_wrapper_type_text" style="" data-hs-cos-general-type="meta_field" data-hs-cos-type="text">Setting Up Git on Windows in Four Easy Steps</span></a> 
+            </h1>
+            <p id="hubspot-author_data" class="hubspot-editable" data-hubspot-form-id="author_data" data-hubspot-name="Blog Author">
+                    <span class="hs-author-label">Posted by</span>
+                    
+                        <a class="author-link" href="https://blog.assembla.com/author/adam-feber">Adam Feber</a> on Jul 8, 2015 1:30:00 PM
+                        
+                        
+                            </p><div class="hs-author-social-section" style="display: none;">
+                                <span class="hs-author-social-label">Find me on:</span>
+                                <div class="hs-author-social-links">
+                                    
+                                    
+                                        <a href="https://www.linkedin.com/in/adamfeber" target="_blank" class="hs-author-social-link hs-social-linkedin">LinkedIn</a>
+                                    
+                                    
+                                        <a href="https://twitter.com/adamfeber" target="_blank" class="hs-author-social-link hs-social-twitter">Twitter </a>
+                                    
+                                    
+                                </div>
+                            </div>
+                        
+                    
+            <p></p>
+        </div>
+            <span id="hs_cos_wrapper_blog_social_sharing" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_blog_social_sharing" style="" data-hs-cos-general-type="widget" data-hs-cos-type="blog_social_sharing">
+<div class="hs-blog-social-share">
+    <ul class="hs-blog-social-share-list">
+        
+        <li class="hs-blog-social-share-item hs-blog-social-share-item-twitter">
+            <!-- Twitter social share -->
+            <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="./Setting Up Git on Windows in Four Easy Steps_files/tweet_button.b41e99df00581dc95d7fdd63f3283511.en.html" data-url="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx" style="position: static; visibility: visible; width: 60px; height: 20px;"></iframe>
+        </li>
+        
+
+        
+        <li class="hs-blog-social-share-item hs-blog-social-share-item-linkedin">
+            <!-- LinkedIn social share -->
+            <span class="IN-widget" style="line-height: 1; vertical-align: baseline; display: inline-block; text-align: center;"><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1468619314542_0"><a id="li_ui_li_gen_1468619314542_0-link" href="javascript:void(0);"><span id="li_ui_li_gen_1468619314542_0-logo">in</span><span id="li_ui_li_gen_1468619314542_0-title"><span id="li_ui_li_gen_1468619314542_0-mark"></span><span id="li_ui_li_gen_1468619314542_0-title-text">Share</span></span></a></span></span><span style="padding: 0px !important; margin: 0px !important; text-indent: 0px !important; display: inline-block !important; vertical-align: baseline !important; font-size: 1px !important;"><span id="li_ui_li_gen_1468619314561_1-container" class="IN-right"><span id="li_ui_li_gen_1468619314561_1" class="IN-right"><span id="li_ui_li_gen_1468619314561_1-inner" class="IN-right"><span id="li_ui_li_gen_1468619314561_1-content" class="IN-right">7</span></span></span></span></span></span><script type="IN/Share+init" data-url="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx" data-showzero="true" data-counter="right"></script>
+        </li>
+        
+
+        
+        <li class="hs-blog-social-share-item hs-blog-social-share-item-facebook">
+            <!-- Facebook share -->
+            <div class="fb-like fb_iframe_widget" data-href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" data-width="120" fb-xfbml-state="rendered" fb-iframe-plugin-query="action=like&amp;app_id=&amp;container_width=0&amp;href=https%3A%2F%2Fblog.assembla.com%2FAssemblaBlog%2Ftabid%2F12618%2Fbid%2F77264%2FSetting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;share=true&amp;show_faces=false&amp;width=120"><span style="vertical-align: bottom; width: 126px; height: 20px;"><iframe name="f3e11196e3061" width="120px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="./Setting Up Git on Windows in Four Easy Steps_files/like.html" class="" style="border: none; visibility: visible; width: 126px; height: 20px;"></iframe></span></div>
+        </li>
+        
+
+        
+        <li class="hs-blog-social-share-item hs-blog-social-share-item-google-plus">
+            <!-- Google +1 -->
+            <div id="___plusone_0" style="text-indent: 0px; margin: 0px; padding: 0px; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 90px; height: 20px; background: transparent;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 90px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 20px;" tabindex="0" vspace="0" width="100%" id="I0_1468619314763" name="I0_1468619314763" src="./Setting Up Git on Windows in Four Easy Steps_files/fastbutton.html" data-gapiattached="true" title="+1"></iframe></div>
+        </li>
+        
+    </ul>
+ </div>
+
+</span>
+        <div class="section post-body">
+            <span id="hs_cos_wrapper_post_body" class="hs_cos_wrapper hs_cos_wrapper_meta_field hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="meta_field" data-hs-cos-type="rich_text"><strong>Revised 12/09/2014: This is one of our popular blogs published back in 2012. We just replaced some of the older images and updated old links.</strong>
+<div class="hs-migrated-cms-post">
+<h2>Introduction</h2>
+<p>Setting up Git can be intimidating, especially for those that are trying a version control system for the first time or moving from Subversion. It use to be the case that Git was a huge hassle to install and use on Windows. However, today it's very easy to use Git on Windows either through Git Bash, if you are a fan of the command line, or if you prefer, a graphical interface, through programs such as TortoiseGit. But don't fret - we'll show you how to set everything up and connect it with Assembla.</p>
+<!--more-->
+<h2>Table of Contents</h2>
+<ol>
+<li><a href="http://msysgit.github.io/">Download and Install Git for Windows</a></li>
+<li><a href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx#tortoisegit">Download and Install TortoiseGit</a> (Optional but recommended for first timers)</li>
+<li><a href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx#generatessh">Generate SSH keys</a></li>
+<li><a href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx#linkssh">Link SSH key with Assembla</a></li>
+</ol>
+<h2>Prerequisites</h2>
+<ol>
+<li><a href="https://www.assembla.com/plans?ref=sugow" title="Assembla Git repository" target="_blank">Assembla Git repository</a> - sign up if you haven't already, Git and all our other project management tools are totally free for teams up to 3 people.</li>
+<li>A strong desire to install Git on Windows.</li>
+<li>That's it, let's go!</li>
+</ol>
+<h3>1. Download and Install Git for Windows</h3>
+<p>Getting started. You'll need to download and install <a href="http://msysgit.github.io/" title="Git for Windows" target="_blank">Git for Windows</a>.&nbsp;If you're unsure of which one to choose, just go with the full installer.&nbsp;After downloading, run the installer.</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/welcome_Git-setup.png" alt="welcome_Git-setup" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>If you have PuTTY/TortoiseSVN installed, you may see this screen, otherwise just ignore this.&nbsp;Regardless, use OpenSSH to make things easy.&nbsp;<br><img id="img-1328138612931" src="./Setting Up Git on Windows in Four Easy Steps_files/ssh-executable.png" alt="SSH Executable" class="alignCenter" border="0" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>From here, the process become quite streamlined. Simply follow the setup steps to ensure optimal settings. We recommend selecting "Use Git Bash only" as it provides an unmodified PATH.</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Git_adjustPath.png" alt="Git_adjustPath" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>After selecting next, we recommend chosing the option of "Checkout Windows-style, commit Unix-style line endings". Select next once you have done this.</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Git_Configure_LineEndings.png" alt="Git_Configure_LineEndings" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Git_Installation_InProgress.png" alt="Git_Installation_InProgress" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Git_Installation_complete.png" alt="Git_Installation_complete" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<br>
+<h3 id="tortoisegit">Download and Install TortoiseGit</h3>
+<p><em>TortoiseGit is a Windows Shell Interface to Git and based on TortoiseSVN.<br>This step is optional. If you are comfortable using the command line for interacting with Git, you don't need to install TortoiseGit.<br><br>Next up, let's download and install<a href="https://code.google.com/p/tortoisegit/wiki/Download"> TortoiseGit.</a> </em></p>
+<p><em>Before you start the installation, please make sure that you choose the right installer for your PC, otherwise the setup will fail.</em></p>
+<p>&nbsp;</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Tortoise_Git_3.png" alt="Tortoise_Git_3" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>&nbsp;</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Tortoise_Git_4.png" alt="Tortoise_Git_4" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>&nbsp;</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Tortoise_Git_5.png" alt="Tortoise_Git_5" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p>&nbsp;&nbsp;</p>
+<p><img src="./Setting Up Git on Windows in Four Easy Steps_files/Tortoise_Git_7.png" alt="Tortoise_Git_7" style="display: block; margin-left: auto; margin-right: auto;"></p>
+<p><br>We'll need to configure TortoiseGit - to do this, right click anywhere on your Desktop, select "TortoiseGit" and then "Settings."<br><br><img id="img-1328138709356" src="./Setting Up Git on Windows in Four Easy Steps_files/tortoise8.png" alt="tortoise8" style="display: block; margin-left: auto; margin-right: auto;" border="0"><br>Find "Git" and then click on "Config" from the menu on the left. Then fill in your Name and Email, making sure to use the same email that you used to sign up for Assembla.</p>
+Don't forget to click OK when you're done.<br><br><img id="img-1328111072884" src="./Setting Up Git on Windows in Four Easy Steps_files/tortoise9.png" alt="tortoise9" height="444" border="0" width="650" srcset="//cdn2.hubspot.net/hub/365/file-13164138-png/images/tortoise9.png?t=1468528418745&amp;width=325&amp;height=222 325w, //cdn2.hubspot.net/hub/365/file-13164138-png/images/tortoise9.png?t=1468528418745&amp;width=650&amp;height=444 650w, //cdn2.hubspot.net/hub/365/file-13164138-png/images/tortoise9.png?t=1468528418745&amp;width=975&amp;height=666 975w, //cdn2.hubspot.net/hub/365/file-13164138-png/images/tortoise9.png?t=1468528418745&amp;width=1300&amp;height=888 1300w, //cdn2.hubspot.net/hub/365/file-13164138-png/images/tortoise9.png?t=1468528418745&amp;width=1625&amp;height=1110 1625w, //cdn2.hubspot.net/hub/365/file-13164138-png/images/tortoise9.png?t=1468528418745&amp;width=1950&amp;height=1332 1950w" sizes="(max-width: 650px) 100vw, 650px"><br><br>Great, now TortoiseGit is all set!
+<h3 id="generatessh">Generate Your SSH keys</h3>
+<p>There's two ways to generate SSH keys:<br>&nbsp; 1. If you installed TortoiseGit, use the method directly below. 2. If you only installed Git on Windows and are not using TortiseGit, jump to the "Git Bash SSH Keys" section.<br><br><strong>TortoiseGit SSH Keys</strong></p>
+<p>SSH creates a secure connection from your computer to Assembla, making sure that you are who you claim to be so that only authorized persons can commit to your repository. Assembla needs to know your public SSH key to make the secure connection, so let's fire up Puttygen to generate an SSH key pair. <br><br>Start -&gt; Programs -&gt; TortoiseGit -&gt; Puttygen<br><br><img id="img-1328138764470" src="./Setting Up Git on Windows in Four Easy Steps_files/puttygen1.png" alt="puttygen1" style="display: block; margin-left: auto; margin-right: auto;" border="0"><br>In Puttygen, first click on the "Generate" button.<br><br><img id="img-1328138803440" src="./Setting Up Git on Windows in Four Easy Steps_files/puttygen2.png" alt="puttygen2" style="display: block; margin-left: auto; margin-right: auto;" border="0"><br> Next up - you'll move your mouse around the big gray area under the progress bar to generate randomness for super security.<br><br><img id="img-1328138822744" src="./Setting Up Git on Windows in Four Easy Steps_files/puttygen3.png" alt="puttygen3" style="display: block; margin-left: auto; margin-right: auto;" border="0"><br>Once the key is generated, you should copy it onto your clipboard. You will use this later to authenticate with Assembla.<br><br><img id="img-1328138838146" src="./Setting Up Git on Windows in Four Easy Steps_files/puttygen4.png" alt="puttygen4" style="display: block; margin-left: auto; margin-right: auto;" border="0"><br>Afterwards, choose a memorable password and confirm it. Don't forget your password!<br><br><img id="img-1328138861839" src="./Setting Up Git on Windows in Four Easy Steps_files/puttygen5.png" alt="puttygen5" style="display: block; margin-left: auto; margin-right: auto;" border="0"><br>Finally, click on the "Save private key" button and save your private key somewhere you'll remember.<br><br><img id="img-1328111087241" src="./Setting Up Git on Windows in Four Easy Steps_files/puttygen6.png" alt="puttygen6" style="display: block; margin-left: auto; margin-right: auto;" height="538" border="0" width="650" srcset="//cdn2.hubspot.net/hub/365/file-13163364-png/images/puttygen6.png?t=1468528418745&amp;width=325&amp;height=269 325w, //cdn2.hubspot.net/hub/365/file-13163364-png/images/puttygen6.png?t=1468528418745&amp;width=650&amp;height=538 650w, //cdn2.hubspot.net/hub/365/file-13163364-png/images/puttygen6.png?t=1468528418745&amp;width=975&amp;height=807 975w, //cdn2.hubspot.net/hub/365/file-13163364-png/images/puttygen6.png?t=1468528418745&amp;width=1300&amp;height=1076 1300w, //cdn2.hubspot.net/hub/365/file-13163364-png/images/puttygen6.png?t=1468528418745&amp;width=1625&amp;height=1345 1625w, //cdn2.hubspot.net/hub/365/file-13163364-png/images/puttygen6.png?t=1468528418745&amp;width=1950&amp;height=1614 1950w" sizes="(max-width: 650px) 100vw, 650px"></p>
+<h3><br>Git Bash SSH Keys</h3>
+<em style="background-color: #ffffcc;">If you did not install TortoiseGit, you're at the right place! If you did install TortoiseGit, follow the steps above and skip this section.<br><br></em>
+<ul>
+<li>Start up Git Bash:&nbsp;Start -&gt; All Programs -&gt; Git -&gt; Git Bash</li>
+<li>On the command prompt, type in the following command substituting with the email you used to sign up for Assembla.</li>
+<li>When it asks you for the file, just hit Enter.</li>
+<li>Please note that you should definitely enter a passphrase; when you type, nothing will show up. This is normal, don't worry about it.</li>
+</ul>
+<p><span style="color: #993300;">ssh-keygen -t rsa -C "me@email.com"</span></p>
+<p>Use Notepad to open up the .ssh/id_rsa.pub file you just generated and copy the all of the contents of that file.</p>
+<h3 id="linkssh">Link Your SSH key with Assembla</h3>
+<a href="https://www.assembla.com/user/edit/edit_git_settings" rel="nofollow" title="Open up your Assembla profile" target="_blank">Open up your Assembla profile</a> which is where you'll paste the public key you just copied from the previous step.&nbsp;<br>
+<div><img id="img-1328138912272" src="./Setting Up Git on Windows in Four Easy Steps_files/key1.png" alt="key1" style="height: 211px; width: 650px; display: block; margin-left: auto; margin-right: auto;" height="211" border="0" width="650" srcset="//cdn2.hubspot.net/hub/365/file-13162940-png/images/key1.png?t=1468528418745&amp;width=325&amp;height=106 325w, //cdn2.hubspot.net/hub/365/file-13162940-png/images/key1.png?t=1468528418745&amp;width=650&amp;height=211 650w, //cdn2.hubspot.net/hub/365/file-13162940-png/images/key1.png?t=1468528418745&amp;width=975&amp;height=317 975w, //cdn2.hubspot.net/hub/365/file-13162940-png/images/key1.png?t=1468528418745&amp;width=1300&amp;height=422 1300w, //cdn2.hubspot.net/hub/365/file-13162940-png/images/key1.png?t=1468528418745&amp;width=1625&amp;height=528 1625w, //cdn2.hubspot.net/hub/365/file-13162940-png/images/key1.png?t=1468528418745&amp;width=1950&amp;height=633 1950w" sizes="(max-width: 650px) 100vw, 650px"><br>Click "Add Key" after you've pasted the key into the box. You should see something like the following picture below. If so, congratulations, you're done with this section!<br><img id="img-1328138952874" src="./Setting Up Git on Windows in Four Easy Steps_files/key2.png" alt="key2" class="alignCenter" style="display: block; margin-left: auto; margin-right: auto;" height="113" border="0" width="650" srcset="//cdn2.hubspot.net/hub/365/file-13162945-png/images/key2.png?t=1468528418745&amp;width=325&amp;height=57 325w, //cdn2.hubspot.net/hub/365/file-13162945-png/images/key2.png?t=1468528418745&amp;width=650&amp;height=113 650w, //cdn2.hubspot.net/hub/365/file-13162945-png/images/key2.png?t=1468528418745&amp;width=975&amp;height=170 975w, //cdn2.hubspot.net/hub/365/file-13162945-png/images/key2.png?t=1468528418745&amp;width=1300&amp;height=226 1300w, //cdn2.hubspot.net/hub/365/file-13162945-png/images/key2.png?t=1468528418745&amp;width=1625&amp;height=283 1625w, //cdn2.hubspot.net/hub/365/file-13162945-png/images/key2.png?t=1468528418745&amp;width=1950&amp;height=339 1950w" sizes="(max-width: 650px) 100vw, 650px">
+<h3>Stuck? Need help?</h3>
+</div>
+<div>If you encounter difficulty with any of this, don't hesitate to contact <a href="https://www.assembla.com/contact?ref=sugow" rel="nofollow" title="Assembla support" target="_blank">Assembla support</a>.</div>
+<div><!--HubSpot Call-to-Action Code --> 
+<span class="hs-cta-wrapper" id="hs-cta-wrapper-f4dcdda5-71ac-494c-8f7e-7afaf95ff2e6"> <span class="hs-cta-node hs-cta-f4dcdda5-71ac-494c-8f7e-7afaf95ff2e6" id="hs-cta-f4dcdda5-71ac-494c-8f7e-7afaf95ff2e6" data-hs-drop="true" style="visibility: visible; display: block; text-align: center;"><a id="cta_button_365_b413955c-f711-4c93-8457-91185e27711a" class="cta_button " href="https://cta-service-cms2.hubspot.com/ctas/v2/public/cs/c/?cta_guid=b413955c-f711-4c93-8457-91185e27711a&amp;placement_guid=f4dcdda5-71ac-494c-8f7e-7afaf95ff2e6&amp;portal_id=365&amp;redirect_url=APefjpEifA_uUuY-87lDrtcRd5d-tNLyulppWY5d3ItyHOQvBIsp-Cj1rFAIpK5Sft4USVb63kDg1q4LHBOPV4QqSG3bilEIRqJ-UxVlttJVqa29z9x-inZ8EV09i27R4_gcG0QhfQ5kHWcErMksl5wJWi65JY9m2Q&amp;hsutk=&amp;canon=https%3A%2F%2Fblog.assembla.com%2FAssemblaBlog%2Ftabid%2F12618%2Fbid%2F77264%2FSetting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx&amp;__hstc=240438364.c6dd4853def3bf7a2f7929e8c26b2c49.1468619317417.1468619317417.1468619317417.1&amp;__hssc=240438364.1.1468619317417&amp;__hsfp=3288513174" style="margin: 20px auto;" cta_dest_link="http://offer.assembla.com/subscribe-to-assembla-blog" title="Subscribe to Our Blog"> <span style="color: #ffffff; font-size: 20px; font-family: sans-serif; line-height: 1.5em;">Subscribe to Our Blog</span> </a> </span> <script charset="utf-8" src="./Setting Up Git on Windows in Four Easy Steps_files/current.js"></script> <script type="text/javascript">
+        hbspt.cta.load(365, 'f4dcdda5-71ac-494c-8f7e-7afaf95ff2e6', {});
+    </script> </span> 
+<!-- end HubSpot Call-to-Action Code --></div>
+<div></div>
+<div>
+<h3>Want free Git hosting?</h3>
+Assembla offers<strong> Free Git hosting</strong> for <strong>unlimited users</strong> and <strong>unlimited projects</strong></div>
+<div></div>
+<div><!--HubSpot Call-to-Action Code --> 
+<span class="hs-cta-wrapper" id="hs-cta-wrapper-09b4842b-afb5-4286-acef-73e82934fd01"> <span class="hs-cta-node hs-cta-09b4842b-afb5-4286-acef-73e82934fd01" id="hs-cta-09b4842b-afb5-4286-acef-73e82934fd01" data-hs-drop="true" style="visibility: visible; display: block; text-align: center;"><a id="cta_button_365_90a88f8d-9955-4c8f-806d-10380a7cf247" class="cta_button " href="https://cta-service-cms2.hubspot.com/ctas/v2/public/cs/c/?cta_guid=90a88f8d-9955-4c8f-806d-10380a7cf247&amp;placement_guid=09b4842b-afb5-4286-acef-73e82934fd01&amp;portal_id=365&amp;redirect_url=APefjpHvGLxmqhUrNJxjglLazlKxy7Kg9y342c2bf9OCCBN05kIQarUyx7cnVUC23PCdBhcMeM4Rs3hIyMRT-So-G52LTlbk0lbu1ZCUPzyW9DnA5YJR59U&amp;hsutk=&amp;canon=https%3A%2F%2Fblog.assembla.com%2FAssemblaBlog%2Ftabid%2F12618%2Fbid%2F77264%2FSetting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx&amp;__hstc=240438364.c6dd4853def3bf7a2f7929e8c26b2c49.1468619317417.1468619317417.1468619317417.1&amp;__hssc=240438364.1.1468619317417&amp;__hsfp=3288513174" style="margin: 20px auto;" cta_dest_link="https://www.assembla.com/git/" title="Get My Free Git Repository"> <span style="color: #ffffff; font-size: 24px; font-family: sans-serif; line-height: 1.5em;">Get My Free Git Repository<br></span> </a> </span> <script charset="utf-8" src="./Setting Up Git on Windows in Four Easy Steps_files/current.js"></script> <script type="text/javascript">
+        hbspt.cta.load(365, '09b4842b-afb5-4286-acef-73e82934fd01', {});
+    </script> </span> 
+<!-- end HubSpot Call-to-Action Code --></div>
+</div></span>
+        </div>
+        
+             <p id="hubspot-topic_data"> Topics:
+                
+                    <a class="topic-link" href="https://blog.assembla.com/topic/tutorials">tutorials</a>,
+                
+                    <a class="topic-link" href="https://blog.assembla.com/topic/gitgerrit">git/gerrit</a>,
+                
+                    <a class="topic-link" href="https://blog.assembla.com/topic/git-on-windows">git on windows</a>
+                
+             </p>
+        
+
+    </div>
+</div></div>
+
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-4 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-raw_jinja " style="" data-widget-type="raw_jinja" data-x="0" data-w="12">
+
+	<div class="author-profile post">
+		<div class="row-fluid">
+			<div class="span3">
+				<div class="avatar light-border">                   
+					<img src="./Setting Up Git on Windows in Four Easy Steps_files/headshot.jpg">
+				</div>
+			</div>
+			<div class="span9">
+				<h4>Written by <a href="https://blog.assembla.com/author/adam-feber">Adam Feber</a></h4>
+				<p>Tech enthusiast and entrepreneur who enjoys keeping up with the latest #startups.</p>
+				<ul class="social-profiles">
+					
+
+					
+						<li class="twitter"><a href="https://twitter.com/adamfeber" target="_blank">Twitter</a></li>
+					
+
+					
+						<li class="linkedin"><a href="https://www.linkedin.com/in/adamfeber" target="_blank">LinkedIn</a></li>
+					
+
+					
+				</ul>
+			</div>
+		</div>
+	</div>
+</div><!--end widget-span -->
+
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-5 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-blog_comments " style=".blog ul.inputs-list li.hs-form-booleancheckbox .hs-form-booleancheckbox-display input#subscribe {   width: auto !important;   position: absolute;   margin: 5px 0 0 -20px; }  .blog ul.inputs-list li.hs-form-booleancheckbox .hs-form-booleancheckbox-display {   padding-left: 20px; }" data-widget-type="blog_comments" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_blog_comments" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_blog_comments" style="" data-hs-cos-general-type="widget" data-hs-cos-type="blog_comments">
+<div class="section post-footer">
+    <div id="comments-listing" class="new-comments">
+    
+    
+    <div class="comment depth-0" data-threadid="0002.0000.0000.0000.0000.0000.0000.0000.0000.0000">
+        <div class="comment-from">
+          <h4>
+            
+            Daa
+            
+          </h4>
+        </div>
+        <div class="comment-date">3/2/2012 10:54:58</div>
+        <div class="comment-body"><p>I would also recommend PoshGit as one of the steps for Git on Windows.&nbsp; <br>http://haacked.com/archive/2011/12/13/better-git-with-powershell.aspx</p></div>
+        
+      </div>
+
+</div>
+    <script>
+        var _hscLegacy = false;
+    </script>
+    <!--[if lte IE 8]>
+    <script>
+        _hscLegacy = true;
+    </script>
+    <![endif]-->
+    <script type="text/javascript">
+        (function($) {
+            var commentsEmbedContext = {
+                portalId: 365,
+                collectionId: 995394571,
+                contentId: 993070409,
+                target: '#comments-listing.new-comments',
+                showComments: true,
+                showForm: false,
+                commentVerificationText: "Your comment has been received.",
+                embedScriptEnv: "prod",
+                apiEnv: "prod",
+                isLegacyBrowser: _hscLegacy,
+                contentTitle: "Setting Up Git on Windows in Four Easy Steps",
+                contentCreatedAt: "1436376600000",
+                contentPermalink: "https:\/\/blog.assembla.com\/AssemblaBlog\/tabid\/12618\/bid\/77264\/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx",
+                contentAuthorEmail: "adamfeber@gmail.com",
+                contentAuthorName: "Adam Feber",
+                captchaRequired: true,
+                captchaKey: "6Lc3uMsSAAAAAMjk4NIvPQK9_-ZLk2wBokFCo5Qt",
+                maxThreadDepth: 3,
+                formId: "e53e3868-3627-4a3c-9210-df55e8ace263"
+            };
+            function loadComments() {
+                if (window.hubspot && typeof window.hubspot.loadCommentsEmbed === 'function') {
+                    hubspot.loadCommentsEmbed(commentsEmbedContext.embedScriptEnv, function() {
+                        if (typeof window.hsEmbedComments === 'function') {
+                            window.hsEmbedComments(commentsEmbedContext);
+                        }
+                    }, _hscLegacy);
+                } else {
+                  setTimeout(loadComments, 50);
+                }
+            }
+            loadComments();
+        })(window.hsjQuery || jQuery);
+    </script>
+</div>
+
+</span></div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+<div class="span4 widget-span widget-type-cell blog-sidebar" style="" data-widget-type="cell" data-x="8" data-w="4">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-6 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-follow_me " style="" data-widget-type="follow_me" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_module_14062954934813874" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_follow_me" style="" data-hs-cos-general-type="widget" data-hs-cos-type="follow_me"><h3>Follow Assembla</h3>
+<div style=""><a href="http://www.youtube.com/user/assemblavideos" class="fm_button fm_youtube" target="_blank"><span style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=&#39;http://static.hsappstatic.net/social_shared/static-2.2815/img/followme/icon_youtube.png&#39;, sizingMethod=&#39;scale&#39;);  width: 32px; height: 32px; display:inline-block;cursor:pointer;  background-image:url(&#39;//static.hsappstatic.net/social_shared/static-2.2815/img/followme/icon_youtube.png&#39;); _background-image:none;" title="Follow us on YouTube"></span></a><a href="https://blog.assembla.com/rss.xml" class="fm_button fm_rss" target="_blank"><span style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=&#39;http://static.hsappstatic.net/social_shared/static-2.2815/img/followme/icon_rss.png&#39;, sizingMethod=&#39;scale&#39;);  width: 32px; height: 32px; display:inline-block;cursor:pointer;  background-image:url(&#39;//static.hsappstatic.net/social_shared/static-2.2815/img/followme/icon_rss.png&#39;); _background-image:none;" title="Follow us on RSS"></span></a><a href="https://twitter.com/assembla" class="fm_button fm_twitter" target="_blank"><span style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src=&#39;http://static.hsappstatic.net/social_shared/static-2.2815/img/followme/icon_twitter.png&#39;, sizingMethod=&#39;scale&#39;);  width: 32px; height: 32px; display:inline-block;cursor:pointer;  background-image:url(&#39;//static.hsappstatic.net/social_shared/static-2.2815/img/followme/icon_twitter.png&#39;); _background-image:none;" title="Follow us on Twitter"></span></a></div></span></div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-7 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-rich_text " style="" data-widget-type="rich_text" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_module_14062956661534729" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_rich_text" style="" data-hs-cos-general-type="widget" data-hs-cos-type="rich_text"><h3>Get Started</h3>
+<span><a href="https://www.assembla.com/plans?utm_source=side-bar&amp;utm_medium=blog&amp;utm_campaign=content"><img src="./Setting Up Git on Windows in Four Easy Steps_files/blog-CTA-button.png" alt="blog-CTA-button"></a></span></span>
+</div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-8 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-blog_subscribe " style="" data-widget-type="blog_subscribe" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_blog_subscription" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_blog_subscribe" style="" data-hs-cos-general-type="widget" data-hs-cos-type="blog_subscribe"><h3 id="hs_cos_wrapper_blog_subscription_title" class="hs_cos_wrapper form-title" data-hs-cos-general-type="widget_field" data-hs-cos-type="text">Subscribe to Email Updates</h3>
+
+<div id="hs_form_target_blog_subscription"><form novalidate="" accept-charset="UTF-8" action="https://forms.hubspot.com/uploads/form/v2/365/9dca80ca-65f4-4ae0-b281-c96c798c160d" enctype="multipart/form-data" id="hsForm_9dca80ca-65f4-4ae0-b281-c96c798c160d_4929" method="POST" class="hs-form stacked" data-form-id="9dca80ca-65f4-4ae0-b281-c96c798c160d" data-portal-id="365" data-reactid=".0"><div data-reactid=".0.0:$0"><div class="hs_email field hs-form-field" data-reactid=".0.0:$0.$email"><label class="" placeholder="Enter your Email" for="email-9dca80ca-65f4-4ae0-b281-c96c798c160d_4929" data-reactid=".0.0:$0.$email.0"><span data-reactid=".0.0:$0.$email.0.0">Email</span><span class="hs-form-required" data-reactid=".0.0:$0.$email.0.1">*</span></label><legend class="hs-field-desc" style="display:none;" data-reactid=".0.0:$0.$email.1"></legend><div class="input" data-reactid=".0.0:$0.$email.$email"><input id="email-9dca80ca-65f4-4ae0-b281-c96c798c160d_4929" class="hs-input" type="email" name="email" required="" placeholder="" value="" data-reactid=".0.0:$0.$email.$email.0"></div></div></div><div data-reactid=".0.0:$1"><div class="hs_blog_assembla_blog_subscription field hs-form-field" style="display:none;" data-reactid=".0.0:$1.$blog_assembla_blog_subscription"><label class="" placeholder="Enter your Notification Frequency" for="blog_assembla_blog_subscription-9dca80ca-65f4-4ae0-b281-c96c798c160d_4929" data-reactid=".0.0:$1.$blog_assembla_blog_subscription.0"><span data-reactid=".0.0:$1.$blog_assembla_blog_subscription.0.0">Notification Frequency</span></label><legend class="hs-field-desc" style="display:none;" data-reactid=".0.0:$1.$blog_assembla_blog_subscription.1"></legend><div class="input" data-reactid=".0.0:$1.$blog_assembla_blog_subscription.$blog_assembla_blog_subscription"><input name="blog_assembla_blog_subscription" class="hs-input" type="hidden" value="" data-reactid=".0.0:$1.$blog_assembla_blog_subscription.$blog_assembla_blog_subscription.0"></div></div></div><div data-reactid=".0.0:$2"><div class="hs_lifecyclestage field hs-form-field" style="display:none;" data-reactid=".0.0:$2.$lifecyclestage"><label class="" placeholder="Enter your Lifecycle Stage" for="lifecyclestage-9dca80ca-65f4-4ae0-b281-c96c798c160d_4929" data-reactid=".0.0:$2.$lifecyclestage.0"><span data-reactid=".0.0:$2.$lifecyclestage.0.0">Lifecycle Stage</span></label><legend class="hs-field-desc" style="display:none;" data-reactid=".0.0:$2.$lifecyclestage.1"></legend><div class="input" data-reactid=".0.0:$2.$lifecyclestage.$lifecyclestage"><input name="lifecyclestage" class="hs-input" type="hidden" value="subscriber" data-reactid=".0.0:$2.$lifecyclestage.$lifecyclestage.0"></div></div></div><div class="hs_submit" data-reactid=".0.2"><div class="hs-field-desc" style="display:none;" data-reactid=".0.2.0"></div><div class="actions" data-reactid=".0.2.1"><input type="submit" value="Subscribe" class="hs-button primary large" data-reactid=".0.2.1.0"></div></div><input name="hs_context" type="hidden" value="{&quot;rumScriptExecuteTime&quot;:2671.0600000000004,&quot;rumServiceResponseTime&quot;:3596.69,&quot;rumFormRenderTime&quot;:798.9449999999997,&quot;pageUrl&quot;:&quot;https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx&quot;,&quot;pageTitle&quot;:&quot;Setting Up Git on Windows in Four Easy Steps&quot;,&quot;isHostedOnHubspot&quot;:true,&quot;timestamp&quot;:1468619314323,&quot;userAgent&quot;:&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/51.0.2704.79 Chrome/51.0.2704.79 Safari/537.36&quot;,&quot;referrer&quot;:&quot;https://www.google.com.ec/&quot;,&quot;hutk&quot;:&quot;c6dd4853def3bf7a2f7929e8c26b2c49&quot;,&quot;originalEmbedContext&quot;:{&quot;portalId&quot;:&quot;365&quot;,&quot;formId&quot;:&quot;9dca80ca-65f4-4ae0-b281-c96c798c160d&quot;,&quot;formInstanceId&quot;:&quot;4929&quot;,&quot;pageId&quot;:993070409,&quot;pageName&quot;:&quot;Setting Up Git on Windows in Four Easy Steps&quot;,&quot;contentType&quot;:&quot;blog-post&quot;,&quot;redirectUrl&quot;:&quot;https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx?hsFormKey=87f184464251010b60b5bb080159964b#blog_subscription&quot;,&quot;css&quot;:&quot;&quot;,&quot;target&quot;:&quot;#hs_form_target_blog_subscription&quot;,&quot;formData&quot;:{&quot;cssClass&quot;:&quot;hs-form stacked&quot;}},&quot;formName&quot;:&quot;Subscribe to Assembla Blog Notifications&quot;,&quot;recentFieldsCookie&quot;:{},&quot;pageId&quot;:&quot;12618-77264&quot;,&quot;pageName&quot;:&quot;Setting Up Git on Windows in Four Easy Steps&quot;,&quot;boolCheckBoxFields&quot;:&quot;&quot;,&quot;dateFields&quot;:&quot;&quot;,&quot;redirectUrl&quot;:&quot;https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx?hsFormKey=87f184464251010b60b5bb080159964b#blog_subscription&quot;,&quot;formInstanceId&quot;:&quot;4929&quot;,&quot;smartFields&quot;:{},&quot;urlParams&quot;:{},&quot;formValidity&quot;:{},&quot;correlationId&quot;:&quot;fb453d58-cf25-4e67-98e5-97ef7653ea6a&quot;,&quot;disableCookieSubmission&quot;:false}" data-reactid=".0.3"></form></div>
+
+<!--[if lte IE 8]>
+<script charset="utf-8" src="https://js.hsforms.net/forms/v2-legacy.js"></script>
+<![endif]-->
+<script charset="utf-8" src="./Setting Up Git on Windows in Four Easy Steps_files/v2.js"></script>
+
+<script>
+    hbspt.forms.create({
+        portalId: '365',
+        formId: '9dca80ca-65f4-4ae0-b281-c96c798c160d',
+        formInstanceId: '4929',
+        pageId: 993070409,
+        pageName: 'Setting Up Git on Windows in Four Easy Steps',
+        contentType: 'blog-post',
+        
+        redirectUrl: 'https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx?hsFormKey=87f184464251010b60b5bb080159964b#blog_subscription',
+        
+        
+        css: '',
+        target: '#hs_form_target_blog_subscription',
+        
+        formData: {
+          cssClass: 'hs-form stacked'
+        }
+    });
+</script>
+</span></div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-9 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-post_listing " style="" data-widget-type="post_listing" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_top_posts" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_post_listing" style="" data-hs-cos-general-type="widget" data-hs-cos-type="post_listing"><div class="block">
+  <h3>Latest Posts</h3>
+  <div class="widget-module">
+    <ul>
+      
+      <li>
+        
+        <a href="https://blog.assembla.com/blame-has-arrived">'Blame' for Git, SVN, and Perforce</a>
+      </li>
+      
+      <li>
+        
+        <a href="https://blog.assembla.com/perfecting-the-new-the-cardwall">Perfecting a Real Time Cardwall</a>
+      </li>
+      
+      <li>
+        
+        <a href="https://blog.assembla.com/dev-ops-takes-on-ddos">DevOps at Assembla: on Guard for Customer Experience</a>
+      </li>
+      
+      <li>
+        
+        <a href="https://blog.assembla.com/real-time-cardwall-realtimeproductivity">You Work Quickly, Now Your Cardwall Does Too! #RealTimeProductivity</a>
+      </li>
+      
+      <li>
+        
+        <a href="https://blog.assembla.com/meet-the-team-stanislav-kolotinskiy">Meet the Team: Stanislav Kolotinskiy</a>
+      </li>
+      
+    </ul>
+  </div>
+</div></span></div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+<div class="row-fluid-wrapper row-depth-1 row-number-10 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-post_filter " style="" data-widget-type="post_filter" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_post_filter" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_post_filter" style="" data-hs-cos-general-type="widget" data-hs-cos-type="post_filter"><div class="block">
+  <h3>Browse by Tag</h3>
+  <div class="widget-module">
+    <ul>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/assembla-releases">assembla releases <span class="filter-link-count" dir="ltr">(144)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/agile">agile <span class="filter-link-count" dir="ltr">(93)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/development-process">development process <span class="filter-link-count" dir="ltr">(84)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/assembla">assembla <span class="filter-link-count" dir="ltr">(73)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/collaboration">collaboration <span class="filter-link-count" dir="ltr">(68)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/software-business">software business <span class="filter-link-count" dir="ltr">(60)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/ticketsissue-tracking">tickets/issue tracking <span class="filter-link-count" dir="ltr">(60)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/distributed-development">distributed development <span class="filter-link-count" dir="ltr">(53)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/project-management">project management <span class="filter-link-count" dir="ltr">(48)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/tutorials">tutorials <span class="filter-link-count" dir="ltr">(46)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/staffing">staffing <span class="filter-link-count" dir="ltr">(45)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/continuous-delivery">continuous delivery <span class="filter-link-count" dir="ltr">(41)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/repositories">repositories <span class="filter-link-count" dir="ltr">(40)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/subversion">subversion <span class="filter-link-count" dir="ltr">(40)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/videospodcasts">videos/podcasts <span class="filter-link-count" dir="ltr">(34)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/case-studies">case studies <span class="filter-link-count" dir="ltr">(31)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/renzoku">renzoku <span class="filter-link-count" dir="ltr">(25)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/git">git <span class="filter-link-count" dir="ltr">(24)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/gitgerrit">git/gerrit <span class="filter-link-count" dir="ltr">(24)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/open-source">open source <span class="filter-link-count" dir="ltr">(23)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/scrum">scrum <span class="filter-link-count" dir="ltr">(23)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/integration">Integration <span class="filter-link-count" dir="ltr">(21)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/kanban">kanban <span class="filter-link-count" dir="ltr">(21)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/planningroadmapping">planning/roadmapping <span class="filter-link-count" dir="ltr">(20)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/buildrelease-management">build/release management <span class="filter-link-count" dir="ltr">(18)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/scalable-agile">scalable agile <span class="filter-link-count" dir="ltr">(15)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/application-maintenance">application maintenance <span class="filter-link-count" dir="ltr">(14)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/innovation">innovation <span class="filter-link-count" dir="ltr">(14)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/application-management">application management <span class="filter-link-count" dir="ltr">(13)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/cloud">cloud <span class="filter-link-count" dir="ltr">(13)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/continuous-integration">continuous integration <span class="filter-link-count" dir="ltr">(12)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/workflow">workflow <span class="filter-link-count" dir="ltr">(9)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/enterprise">enterprise <span class="filter-link-count" dir="ltr">(8)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/perforce">perforce <span class="filter-link-count" dir="ltr">(8)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/ux">UX <span class="filter-link-count" dir="ltr">(8)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/design">design <span class="filter-link-count" dir="ltr">(7)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/api">API <span class="filter-link-count" dir="ltr">(6)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/new-features">new features <span class="filter-link-count" dir="ltr">(6)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/repository">repository <span class="filter-link-count" dir="ltr">(6)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/cardwall">Cardwall <span class="filter-link-count" dir="ltr">(5)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/client-collaboration">client collaboration <span class="filter-link-count" dir="ltr">(5)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/fast-it">Fast IT <span class="filter-link-count" dir="ltr">(5)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/tech-leads">tech leads <span class="filter-link-count" dir="ltr">(5)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/tickets">tickets <span class="filter-link-count" dir="ltr">(5)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/code-review">code review <span class="filter-link-count" dir="ltr">(4)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/connected-portfolio">connected portfolio <span class="filter-link-count" dir="ltr">(4)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/planner">planner <span class="filter-link-count" dir="ltr">(4)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/portfolio">portfolio <span class="filter-link-count" dir="ltr">(4)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/portfolio-management">Portfolio Management <span class="filter-link-count" dir="ltr">(4)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/code-browser">Code Browser <span class="filter-link-count" dir="ltr">(3)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/jenkins">jenkins <span class="filter-link-count" dir="ltr">(3)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/meet-the-team">Meet the Team <span class="filter-link-count" dir="ltr">(3)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/milestones">Milestones <span class="filter-link-count" dir="ltr">(3)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/security">security <span class="filter-link-count" dir="ltr">(3)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/webinar">webinar <span class="filter-link-count" dir="ltr">(3)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/connectors">connectors <span class="filter-link-count" dir="ltr">(2)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/files-tool">files tool <span class="filter-link-count" dir="ltr">(2)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/game-developers">game developers <span class="filter-link-count" dir="ltr">(2)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/mobile">mobile <span class="filter-link-count" dir="ltr">(2)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/perforce-hosting">perforce hosting <span class="filter-link-count" dir="ltr">(2)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/updated-design">updated design <span class="filter-link-count" dir="ltr">(2)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/account-pages">Account pages <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/aha-rules">AHA Rules <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/bring-your-own-app">bring your own app <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/bugs">bugs <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/byod">BYOD <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/configuration">configuration <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/continuous-agile">continuous agile <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/ddos">ddos <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/deprecation">deprecation <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/devops">devops <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/dropbox">dropbox <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/email">email <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/feature-removal">feature removal <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/git-on-windows">git on windows <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/lean-principles">Lean Principles <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/metric-drive-product-development">metric-drive product development <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/navigation">navigation <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/p4">P4 <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/product">product <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/product-management">product management <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/productivity">Productivity, <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/promotion">Promotion <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/real-time-tickets">Real time tickets <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/removal-of-tools">removal of tools <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/software">software <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/space-templates">Space Templates <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/story-owner">story owner <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/stuck-ticket">stuck ticket <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/system-of-analysis">system of analysis <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/tags">tags <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/task">task <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/teamwork">teamwork <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/templates">Templates <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/user-experience">user experience <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+        <li>
+          <a href="https://blog.assembla.com/topic/using-assembla">Using Assembla <span class="filter-link-count" dir="ltr">(1)</span></a>
+        </li>
+      
+    </ul>
+    
+  </div>
+</div>
+</span></div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+    </div><!--end body -->
+</div><!--end body wrapper -->
+
+<div class="footer-container-wrapper">
+    <div class="footer-container container-fluid">
+
+<div class="row-fluid-wrapper row-depth-1 row-number-1 ">
+<div class="row-fluid ">
+<div class="span12 widget-span widget-type-global_widget " style="" data-widget-type="global_widget" data-x="0" data-w="12">
+<div class="cell-wrapper layout-widget-wrapper">
+<span id="hs_cos_wrapper_footer_2015" class="hs_cos_wrapper hs_cos_wrapper_widget hs_cos_wrapper_type_raw_html" style="" data-hs-cos-general-type="widget" data-hs-cos-type="raw_html" data-global-widget-id="3428270133"><footer class="section2">
+  
+    <div class="row">
+      
+      <div class="hide-for-small-only">
+     
+      <div class="large-2 medium-3 small-12 columns">
+
+          <h5>Company</h5>
+          <ul>
+						<li><a href="https://www.assembla.com/about">About Assembla</a></li>
+						<li><a href="https://www.assembla.com/testimonials">Testimonials</a></li>
+						<li><a href="https://www.assembla.com/team">Meet the team</a></li>
+						<li><a href="https://www.assembla.com/contact">Contact us</a></li>
+					</ul>
+          
+      </div>
+      
+      <div class="large-2 medium-3 small-12 columns">
+
+          <h5>Products</h5>
+          <ul>
+						<li><a href="https://www.assembla.com/workspaces">Workspaces</a></li>
+						<li><a href="https://www.assembla.com/workspaces/repositories-features">Repositories</a></li>
+						<li><a href="https://www.assembla.com/portfolio">Portfolio</a></li>
+					</ul>
+          
+      </div>
+      
+      <div class="large-3 medium-3 small-12 columns">
+
+          <h5>Resources</h5>
+          <ul>
+						<li><a target="_blank" href="http://api-doc.assembla.com/">Developer API</a></li>
+						<li><a href="https://www.assembla.com/integrations">Third-Party integrations</a></li>
+						<li><a target="_blank" href="https://blog.assembla.com/">Blog</a></li>
+					</ul>
+          
+      </div>
+      
+      <div class="large-3 medium-3 small-12 columns">
+
+          <h5>Support</h5>
+          <ul>
+						<li><a target="_blank" href="http://helpdesk.assembla.com/">Customer support portal</a></li>
+						<li><a target="_blank" href="http://feedback.assembla.com/">Feature requests</a></li>
+						<li><a href="mailto:support@assembla.com">support@assembla.com</a></li>
+					</ul>
+          
+      </div>
+      
+      </div>
+      
+      <div class="large-2 medium-12 small-12 columns connect">
+
+          <h5>Connect</h5>
+          <ul>
+						<li><a target="_blank" href="https://www.facebook.com/assembla"><span class="icon-facebook"></span>Facebook</a></li>
+						<li><a class="twitter" target="_blank" href="https://twitter.com/assembla"><span class="icon-twitter"></span>Twitter</a></li>
+						<li><a class="linkedin" target="_blank" href="http://www.linkedin.com/company/assembla"><span class="icon-linkedin"></span>LinkedIn</a></li>
+						<li><a class="google" target="_blank" href="https://plus.google.com/+assembla/about"><span class="icon-google"></span>Google+</a></li>
+						<li><a class="rss" target="_blank" href="http://feed.assembla.com/"><span class="icon-rss"></span>Blog RSS</a></li>
+					</ul>
+          
+      </div>   
+      
+      <hr>
+    </div> <!-- /.row --->
+    
+     <div class="row">
+     
+      <div class="large-2 medium-2 small-12 columns">
+        
+      <div class="logo-footer"></div>
+        
+      </div>
+      
+      <div class="large-8 medium-8 small-12 columns">
+        
+      <p class="copyright">Copyright © 2006 - 2016, Assembla Inc.<br class="show-for-small-only"> <a target="_blank" href="http://helpdesk.assembla.com/customer/portal/articles/684427-terms-of-service">Terms of Service</a> - <a target="_blank" href="http://helpdesk.assembla.com/customer/portal/articles/684544-privacy-policy">Privacy Policy</a></p>
+        
+      </div>
+      
+      <div class="large-2 medium-2 small-12 columns">
+        
+      <p class="top"><a href="https://blog.assembla.com/AssemblaBlog/tabid/12618/bid/77264/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx#">Back To Top <span class="icon-arrow-up"></span></a></p>
+        
+      </div>
+      
+    
+    </div> <!-- /.row --->
+  
+  
+</footer></span></div><!--end layout-widget-wrapper -->
+</div><!--end widget-span -->
+</div><!--end row-->
+</div><!--end row-wrapper -->
+
+    </div><!--end footer -->
+</div><!--end footer wrapper -->
+
+    
+<script type="text/javascript" src="./Setting Up Git on Windows in Four Easy Steps_files/public_common.js"></script>
+
+<!-- Start of Async HubSpot Analytics Code -->
+<script type="text/javascript">
+var _hsq = _hsq || [];
+_hsq.push(["setContentType", "blog-post"]);
+_hsq.push(["setCanonicalUrl", "https:\/\/blog.assembla.com\/AssemblaBlog\/tabid\/12618\/bid\/77264\/Setting-Up-Git-on-Windows-in-Four-Easy-Steps.aspx"]);
+_hsq.push(["setPageId", "12618-77264"]);
+_hsq.push(["setContentMetadata", {
+    "contentPageId": 993070409,
+    "legacyPageId": "12618-77264",
+    "contentGroupId": 995394571,
+    "abTestId": null,
+    "languageVariantId": 993070409,
+    "languageCode": null
+}]);
+_hsq.push(["setTargetedContentMetadata", []]);
+(function(d,s,i,r) {
+    if (d.getElementById(i)){return;}
+    var n=d.createElement(s),e=d.getElementsByTagName(s)[0];
+    n.id=i;n.src='//js.hs-analytics.net/analytics/'+(Math.ceil(new Date()/r)*r)+'/365.js';
+    e.parentNode.insertBefore(n, e);
+})(document,"script","hs-analytics",300000);
+</script>
+<!-- End of Async HubSpot Analytics Code -->
+
+
+<script type="text/javascript">
+var hsVars = {
+    ticks: 1468619312872,
+    page_id: 993070409,
+    content_group_id: 995394571,
+    portal_id: 365,
+    app_hs_base_url: "https://app.hubspot.com"
+}
+</script>
+
+
+
+<!-- start Main.js DO NOT REMOVE --> 
+
+<script src="./Setting Up Git on Windows in Four Easy Steps_files/Assembla-Jun2014-main.min.js"></script> 
+
+<!-- end Main.js -->
+
+<!-- Google Tag Manager -->
+<noscript>&lt;iframe src="//www.googletagmanager.com/ns.html?id=GTM-M82252" height="0" width="0" style="display:none;visibility:hidden"&gt;&lt;/iframe&gt;</noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-M82252');</script>
+<!-- End Google Tag Manager -->
+<script src="./Setting Up Git on Windows in Four Easy Steps_files/td.js" async="" data-trackduck-id="577e953aa48108ac22cf2eab"></script>
+
+<div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Setting Up Git on Windows in Four Easy Steps_files/bz-D0tzmBsw.html" style="border: none;"></iframe></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div></div>
+ <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&status=0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<script type="text/javascript">
+  window.___gcfg = {
+    lang: 'en-US',
+    parsetags: 'onload'
+  };
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/platform.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+ 
+
+
+    <!-- Generated by the HubSpot Template Builder - template version 1.03 -->
+
+<!-- end coded_template: id:1000593278 path:generated_layouts/1000591408.html -->
+<script type="text/javascript" src="./Setting Up Git on Windows in Four Easy Steps_files/recaptcha_ajax.js" id="hs-cgr-script"></script><script type="text/javascript" src="./Setting Up Git on Windows in Four Easy Steps_files/v2.js" id="hs-cfcv2-script"></script><script type="text/javascript" src="./Setting Up Git on Windows in Four Easy Steps_files/embed.js" id="hs-cembed-script"></script><iframe name="oauth2relay232434958" id="oauth2relay232434958" src="./Setting Up Git on Windows in Four Easy Steps_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><div id="trackduck" data-html2canvas-ignore="" style="position: static !important;"><div class="td_markers" style="position: static !important;"></div><style id="trackduck_style" type="text/css">@media print { #trackduck {display: none;} }.trackduck-anonymous-hover:hover ~ .trackduck-anonymous-label   {opacity:1 !important; visibility:visible !important;}.td-bl .trackduck-anonymous-hover:hover ~ .trackduck-anonymous-label, .td-tl .trackduck-anonymous-hover:hover ~ .trackduck-anonymous-label   {margin-right: -45px !important;}.td-br .trackduck-anonymous-hover:hover ~ .trackduck-anonymous-label, .td-tr .trackduck-anonymous-hover:hover ~ .trackduck-anonymous-label   {margin-left: -45px !important;}.td-br .trackduck-anonymous-figure, .td-tr .trackduck-anonymous-figure   {border-width: 5px 0 5px 6px;border-color: transparent transparent transparent rgba(31, 31, 31, 0.57); right:-6px;}.td-bl .trackduck-anonymous-figure, .td-tl .trackduck-anonymous-figure   {border-width: 5px 6px 5px  0;border-color: transparent rgba(31, 31, 31, 0.57) transparent transparent;left:-6px;}</style><div class="trackduck-anonymous td-br" style="border-radius: 3px; font-family: &quot;Helvetica Neue&quot;, Arial, sans-serif !important; position: fixed !important; color: rgb(255, 255, 255) !important; cursor: pointer !important; width: 40px !important; height: 40px !important; z-index: 2147483548 !important; bottom: 20px !important; right: 20px !important; background-image: url(&quot;https://d1ks1friyst4m3.cloudfront.net/toolbar/prod/1466666326867/img/td-anon.png&quot;) !important; background-color: rgb(255, 188, 32) !important; background-position: 8px -14px !important; background-repeat: no-repeat !important;"><div class="trackduck-anonymous-hover" style="position: relative !important; z-index: 1 !important; width: 100% !important; height: 100% !important;"></div><div class="trackduck-anonymous-label" style="visibility: hidden; opacity: 0; position: absolute !important; line-height: 40px !important; padding: 0px 20px !important; border-radius: 2px !important; font-size: 12px !important; color: rgb(255, 255, 255) !important; transition: all 0.25s ease-out !important; top: 0px !important; white-space: nowrap !important; left: -99px !important; background: rgba(31, 31, 31, 0.568627) !important;">Leave Feedback<div class="trackduck-anonymous-figure" style="position: absolute; width: 0px; height: 0px; border-style: solid; top: 14px;"></div></div></div></div><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" src="./Setting Up Git on Windows in Four Easy Steps_files/saved_resource.html"></iframe></body></html>

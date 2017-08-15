@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml" xml:lang="es" lang="es"><head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <title>13.2. Python bajo Apache (Python para principiantes)</title>
+                                    <link rel="stylesheet" href="13.2.%20Python%20bajo%20Apache%20%28Python%20para%20principiantes%29%20Archivos/app.css">
+                        <link href="13.2.%20Python%20bajo%20Apache%20%28Python%20para%20principiantes%29%20Archivos/css.css" rel="stylesheet" type="text/css">
+        <script src="13.2.%20Python%20bajo%20Apache%20%28Python%20para%20principiantes%29%20Archivos/ca-pub-1491000300253750.js"></script><script src="13.2.%20Python%20bajo%20Apache%20%28Python%20para%20principiantes%29%20Archivos/analytics.js" async=""></script><script type="text/javascript">
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-82842-2', 'librosweb.es');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+        </script>
+                        <link rel="apple-touch-icon" type="image/png" href="https://librosweb.es/apple-touch-icon.png">
+        <link rel="apple-touch-icon-precomposed" type="image/png" href="https://librosweb.es/apple-touch-icon.png">
+        <meta name="apple-mobile-web-app-title" content="LibrosWeb">
+        <link rel="shortcut icon" type="image/png" href="https://librosweb.es/favicon.png">
+        <meta name="site-version" content="a7f65a4">
+                <link rel="publisher" href="http://plus.google.com/112008023125011571577">
+                                                    <link rel="prev" href="https://librosweb.es/libro/python/capitulo_13/introduccion.html">
+                    <link rel="next" href="https://librosweb.es/libro/python/capitulo_13/utilizando_environ_para_manejar_peticiones_del_usuario.html">
+                <link rel="start" href="https://librosweb.es/libro/python/">
+                <meta name="twitter:site" content="@librosweb">
+                <link rel="search" type="application/opensearchdescription+xml" href="http://librosweb.es/opensearch/documentation.xml" title="LibrosWeb">
+                <meta property="fb:page_id" content="437758756273955">
+                <meta property="fb:app_id" content="437758756273955">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="13.2. Python bajo Apache (Python para principiantes)">
+        <meta property="og:image" content="http://www.gravatar.com/avatar/9f219b4dfaa677bfd0f47753c02d5126.png?s=200">
+                <meta name="msapplication-TileColor" content="#CC1414">
+        <meta name="application-name" content="LibrosWeb">
+        <meta name="msapplication-tooltip" content="Libros y tutoriales sobre HTML, CSS, JavaScript, PHP y otras tecnologías web.">
+    </head>
+
+    <body id="p-1-2" class="books book_page python"><script type="text/javascript">
+//<![CDATA[
+try{(function(a){var b="https://",c="librosweb.es",d="/cdn-cgi/cl/",e="img.gif",f=new a;f.src=[b,c,d,e].join("")})(Image)}catch(e){}
+//]]>
+</script>
+        <div id="header">
+                    <div class="container">
+                <div class="navbar navbar-static-top">
+                    <div id="header-brand" class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu">
+                            <span class="sr-only">Desplegar menú</span>
+                            <i class="fa fa-menu"></i>
+                        </button>
+                        <a class="navbar-brand" href="https://librosweb.es/" title="LibrosWeb.es">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 132 32" preserveAspectRatio="xMinYMin meet">
+<g fill="#CC1414" transform="translate(-21.738 -21.148)">
+<path d="m24.062 23.486v28h9.64v-5h-4.04v-23h-5.6"></path>
+<path d="m40.796 23.486h-5.6v28h5.6v-28"></path>
+<path d="m53.932 37.006c1.48-0.56 2.32-1.76 2.32-4.16v-4.16c0-3.48-1.72-5.2-5.2-5.2h-8.24v28h8.32c3.48 0 5.2-1.72 5.2-5.2v-5.68c0-2.04-0.72-3.12-2.4-3.6m-3.24-7.72v4.64c0 0.68-0.32 1-1 1h-1.32v-6.64h1.32c0.68 0 1 0.32 1 1m-2.32 10.32h1.4c0.68 0 1 0.32 1 1v5.08c0 0.68-0.32 1-1 1h-1.4v-7.08"></path>
+<path d="m69.284 38.246c1.52-0.56 2.4-1.76 2.4-4.16v-5.4c0-3.48-1.72-5.2-5.2-5.2h-8.36v28h5.6v-10.6h1.4c0.68 0 1 0.32 1 1v9.6h5.6v-9.64c0-2.04-0.72-3.12-2.44-3.6m-3.2-8.88v5.76c0 0.68-0.32 1-1 1h-1.36v-7.76h1.36c0.68 0 1 0.32 1 1"></path>
+<path d="m87.513 46.526v-18.08c0-3.48-1.72-5.2-5.2-5.2h-3.6c-3.48 0-5.2 1.72-5.2 5.2v18.08c0 3.48 1.72 5.2 5.2 5.2h3.6c3.48 0 5.2-1.72 5.2-5.2m-5.6-17.48v16.88c0 0.68-0.32 1-1 1h-0.8c-0.68 0-1-0.32-1-1v-16.88c0-0.68 0.32-1 1-1h0.8c0.68 0 1 0.32 1 1"></path>
+<path d="m100.57 36.966-4.8-3.56c-0.68-0.48-0.96-0.92-0.96-1.8v-2.64c0-0.68 0.32-1 1-1h0.44c0.68 0 1 0.32 1 1v4.6h5.48v-5.12c0-3.48-1.72-5.2-5.2-5.2h-3.04c-3.48 0-5.2 1.72-5.2 5.2v4.44c0 2 0.52 3.16 2.24 4.4l4.8 3.56c0.68 0.48 0.96 0.92 0.96 1.8v3.36c0 0.68-0.32 1-1 1h-0.52c-0.68 0-1-0.32-1-1v-5.44h-5.48v5.96c0 3.48 1.72 5.2 5.2 5.2h3.12c3.48 0 5.2-1.72 5.2-5.2v-5.16c0-2.08-0.52001-3.16-2.24-4.4"></path>
+<path d="m106.98 51.486h6.16l1.44-12.72 1.44 12.72h6.16l3.4-28h-4.96l-1.44 14.88-1.6-14.88h-5.28l-1.6 14.92-1.44-14.92h-5.68l3.4 28"></path>
+<path d="m126.87 23.486v28h10.48v-5h-4.88v-6.72h4.6v-5h-4.6v-6.28h4.8v-5h-10.4"></path>
+<path d="m150.26 37.006c1.48-0.56 2.32-1.76 2.32-4.16v-4.16c0-3.48-1.72-5.2-5.2-5.2h-8.24v28h8.32c3.48 0 5.2-1.72 5.2-5.2v-5.68c0-2.04-0.72001-3.12-2.4-3.6m-3.24-7.72v4.64c0 0.68-0.32001 1-1 1h-1.32v-6.64h1.32c0.67999 0 1 0.32 1 1m-2.32 10.32h1.4c0.67999 0 1 0.32 1 1v5.08c0 0.68-0.32001 1-1 1h-1.4v-7.08"></path>
+</g>
+</svg>
+                            <span>LibrosWeb</span>
+                        </a>
+
+                        <div id="header-menu" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                
+                                                                <li class="">
+                                    <a href="https://librosweb.es/">Inicio</a>
+                                </li>
+                                                                <li class="active">
+                                    <a href="https://librosweb.es/libros/">Libros</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://librosweb.es/tutoriales/">Tutoriales</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://librosweb.es/eventos/">Eventos</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://librosweb.es/foro/">Foro</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="https://librosweb.es/buscar">Buscar</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+        <div id="wrapper" class="container">
+                <div id="book-toc-anchor" class="well visible-xs">
+        <a href="#indice">Ver índice de contenidos del libro</a>
+    </div>
+
+    <ol class="hidden-xs breadcrumb">
+        <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="https://librosweb.es/libros/" itemprop="url"><span itemprop="title">Libros</span></a>
+        </li>
+
+        <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="https://librosweb.es/libro/python/" itemprop="url"><span itemprop="title">Python para principiantes</span></a>
+        </li>
+
+            <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="https://librosweb.es/libro/python/capitulo_13.html" itemprop="url"><span itemprop="title">Capítulo 13. Corriendo aplicaciones Python en la web</span></a>
+        </li>
+    
+        <li class="breadcrumb__item">
+            <span>13.2. Python bajo Apache</span>
+        </li>
+    </ol>
+
+            <div id="content">
+                                    <div class="row">
+                        <div id="main" class="col-md-9">
+                            
+    
+    <h1 id="python_bajo_apache" class="title">
+        <span>13.2.</span> Python bajo Apache
+    </h1>
+
+    
+
+<p>Como si de una receta de cocina se tratara, vamos a aprender <strong>cómo servir aplicaciones Web con Python, utilizando el servidor Apache</strong>.</p>
+
+<p>No es mucha la bibliografía que puede encontrarse al respecto, pero 
+sí, lo es bastante confusa y hasta incluso contradictoria. Por eso, en 
+este curso, nos vamos a proponer mantener el espíritu de simplicidad de 
+Python, encontrando la manera simple de hacerlo.</p>
+
+<h3 id="que_necesitamos">13.2.1. ¿Qué necesitamos?</h3>
+
+<p>En principio, necesitamos hacer que Apache, incorpore un soporte para
+ servir archivos Python. Para ello, necesitaremos habilitarle un módulo,
+ que brinde este soporte.</p>
+
+<p>Existen varios módulos de Apache que brindan soporte para correr archivos Python. Uno de los más populares es el módulo <code>mod_python</code>, que sin embargo, presenta <a href="http://docs.python.org/release/2.7/howto/webservers.html#mod-python">algunos problemas</a> que pueden prevenirse, utilizando el <a href="http://docs.python.org/release/2.7/howto/webservers.html#mod-wsgi">módulo mod_wsgi</a> el cual utilizaremos en este curso.</p>
+
+<p><strong>1) Instalación de mod_wsgi en Apache</strong></p>
+
+<p>Para habilitar <code>mod_wsgi</code> en Apache, basta con instalar el paquete <code>libapache2-mod-wsgi</code>:</p>
+
+<div class="code cli">
+<pre class="cli">sudo apt-get install libapache2-mod-wsgi</pre>
+</div>
+
+<p><strong>2) Crear la estructura de directorios para nuestra aplicación</strong></p>
+
+<p>Primero, es importante saber, como va a funcionar nuestra aplicación y cómo va a interactuar vía Web.</p>
+
+<p>Debemos tener un <strong>directorio destinado a montar toda la aplicación</strong>:</p>
+
+<div class="code cli">
+<pre class="cli">mkdir /home/yo/curso-python/trunk/python-web</pre>
+</div>
+
+<p>Dentro de este directorio, vamos a <strong>dividir su arquitectura en dos partes</strong>:</p>
+
+<ol>
+<li>Destinada al almacenaje de nuestra aplicación Python pura (será un directorio privado, no servido).</li>
+<li>Destinada a servir la aplicación (directorio público servido) en el cuál solo almacenaremos archivos estáticos.</li>
+</ol>
+
+<div class="code cli">
+<pre class="cli">mkdir /home/yo/curso-python/trunk/python-web/mypythonapp
+mkdir /home/yo/curso-python/trunk/python-web/public_html</pre>
+</div>
+
+<p>Dentro de nuestro directorio <code>mypythonapp</code>, almacenaremos entonces, todos los módulos y paquetes de nuestra aplicación Python, mientras que en <code>public_html</code>, estarán todos los archivos estáticos y será el único directorio al que se pueda acceder mediante el navegador Web.</p>
+
+<p>Aprovecharemos este paso, para crear una carpeta, destinada a almacenar los logs de errores y accesos a nuestra Web App:</p>
+
+<div class="code cli">
+<pre class="cli">mkdir /home/yo/curso-python/trunk/python-web/logs</pre>
+</div>
+
+<p><strong>3) Crear un controlador para la aplicación</strong></p>
+
+<p>Todas las peticiones realizadas por el usuario (es decir, las URI a 
+las cuáles el usuario acceda por el navegador), serán manejadas por un 
+único archivo, que estará almacenado en nuestro directorio <code>mypythonapp</code>.</p>
+
+<div class="code cli">
+<pre class="cli">echo '# -*- coding: utf-8 -*-' &gt; mypythonapp/controller.py</pre>
+</div>
+
+<p>Este archivo <code>controller.py</code> actuará como un pseudo <em>front controller</em>,
+ siendo el encargado de manejar todas las peticiones del usuario, 
+haciendo la llamada a los módulos correspondientes según la URI 
+solicitada.</p>
+
+<p>Dicho módulo, solo se encargará de definir una función, que actúe con cada petición del usuario. Esta función, <strong>deberá ser una función WSGI aplicación válida</strong>. Esto significa que:</p>
+
+<ol>
+<li>Deberá llamarse <code>application</code></li>
+<li>Deberá recibir dos parámetros: <code>environ</code>, del módulo <code>os</code>, que provee un diccionario de las peticiones HTTP estándar y otras variables de entorno, y la función <code>start_response</code>, de WSGI, encargada de entregar la respuesta HTTP al usuario.</li>
+</ol>
+
+<div class="code python">
+<pre class="python"><span class="kw1">def</span> application<span class="br0">(</span>environ<span class="sy0">,</span> start_response<span class="br0">)</span>: 
+    <span class="co1"># Genero la salida HTML a mostrar al usuario </span>
+    output <span class="sy0">=</span> <span class="st0">"&lt;p&gt;Bienvenido a mi &lt;b&gt;PythonApp&lt;/b&gt;!!!&lt;/p&gt;"</span> 
+    <span class="co1"># Inicio una respuesta al navegador </span>
+    start_response<span class="br0">(</span><span class="st0">'200 OK'</span><span class="sy0">,</span> <span class="br0">[</span><span class="br0">(</span><span class="st0">'Content-Type'</span><span class="sy0">,</span> <span class="st0">'text/html; charset=utf-8'</span><span class="br0">)</span><span class="br0">]</span><span class="br0">)</span> 
+    <span class="co1"># Retorno el contenido HTML </span>
+    <span class="kw1">return</span> output</pre>
+</div>
+
+<p>Más adelante, veremos como crear un <em>Application WSGI Controller</em>, mucho más 
+potente.</p>
+
+<p><strong>4) Configurar el VirtualHost</strong></p>
+
+<p>En la buena configuración de nuestro <code>VirtualHost</code>, estará la clave para correr nuestra aplicación Python a través de la Web.</p>
+
+<p>Mientras que el <code>DocumentRoot</code> de nuestro sitio Web, será la carpeta pública, 
+<code>public_html</code>, una variable del <code>VirtualHost</code>, será la encargada de redirigir todas las peticiones públicas del usuario, hacia nuestro <em>front controller</em>. Y la variable que se encargue de esto, será el alias <code>WSGIScriptAlias</code>:</p>
+
+<div class="code cli">
+<pre class="cli">sudo nano /etc/apache2/sites-available/python-web</pre>
+</div>
+
+<p>Una vez allí, escribimos el contenido del nuevo virtual host:</p>
+
+<div class="code apache">
+<pre class="apache">&lt;<span class="kw3">VirtualHost</span> *:<span class="nu0">80</span>&gt; 
+  <span class="kw1">ServerName</span> python-web
+&nbsp;
+  <span class="kw1">DocumentRoot</span> /home/yo/curso-python/trunk/python-web/public_html 
+  WSGIScriptAlias / /home/yo/curso-python/trunk/python-web/mypythonapp/controller.py 
+  <span class="kw1">ErrorLog</span> /home/yo/curso-python/trunk/python-web/logs/errors.log 
+  <span class="kw1">CustomLog</span> /home/yo/curso-python/trunk/python-web/logs/access.log combined 
+&nbsp;
+  &lt;<span class="kw3">Directory</span> /&gt; 
+    <span class="kw1">Options</span> <span class="kw2">FollowSymLinks</span> 
+    <span class="kw1">AllowOverride</span> <span class="kw2">All</span> 
+  &lt;/<span class="kw3">Directory</span>&gt; 
+&lt;/<span class="kw3">VirtualHost</span>&gt;</pre>
+</div>
+
+<p>Una vez configurado nuestro <code>VirtualHost</code>:</p>
+
+<ol>
+<li>Habilitamos el sitio web: <code>sudo a2ensite python-web</code></li>
+<li>Recargamos Apache: <code>sudo service apache2 reload</code></li>
+<li>Habilitamos el sitio en nuestro host: <code>sudo nano /etc/hosts</code> y allí agregamos la siguiente línea: <code>127.0.0.1python-web</code></li>
+</ol>
+
+<p>A partir de ahora, si abrimos nuestro navegador Web e ingresamos la url <a href="http://python-web/">http://python-web</a> veremos la frase: <em>"Bienvenido a mi PythonApp"</em>.</p>
+
+<div class="admonition note"><p><strong class="title">Nota</strong> Agregar un nuevo <em>hostname</em> a nuestro <code>/etc/hosts</code> nos permitirá seguir trabajando normalmente con nuestro <code>localhost</code>, sin que nuestras aplicaciones Python interfieran con otras, ya sean webs estáticas en HTML o dinámicas en PHP u otro lenguaje.</p></div>
+
+
+
+    
+    <ul class="row pager pager--large">
+        <li class="col-xs-6 previous ">
+                            <a href="https://librosweb.es/libro/python/capitulo_13/introduccion.html">
+                    <strong><i class="hidden-xs">←</i> Anterior</strong>
+                    <small>13.1. Introducción</small>
+                </a>
+                    </li>
+
+        <li class="col-xs-6 next ">
+                            <a href="https://librosweb.es/libro/python/capitulo_13/utilizando_environ_para_manejar_peticiones_del_usuario.html">
+                    <strong>Siguiente <i class="hidden-xs">→</i></strong>
+                    <small>13.3. Utilizando environ para manejar peticiones del usuario</small>
+                </a>
+                    </li>
+    </ul>
+
+            <div class="legalnotice legalnotice--standout">
+            Copyright (c) 2011-2013 <a href="http://www.eugeniabahit.com/">Eugenia Bahit</a>.
+La copia y redistribución de esta página se permite bajo los términos
+de la licencia Creative Commons Atribución NoComercial SinDerivadas
+3.0 Unported siempre que se conserve esta nota de copyright.
+
+        </div>
+                            </div>
+
+                        <div id="sidebar" class="col-md-3">
+                            
+                <div class="module module--ad module--ad--responsive module--ad--sidebar">
+        <script async="" src="13.2.%20Python%20bajo%20Apache%20%28Python%20para%20principiantes%29%20Archivos/adsbygoogle.js"></script>
+        <ins data-adsbygoogle-status="done" class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-1491000300253750" data-ad-slot="3770792827" data-ad-format="auto"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><iframe marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" frameborder="0" height="600" width="270"></iframe></ins></ins></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    
+    <div class="module">
+        <a id="indice"></a>
+
+        <h3>Indice de contenidos</h3>
+        <ul class="book__toc book__toc--compact">
+                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_1.html"><strong>1.</strong> Preparación del entorno de desarrollo</a>
+            </li>
+                                                                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_2.html"><strong>2.</strong> Estructura y elementos del lenguaje</a>
+            </li>
+                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_3.html"><strong>3.</strong> Módulos, paquetes y namespaces</a>
+            </li>
+                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_4.html"><strong>4.</strong> Funciones definidas por el usuario</a>
+            </li>
+                                                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_5.html"><strong>5.</strong> Introducción a la orientación a objetos</a>
+            </li>
+                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_6.html"><strong>6.</strong> Métodos principales del objeto String</a>
+            </li>
+                                                                        
+                                                                    <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_7.html"><strong>7.</strong> Métodos principales del objeto list</a>
+            </li>
+                                                                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_8.html"><strong>8.</strong> Métodos principales del objeto dict</a>
+            </li>
+                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_9.html"><strong>9.</strong> El objeto File: trabajando con archivos</a>
+            </li>
+                                                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_10.html"><strong>10.</strong> Un paseo por los módulos de la librería estándar</a>
+            </li>
+                                                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_11.html"><strong>11.</strong> Introducción a MySQL y el lenguaje SQL</a>
+            </li>
+                                                                                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_12.html"><strong>12.</strong> Bases de datos en Python con MySQL</a>
+            </li>
+                                                            <li class="level-1 ">
+                <a href="https://librosweb.es/libro/python/capitulo_13.html">
+                    <span>Capítulo 13.</span> Corriendo aplicaciones Python en la web
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="https://librosweb.es/libro/python/capitulo_13/introduccion.html">
+                    <span>13.1.</span> Introducción
+                </a>
+            </li>
+                                            <li class="level-2 active">
+                <a href="https://librosweb.es/libro/python/capitulo_13/python_bajo_apache.html">
+                    <span>13.2.</span> Python bajo Apache
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="https://librosweb.es/libro/python/capitulo_13/utilizando_environ_para_manejar_peticiones_del_usuario.html">
+                    <span>13.3.</span> Utilizando environ para manejar peticiones del usuario
+                </a>
+            </li>
+                                            <li class="level-1">
+                <a href="https://librosweb.es/libro/python/capitulo_14.html"><strong>14.</strong> Enviando e-mails con formato HTML desde Python</a>
+            </li>
+                                                        </ul>
+    </div>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+
+        <div id="footer">
+                    <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-9">
+                        © 2006-2016 LibrosWeb.es
+                        <a href="https://librosweb.es/sitio/contacto">Contacto</a>
+                        <a href="https://plus.google.com/+librosweb">Novedades</a>
+                        <a href="https://librosweb.es/sitio/condiciones">Condiciones</a>
+                        <a href="https://librosweb.es/sitio/privacidad">Privacidad</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 pull-right">
+                        <div class="metric metric--dimmed metric--textright">
+                            <div class="metric__value">3.381</div>
+                            <div class="metric__label">días online</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+                                    <script src="13.2.%20Python%20bajo%20Apache%20%28Python%20para%20principiantes%29%20Archivos/app.js"></script>
+                        
+
+</body></html>

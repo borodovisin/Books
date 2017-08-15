@@ -1,0 +1,175 @@
+
+EJEMPLO DE EDICION-PRECARGA DE FORMULARIO CON UN MODELO PASADO COMO PARAMETRO Y VALIDACIONES DE CAMPOS
+--------------------------------------------------------------------------------------------------
+
+
+VISTA
+-----
+
+def editar_cliente(request):
+    """
+    Pantalla para la actualizacion de los datos basicos del cliente
+    """
+    try:	
+	cliente = models.Cliente.get(pk = request.GET['id_cliente'])
+    except:
+	cliente = None
+
+    form = upd_forms.UpdDatosCliente(data=request.POST or None, request=request, cliente=cliente)
+	
+    if request.GET:
+	if not cliente:
+	    return HttpResponse('El cliente no existe')	
+    else:	
+	if form.is_valid():
+		cliente = form.save()
+		return HttpResponse('<h1>El cliente %d fue actualizado con exito</h1>' % cliente.id)
+    return render(request, 'editar_cliente.html', {'client_form':form)		
+
+
+FORMULARIO
+----------
+
+class UpdDatosCliente(forms.Form):
+    nombres = forms.CharField(label='Nombre Kubera', max_length=70, required=True,
+                        widget=forms.TextInput(attrs={'minlength':'2','onchange':'validarTexto($(this))'}))
+    telefono_movil = forms.CharField(label='Telefono Celular', max_length=15,
+                            widget=forms.TextInput(attrs={'minlength':'5','onchange':'validarNumero($(this))'}))
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        self.cliente = kwargs.pop('cliente')
+        super(UpdDatosCliente, self).__init__(*args, **kwargs)
+        self.fill_form()
+
+
+    def fill_form(self):
+        if self.cliente:
+            try:
+	       if self.cliente.nombres:	
+	           self.fields['nombres'].initial = self.cliente.nombres
+	           self.fields['nombres'].widget.attrs['class'] = 'valid'
+
+	       if self.cliente.telefono:
+                   self.fields['telefono_movil'].initial = self.cliente.telefono
+                   self.fields['telefono_movil'].widget.attrs['class'] = 'valid'  
+            except Exception as e:
+               print 'Error al precargar UpdDatosCliente', e
+        
+    def save(self):
+	...
+	return cliente
+
+HTML INVOCACION (lista_clientes.html)
+---------------------------------------------
+
+<table>
+<tr><th>Nombres</th><th>Telefono</th><th>Accion</th></tr>
+{% for c in clientes %}
+<tr>
+<td>{{c.nombres}}</td>
+<td>{{c.telefono}}</td>
+<td><a href="/clientes/editar/?id_cliente={{c.id}}">EDITAR</a></td>
+</tr>
+{% endfor %}
+	
+
+HTML RESPUESTA (editar_cliente.html)
+---------------------------------------------
+
+<div>
+	<form id="cliente_form" action="/clientes/editar/" onsubmit="return guardarCliente()">
+		{{client_form}}
+		<div id="form-errors"></div>
+		<a href="javascript:guardarCliente()">Guardar</a>
+	</form>
+</div>
+
+<script>
+/*
+Esto es solo ejemplo, poner esto en archivo independiente
+*/
+
+function guardarCliente() {
+    var form_name = 'cliente_form';
+    var form_data=$('#'+form_name).serializeArray();
+    var error_free=true;
+    for (var input in form_data){
+        if(form_data[input]['name'].indexOf('current_step') == -1) {
+            var element = $('#id_' + form_data[input]['name']);
+            var valid = element.hasClass("valid");
+            if (!valid && element && element.attr('id')) {
+                element.addClass("error");
+                error_free = false;
+            }
+        }
+    }
+
+    if (!error_free) {
+        showMessage('Hay errores en el formulario');
+        return false;
+    }
+    else{
+        showMessage('');
+    }
+};
+
+function validarNumero($input) {
+    hideMessage($input);
+    var input=$input;
+    var re = /^\d+$/;
+    var is_alfa=re.test(input.val());
+    if(is_alfa){input.removeClass("error").addClass("valid");}
+    else {
+        input.removeClass("valid").addClass("error");
+        showMessage("El campo debe ser numerico");
+        return false;
+    }
+    return true;
+};
+
+function validarTexto($input) {
+    hideMessage($input);
+    var min_length = $input.attr('minlength');
+    var max_length = $input.attr('maxlength');
+    var input=$input;
+    var valor = input.val().trim();
+    if(min_length && max_length) {
+        if(valor.length > max_length || valor.length < min_length) {
+            input.removeClass("valid").addClass("error");
+            showMessage($input, "El tamaño del campo debe ser mayor a " + min_length + " y menor a " + max_length);
+            return false;
+        }
+        else {
+            input.removeClass("error").addClass("valid");
+        }
+    }
+    else if(min_length) {
+        min_length = parseInt(min_length);
+        if(valor.length < min_length) {
+            input.removeClass("valid").addClass("error");
+            showMessage($input, "El tamaño del campo debe ser mayor a " + min_length);
+        }
+        else {
+            input.removeClass("error").addClass("valid");
+        }
+    }
+    else if(max_length) {
+        max_length = parseInt(max_length);
+        if(input.val().length > max_length) {
+            input.removeClass("valid").addClass("error");
+            showMessage($input, "El tamaño del campo debe ser menor a " + max_length);
+            return false;
+        }
+        else {
+            input.removeClass("error").addClass("valid");
+        }
+    }
+    return true;
+};
+
+function showMessage(msg) {
+   $('#form-errors').html(msg);
+};
+
+</script>

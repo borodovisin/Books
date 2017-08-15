@@ -1,0 +1,33 @@
+.authorgroup {
+	margin: 1em;
+}
+
+.authorgroup br { display: none; }
+
+.authorgroup div,
+.authorgroup h3,
+.authorgroup p {
+	margin: 0;
+	display: inline;
+	font-size: 100%;
+}
+.authorgroup div.author {
+	display: block;
+}
+
+.toc {
+	position: absolute;
+	text-align: left;
+	right: 0px;
+	top: 60px;
+	width: 27ex;
+	padding-left: 1ex;
+	border-left: 1ex solid #eee;
+	margin-top: 4em;
+
+}
+
+table {
+	border-collapse: collapse;
+}
+

@@ -1,0 +1,142 @@
+Arturo para la parte de los combos con filtros que deberas hacer en el registro del socio, te adjunto las instrucciones de un ejemplo que te va a ayudar a organizar la funcionalidad.
+
+Saludos
+
+PasosProyectoWeb.txt
+
+TIPS Revisar para proyecto AEBP
+-------------------------------
+
+- Si se requiere hacer un metodo AJAX que se active con un click o por ejemplo al seleccionar un item de un combo (bajarse el codigo de Websoul para ver el ejemplo):
+
+0. Invocacion
+============
+
+(EJEMPLO FORM se puede ver ejemplos de formularios complejos en /websoul/apps/ws_security/forms.py)
+
+class EjemploForm(forms.Form):
+	
+	pais_cc = forms.ChoiceField(choices=[], label='Pais', required=True)
+        banco = forms.ChoiceField(choices=[], label='Banco', required=True)
+
+	def __init__(self, *args, **kwargs):
+		super(EjemploForm, self).__init__(*args, **kwargs)
+		self.add_attributes()
+
+	def add_attributes(self):
+		self.fields['pais'].widget.attrs['onchange'] = 'validateAndSaveRequiredCBPais($(this))'
+	
+
+(EJEMPLO JS) /websoul/static/js/ws-perfil-consultor.js
+function validateAndSaveRequiredCBPais(element, msg) {
+	//...
+	if($(element).val() != null)
+		consultar_bancos_por_pais( $(element).val() );
+	//...
+};
+
+(EJEMPLO VISTA) 
+
+def registro_entidad(request):
+	form = forms.EjemploForm()
+	return render('registro.html', {'form':form}
+
+(EJEMPLO HTML) 
+
+<form action="/security/registro-infopago/" method="post" id="registro-info-pago" class="contact-form" role="form"
+    onsubmit="return validateForm('registro-info-pago');" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="controls">
+       {{ form.paisc_cc }} {{ form.paisc_cc.errors }}
+    </div>
+    <div class="controls">
+       {{ form.banco }} {{ form.banco.errors }}
+    </div>	 
+    <div class="box-botones">
+        <span class="errorlist" id="form-errors"></span>&nbsp;
+       <button type="submit" class="boton pull-right">
+       Guardar&nbsp;<i class="fa fa-chevron-right"></i>
+       </button>
+    </div>
+</form>
+
+
+1. Script JS 
+============
+
+(EJEMPLO) /websoul/static/js/ws-perfil-consultor.js
+
+function consultar_bancos_por_pais(valor) {
+    if(valor) {
+        $.ajax({
+            url : "/vajax/consultar-bancos-pais/",
+            type : "POST",
+            data : { pais_id : valor },
+            success : function(json) {
+                if(json['result'] == '0') {
+                    var lineas = ['<option selected="selected" value="">-- Nombre del Banco --</option>'];
+                    var bancos = json['bancos'];
+                    for (var b in bancos) {
+                        banco = bancos[b];
+                        lineas.push('<option value="'+banco[0]+'">'+banco[1]+'</option>');
+                    }
+                }
+                var resultado = lineas.join();
+                $('#id_banco').html(resultado);
+            },
+            error : function(xhr,errmsg,err) {
+                showMessage($( "#id_direccion_banco" ), 'Ocurrio un error en la consulta');
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    }
+};
+
+
+2. URL
+============
+
+(EJEMPLO) /websoul/apps/ws_commons/urls.py
+
+url(r'^vajax/consultar-bancos-pais/', vajax.consultar_bancos_pais, name='consultar-bancos-pais'),
+
+3. Vista (las vistas ajax se pone en un archivo llamado vajax.py para diferenciarlas de las vistas normales)
+============
+
+(EJEMPLO) /websoul/apps/ws_commons/vajax.py
+
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def consultar_bancos_pais(request):
+    if request.method == 'POST':
+        pais_id = request.POST.get('pais_id')
+        response_data = {}
+
+        try:
+            bancos = models.BancoPago.objects.get_active(pais__id=pais_id)
+        except Exception as e:
+            print 'Error', e
+            bancos = None
+
+        if bancos and bancos.count() > 0:
+            response_data['result'] = '0'
+            response_data['text'] = 'OK'
+            response_data['bancos'] = [(b.id, b.nombre) for b in bancos]
+        else:
+            response_data['result'] = '1'
+            response_data['text'] = unicode('No se encuentra bancos en el pais %d' % int(pais_id))
+            response_data['bancos'] = []
+
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"response": "Nada"}),
+            content_type="application/json"
+        )
+
+
+

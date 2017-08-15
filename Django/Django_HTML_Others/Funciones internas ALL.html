@@ -1,0 +1,935 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0059)http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>2.3 Funciones internas</title>
+<meta name="description" content="2.3 Funciones internas">
+<meta name="keywords" content="lib">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+
+<link rel="STYLESHEET" href="./Funciones internas ALL_files/lib.css">
+<link rel="previous" href="http://pyspanishdoc.sourceforge.net/lib/module-exceptions.html">
+<link rel="up" href="http://pyspanishdoc.sourceforge.net/lib/builtin.html">
+<link rel="next" href="http://pyspanishdoc.sourceforge.net/lib/python.html">
+</head>
+<body>
+<div class="navigation"><table align="center" width="100%" cellpadding="0" cellspacing="2">
+<tbody><tr>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/module-exceptions.html"><img src="./Funciones internas ALL_files/previous.png" border="0" height="32" alt="Página anterior" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/builtin.html"><img src="./Funciones internas ALL_files/up.png" border="0" height="32" alt="Nivel superior" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/python.html"><img src="./Funciones internas ALL_files/next.png" border="0" height="32" alt="Página siguiente" width="32"></a></td>
+<td align="center" width="100%">Referencia de la Biblioteca de Python</td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/contents.html"><img src="./Funciones internas ALL_files/contents.png" border="0" height="32" alt="Contenido" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/modindex.html" title="Module Index"><img src="./Funciones internas ALL_files/modules.png" border="0" height="32" alt="Índice de módulos" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/genindex.html"><img src="./Funciones internas ALL_files/index.png" border="0" height="32" alt="Índice" width="32"></a></td>
+</tr></tbody></table>
+<b class="navlabel">Anterior:</b> <a class="sectref" href="http://pyspanishdoc.sourceforge.net/lib/module-exceptions.html">2.2 Excepciones internas</a>
+<b class="navlabel">Niv. superior:</b> <a class="sectref" href="http://pyspanishdoc.sourceforge.net/lib/builtin.html">2. Tipos, excepciones y</a>
+<b class="navlabel">Siguiente:</b> <a class="sectref" href="http://pyspanishdoc.sourceforge.net/lib/python.html">3. Servicios de ejecución</a>
+<br><hr></div>
+<!--End of Navigation Panel-->
+
+<h1>
+<br>
+2.3 Funciones internas
+</h1>
+
+<p>
+El intérprete de Python cuenta con funciones internas que siempre se 
+hallan disponibles. Se muestran a continuación, en orden alfabético.
+
+</p><p>
+
+</p><p>
+</p><dl><dt><b><a name="l2h-143"><tt class="function">__import__</tt></a></b> (<var>name</var><big>[</big><var>, globals</var><big>[</big><var>, locals</var><big>[</big><var>, fromlist</var><big>]</big><big>]</big><big>]</big>)
+</dt><dd>
+Esta función es llamada por la sentencia
+<tt class="keyword">import</tt>. Existe con el propósito principal
+de reemplazarla con otra función compatible en interfaz, para
+hacer posible cambiar la semántica de la sentencia 
+<tt class="keyword">import</tt>. Consultar los módulos de biblioteca estándar
+<tt class="module">ihooks</tt> y
+<tt class="module"><a href="http://pyspanishdoc.sourceforge.net/lib/module-rexec.html">rexec</a></tt> si se desea ver por qué
+y cómo hacer esto. Consultar también el módulo interno
+<tt class="module"><a href="http://pyspanishdoc.sourceforge.net/lib/module-imp.html">imp</a></tt>, que define ciertas operaciones
+útiles para construir una función <tt class="function">__import__()</tt> propia.
+
+<p>
+Por ejemplo, la sentencia `<code>import</code> <code>spam</code>' causa la siguiente
+llamada:
+<code>__import__('spam',</code> <code>globals(),</code> <code>locals(), [])</code>;
+la sentencia <code>from</code> <code>spam.jamon import</code> <code>huevos</code> resulta en
+<code>__import__('spam.jamon',</code> <code>globals(),</code> <code>locals(),</code>
+<code>['huevos'])</code>.
+Hay que ver que, a pesar de que se pasan <code>locals()</code> y <code>['huevos']</code> 
+como argumentos, la función <tt class="function">__import__()</tt> no da valor a la 
+variable local <code>huevos</code>; esto se realiza con el código adicional generado
+por la sentencia import (de hecho, la implementación estándar no utiliza el
+argumento <var>locals</var> en absoluto y usa <var>globals</var> sólo para determinar
+el contexto del paquete de la sentencia <tt class="keyword">import</tt>).
+
+</p><p>
+Cuando la variable <var>name</var> tiene la forma <code>package.module</code>,
+normalmente, se devuelve el paquete de nivel más elevado (el nombre hasta el primer
+punto, <i>no</i> el módulo denotado por <var>name</var>. Sin embargo,.
+cuando se proporciona un argumento <var>fromlist</var> no vacío, se devuelve el
+módulo denominado <var>name</var>. Esto se hace de esta manera por
+compatibilidad con el bytecode generado para las diferentes clases de 
+sentencias import. Cuando se utiliza "<tt class="samp">import spam.jamon.huevos</tt>", 
+el paquete de nivel superior <code>spam</code> debe colocarse en el espacio
+nominal que ha llamado a import, pero cuando se usa "<tt class="samp">from
+spam.jamon import huevos</tt>", se ha de utilizar el subpaquete <code>spam.jamon</code> 
+para encontrar la variable <code>huevos</code>.
+Como remedio a este comportamiento, se puede utilizar <tt class="function">getattr()</tt> 
+para extraer los componentes deseados. Por ejemplo, se podría definir la 
+siguiente función de ayuda:
+
+</p><p>
+</p><dl><dd><pre class="verbatim">import string
+
+def my_import(name):
+    mod = __import__(name)
+    components = string.split(name, '.')
+    for comp in components[1:]:
+        mod = getattr(mod, comp)
+    return mod
+</pre></dd></dl>
+
+<p>
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-144"><tt class="function">abs</tt></a></b> (<var>x</var>)
+</dt><dd>
+  Devuelve el valor absoluto de un número. El argumento puede ser
+  un entero normal o largo o un número de coma flotante. Si el argumento
+  es un número complejo, se devuelve su módulo.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-145"><tt class="function">apply</tt></a></b> (<var>function, args</var><big>[</big><var>, keywords</var><big>]</big>)
+</dt><dd>
+El argumento <var>function</var> debe ser un objeto invocable (una función 
+o método definido por el usuario o interna) y <var>args</var> una secuencia
+(si no es una tupla, primero se convierte la secuencia a tupla). Se llama
+a la función <var>function</var> con <var>args</var> como lista de argumentos.
+El número de argumentos es la longitud de la tupla (se diferencia
+de llamar sin más a <code><var>func</var>(<var>args</var>)</code>, pues en este caso
+siempre hay exactamente un argumento).
+Si se proporciona el argumento opcional <var>keywords</var>, debe ser
+un diccionario cuyas claves sean cadenas. Especifica argumentos
+clave a añadir al final de la lista de argumentosd.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-146"><tt class="function">buffer</tt></a></b> (<var>object</var><big>[</big><var>, offset</var><big>[</big><var>, size</var><big>]</big><big>]</big>)
+</dt><dd>
+EL argumento <var>object</var> debe ser un objeto con interfaz compatible
+con buffer (cadenas, matrices y buffers). Se creará un nuevo objeto
+buffer referente a <var>object</var>. El objeto buffer será un corte desde
+el principio de <var>object</var> (o desde el desplazamiento inicial <var>offset</var>
+especificado). El corte se extenderá hasta el final de <var>object</var> (o tendrá
+una longitud especificada por el argumento <var>size</var>).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-147"><tt class="function">callable</tt></a></b> (<var>object</var>)
+</dt><dd>
+Devuelve verdadero si el argumento <var>object</var> parece tener una
+interfaz de llamadas (como las funciones y métodos) y falso en caso
+contrario. SI devuelve verdadero, aún es posible que falle la llamada,
+pero si es falso, las llamadas a <var>object</var> siempre serán infructuosas.
+Es importante ver que las clases siempre tienen la interfaz de llamadas
+(y al llamarlas se obtiene una nueva instancia). Las instancias de clases
+son llamables si cuentan con un método <tt class="method">__call__()</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-148"><tt class="function">chr</tt></a></b> (<var>i</var>)
+</dt><dd>
+  Devuelve una cadena de un carácter cuyo código ASCII 
+  es el entero  <var>i</var>, es decir, <code>chr(97)</code> devuelve la cadena 
+  <code>'a'</code>.  Es la inversa de la función <tt class="function">ord()</tt>.  El argumento
+  debe estar en el rango de 0 a 255, ambos incluidos. Se lanza
+  <tt class="exception">ValueError</tt> si <var>i</var> está fuera de dicho rango.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-149"><tt class="function">cmp</tt></a></b> (<var>x, y</var>)
+</dt><dd>
+  Compara los objetos <var>x</var> y <var>y</var> y devuelve un entero acorde
+  con la comparación. El valor devuelto es negativo si <code><var>x</var>
+  &lt; <var>y</var></code>, cero si <code><var>x</var> == <var>y</var></code> y estrictamente positivo
+  si <code><var>x</var> &gt; <var>y</var></code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-150"><tt class="function">coerce</tt></a></b> (<var>x, y</var>)
+</dt><dd>
+  Devuelve una tupla de dos argumentos numéricos convertidos a
+  un tipo común, usando las mismas reglas que usan las operaciones
+  aritméticas.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-151"><tt class="function">compile</tt></a></b> (<var>string, filename, kind</var>)
+</dt><dd>
+  Compila la cadena <var>string</var> a un objeto código. Los objetos código
+  pueden ejecutarse con la sentencia <tt class="keyword">exec</tt> evaluarse en una
+  llamada a  <tt class="function">eval()</tt>.  El argumento <var>filename</var> debe 
+  proporcionar el fichero del que se leyó el código. Pasar, por ejemplo,
+  <code>'&lt;string&gt;'</code> si no se ha recuperado el código de ningún fichero.
+  El argumento <var>kind</var> especifica qué tipo de código se ha de compilar.
+  Puede ser <code>'exec'</code> si <var>string</var> es una secuencia de sentencias,
+  <code>'eval'</code> si es una sola expresión o <code>'single'</code> si es una sola
+  sentencia interactiva (en cuyo caso, las sentencias-expresión
+  que den como resultado algo diferente de <code>None</code> mostrarán
+  este resultado en pantalla).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-152"><tt class="function">complex</tt></a></b> (<var>real</var><big>[</big><var>, imag</var><big>]</big>)
+</dt><dd>
+  Crea un número complejo con el valor <var>real</var> + <var>imag</var>*j o
+  convierte una cadena o número a complejo. Cada argumento puede
+  ser de cualquier tipo numérico (incluso complejo). <var>imag</var> toma 
+  un valor cero por omisión, y la función sirve de función de conversión
+  como <tt class="function">int()</tt>,  <tt class="function">long()</tt> y <tt class="function">float()</tt>; en tal caso
+  también acepta un argumento cadena, que debe representar un número
+  complejo válido.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-153"><tt class="function">delattr</tt></a></b> (<var>object, name</var>)
+</dt><dd>
+  Esta función es pariente de <tt class="function">setattr()</tt>.  Los argumentos son
+  un objeto y una cadena. La cadena debe ser el nombre de uno de los atributos
+  del objeto. La función elimina dicho atributo, siempre que el objeto lo
+  permita. Por ejemplo, 
+  <code>delattr(<var>x</var>, '<var>foobar</var>')</code> equivale a
+  <code>del <var>x</var>.<var>foobar</var></code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-154"><tt class="function">dir</tt></a></b> (<big>[</big><var>object</var><big>]</big>)
+</dt><dd>
+  Sin argumentos, devuelve la lista de nombres de la tabla de símbolos
+  local actual. Con argumento, intenta recuperar una lista de atributos 
+  válidos para el objeto indicado. Esta información se infiere a 
+  partir de los atributos <tt class="member">__dict__</tt>, <tt class="member">__methods__</tt> y
+  <tt class="member">__members__</tt> del objeto, de existir. Esta lista no es necesariamente
+  completa, pues para las clases, no se incluyen los atributos de clases base,
+  y en el caso de instancias de una clase, no se incluyen los métodos.
+  La lista resultante está en orden alfabético. Por ejemplo:
+
+<p>
+</p><dl><dd><pre class="verbatim">&gt;&gt;&gt; import sys
+&gt;&gt;&gt; dir()
+['sys']
+&gt;&gt;&gt; dir(sys)
+['argv', 'exit', 'modules', 'path', 'stderr', 'stdin', 'stdout']
+</pre></dd></dl>
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-155"><tt class="function">divmod</tt></a></b> (<var>a, b</var>)
+</dt><dd>
+  Toma como argumentos dos números y devuelve una pareja de números:
+  el primero es el cociente de los argumentos y el segundo su resto.
+  Si los operandos son de tipo mixto, se aplican las reglas de operadores binarios
+  aritméticos. En el caso de los enteros largos, el resultado equivale a
+  <code>(<var>a</var> / <var>b</var>, <var>a</var> % <var>b</var>)</code>.
+  En el caso de los números en coma flotante, el resultado es
+  <code>(<var>q</var>, <var>a</var> % <var>b</var>)</code>, donde <var>q</var> suele ser
+  <code>math.floor(<var>a</var> / <var>b</var>)</code>, pero puede ser uno menos.
+  En cualquier caso, <code><var>q</var> * <var>b</var> + <var>a</var> % <var>b</var></code> 
+  se acerca mucho a <var>a</var>, si
+  <code><var>a</var> % <var>b</var></code> no es cero y tiene el mismo signo que
+  <var>b</var>, and <code>0 &lt;= abs(<var>a</var> % <var>b</var>) &lt; abs(<var>b</var>)</code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-156"><tt class="function">eval</tt></a></b> (<var>expression</var><big>[</big><var>, globals</var><big>[</big><var>, locals</var><big>]</big><big>]</big>)
+</dt><dd>
+  Los argumentos son una cadena y dos diccionarios opcionales. El
+  argumento <var>expression</var> se analiza y evalúa como expresión de Python
+  (hablando técnicamente, una lista de condiciones) usando los diccionarios
+  <var>globals</var> y <var>locals</var> como espacio nominal global y local, respectivamente.
+  Si se omite el diccionario <var>locals</var>, toma por valor el diccionario <var>globals</var>.
+  Si se omiten los dos diccionarios, la expresión se evalúa en el entorno en 
+  que se llama a <tt class="keyword">eval</tt>. El valor devuelto es el resultado de la expresión
+  evaluada. Los errores de sintaxis se comunican como excepciones.  Por ejemplo:
+
+<p>
+</p><dl><dd><pre class="verbatim">&gt;&gt;&gt; x = 1
+&gt;&gt;&gt; print eval('x+1')
+2
+</pre></dd></dl>
+
+<p>
+También se puede utilizar esta función para ejecutar objetos código
+  arbitrarios (es decir, los creados con <tt class="function">compile()</tt>). Para ello,
+  se debe pasar un objeto código en lugar de una cadena. El objeto código
+  debe compilarse con el argumento <var>kind</var> a <code>'eval'</code>.
+
+</p><p>
+Pistas: La ejecución dinámica de sentencias se logra con la sentencia
+  <tt class="keyword">exec</tt>. La ejecución de sentencias de un fichero se logra con
+  la función <tt class="function">execfile()</tt>.  Las funciones <tt class="function">globals()</tt> y
+  <tt class="function">locals()</tt> devuelven el diccionario actual global y local, respectivamente,
+  lo que puede resultar útil para pasárselo a <tt class="function">eval()</tt> o
+  <tt class="function">execfile()</tt>.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-157"><tt class="function">execfile</tt></a></b> (<var>file</var><big>[</big><var>, globals</var><big>[</big><var>, locals</var><big>]</big><big>]</big>)
+</dt><dd>
+  Esta función es similar a la sentencia <tt class="keyword">exec</tt>, pero analiza
+  un fichero en lugar de una cadena. Es diferente de la sentencia
+  <tt class="keyword">import</tt> porque no utiliza la administración de módulos, sino
+  que lee el fichero incondicionalmente y no crea un nuevo 
+  módulo<a name="tex2html8" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#foot2562"><sup>2.8</sup></a>.
+
+<p>
+Los argumentos son un nombre de fichero y dos diccionarios opcionales. El
+  fichero se analiza y evalúa como una secuencia de sentencias de Python
+  (de modo similar a un módulo) usando los diccionarios
+  <var>globals</var> y <var>locals</var> como espacio nominal global y local, respectivamente.
+  Si se omite el diccionario <var>locals</var>, toma por valor el diccionario <var>globals</var>.
+  Si se omiten los dos diccionarios, la expresión se evalúa en el entorno en 
+  que se llama a <tt class="keyword">execfile()</tt>. El valor devuelto es 
+  <code>None</code>.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-158"><tt class="function">filter</tt></a></b> (<var>function, list</var>)
+</dt><dd>
+Construye una lista a partir de los elementos de <var>list</var> 
+para los cuales la función <var>function</var> devuelve un valor verdadero.
+Si <var>list</var> es una cadena o una tupla, el resultado tiene ese tipo también; 
+en caso contrario es una lista. Si
+<var>function</var> es <code>None</code>, se presupone la función identidad, por lo que
+se eliminan todos los elementos falsos (cero, nulo o vacío) de <var>list</var>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-159"><tt class="function">float</tt></a></b> (<var>x</var>)
+</dt><dd>
+  Convierte una cadena o número a coma flotante. Si el argumento es
+  una cadena, debe contener una representación válida de un número
+  en coma flotante, con espacio en blanco alrededor opcionalmente.
+  En este caso, se comporta igual que  <code>string.atof(<var>x</var>)</code>.  
+  En caso contrario, el argumento puede ser un entero normal o largo, y
+  se devuelve un número de coma flotante del mismo valor (dentro de
+  la precisión de coma flotante de Python).
+
+<p>
+<b>Nota:</b> Cuando se pasa una cadena, pueden devolverse 
+  los valores de NaN e Infinity, dependiendo de 
+  la biblioteca de C subyacente. El conjunto de cadenas específico aceptado 
+  para devolver estos valores depende por completo de la biblioteca de C
+  y varía de un sistema a otro.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-160"><tt class="function">getattr</tt></a></b> (<var>object, name</var><big>[</big><var>, default</var><big>]</big>)
+</dt><dd>
+  Devuelve el valor del atributo denominado <var>name</var> de <var>object</var>.  
+  <var>name</var> debe ser una cadena de uno de los atributos del objeto,
+  siendo el resultado el valor de dicho atributo. Por ejemplo,
+  <code>getattr(x, 'foobar')</code> equivale a <code>x.foobar</code>.  Si el atributo
+  especificado no existe, se devuelve <var>default</var> si se ha proporcionado o
+  se lanza <tt class="exception">AttributeError</tt> si no.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-161"><tt class="function">globals</tt></a></b> ()
+</dt><dd>
+Devuelve un diccionario que representa la tabla global de símbolos
+actual. Éste es siempre el diccionario del módulo actual (dentro
+de una función o método, éste es el módulo en que está definido,
+no el módulo desde el que se llama).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-162"><tt class="function">hasattr</tt></a></b> (<var>object, name</var>)
+</dt><dd>
+  Los argumentos son un objeto y una cadena. El resultado es 1 si
+  la cadena es el nombre de uno de los atributos del objeto o
+  0 en caso contrario (se implementa llamando a 
+  <code>getattr(<var>object</var>, <var>name</var>)</code>, mirando si hace saltar
+  una excepción o no).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-163"><tt class="function">hash</tt></a></b> (<var>object</var>)
+</dt><dd>
+  Devuelve el valor hash del objeto (si lo tuviere). Los valores hash
+  son enteros que se utilizan para comparar claves de diccionario de 
+  manera rápida en las búsquedas. Los valores numéricos que resultan
+  iguales en una comparación tienen el mismo valor hash (aun si son
+  de tipos diferentes, como 1 y 1.0).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-164"><tt class="function">hex</tt></a></b> (<var>x</var>)
+</dt><dd>
+  Convierte un número entero (de cualquier tamaño) a una cadena 
+  hexadecimal. El resultado es una expresión Python válida. Esta
+  función siempre devuelve un literal sin signo, por ejemplo, en una
+  máquina de 32 bit, <code>hex(-1)</code> devuelve <code>'0xffffffff'</code>.  
+  Si se evalúa en una máquina con el mismo tamaño de palabra,
+  este literal siempre se evalúa como -1, pero en una máquina
+  de palabra de diferente tamaño, puede acabar como un entero positivo
+  muy grande o lanzar una excepción <tt class="exception">OverflowError</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-165"><tt class="function">id</tt></a></b> (<var>object</var>)
+</dt><dd>
+  Devuelve la `identidad' de un objeto. Es un entero (o entero largo)
+  que cumple ser único y constante durante toda la vida del objeto.
+  Dos objetos cuya vida no coincida en el tiempo pueden compartir
+  el mismo valor de <tt class="function">id()</tt>.  Nota de implementación:
+  Es la dirección en memoria del objeto.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-166"><tt class="function">input</tt></a></b> (<big>[</big><var>prompt</var><big>]</big>)
+</dt><dd>
+  Equivale a <code>eval(raw_input(<var>prompt</var>))</code>.
+  <b>Advertencia:</b> ¡Esta función no está a salvo de errores de 
+  usuario! Espera una expresión Python válida como entrada. Si la 
+  entrada no es sintácticamente válida, se lanzará 
+  <tt class="exception">SyntaxError</tt>. Se pueden lanzar otras excepciones si 
+  hay cualquier error durante la evaluación (por otra parte, a
+  veces es justo lo que necesitas cuando hay que escribir un guion
+  rápidamente para uso por expertos).
+
+<p>
+Si está cargado el módulo <tt class="module">readline</tt>, 
+  <tt class="function">input()</tt> lo utilizará para proporcionar edición compleja de
+  línea e histórico de órdenes.
+
+</p><p>
+Se debe considerar el uso de la función <tt class="function">raw_input()</tt> 
+  para la entrada de usuarios en general.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-167"><tt class="function">int</tt></a></b> (<var>x</var><big>[</big><var>, radix</var><big>]</big>)
+</dt><dd>
+  Convierte una cadena o número a entero simple. Si el argumento es
+  una cadena, debe contener un número decimal con signo opcional
+  representable como entero de Python, con espacio alrededor opcional.
+  Se comporta de manera idéntica a <code>string.atoi(<var>x</var><big>[</big>,
+  <var>radix</var><big>]</big>)</code> en este caso.
+  El parámetro <var>radix</var> proporciona la base para la conversión y puede
+  ser cualquier entero en el rango [2, 36].  Si se especifica
+  <var>radix</var> y <var>x</var> no es una cadena, se lanza <tt class="exception">TypeError</tt>.
+  En otros casos, el argumento puede ser un entero normal o largo, o
+  un número en coma flotante. La conversión de los números de coma flotante
+  a enteros está definida por la biblioteca C<a name="tex2html9" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#foot2644"><sup>2.9</sup></a>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-168"><tt class="function">intern</tt></a></b> (<var>string</var>)
+</dt><dd>
+  Introduce <var>string</var> en la tabla de cadenas ``internas'' 
+  y devuelve la cadena interna, que es la propia <var>string</var> 
+  o una cadena. Internar cadenas es útil para ganar algo de rendimiento
+  en el caso de búsquedas en diccionarios; si las claves de un
+  diccionario son internas y la clave buscada es interna también,
+  las búsquedas por clave (tras hallar el valor hash) se realizan
+  por comparación de punteros en lugar de comparación de cadenas.
+  Normalmente, los nombres utilizados en programas de Python se internan
+  automáticamente, así como las claves utilizadas para contener atributos
+  de módulo, clase o instancia. Las cadenas internas son inmortales
+  (es decir, nunca son recolectadas como basura).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-169"><tt class="function">isinstance</tt></a></b> (<var>object, class</var>)
+</dt><dd>
+Devuelve verdadero si el argumento <var>object</var> es una instancia del
+argumento <var>class</var> o de una de sus subclases. También devuelve verdadero
+si <var>class</var> es un objeto tipo y <var>object</var> es un objeto de este tipo.
+Si <var>object</var> no es una instancia de clase u objeto del tipo indicados,
+devuelve falso. Si <var>class</var> no es ni un objeto de una clase ni 
+de un tipo, se lanza una excepción <tt class="exception">TypeError</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-170"><tt class="function">issubclass</tt></a></b> (<var>class1, class2</var>)
+</dt><dd>
+Devuelve verdadero si <var>class1</var> es una subclase (directa o indirecta)
+de <var>class2</var>. Una clase se considera subclase de sí misma. Si
+alguno de los dos argumentos no es un objeto clase, se lanza una excepción
+<tt class="exception">TypeError</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-171"><tt class="function">len</tt></a></b> (<var>s</var>)
+</dt><dd>
+  Devuelve la longitud (el número de elementos) de un objeto. El argumento
+  puede ser una secuencia (cadena, tupla o lista) o una correspondencia
+  (diccionario).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-172"><tt class="function">list</tt></a></b> (<var>sequence</var>)
+</dt><dd>
+Devuelve una lista cuyos elementos son los mismos que los de 
+<var>sequence</var> en el mismo orden.  Si <var>sequence</var> ya es una lista,
+se devuelve una copia, de modo parecido a <code><var>sequence</var>[:]</code>.  
+Por ejemplo,  <code>list('abc')</code> devuelve <code>['a', 'b', 'c']</code> y
+<code>list( (1, 2, 3) )</code> devuelve <code>[1, 2, 3]</code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-173"><tt class="function">locals</tt></a></b> ()
+</dt><dd>
+Devuelve un diccionario que representa la tabla de símbolos local
+actual. <b>Advertencia:</b> No debe modificarse el contenido de 
+este diccionario. Los cambios pueden no afectar a las variables
+locales del intérprete.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-174"><tt class="function">long</tt></a></b> (<var>x</var>)
+</dt><dd>
+Convierte una cadena o número a un entero largo. Si el argumento es
+una cadena, debe contener un número decimal de cualquier tamaño de
+signo opcional, con espacio alrededor opcional también. Se comporta de
+manera idéntica a <code>string.atol(<var>x</var>)</code> en este modo. El argumento
+puede ser también un entero normal o largo, o un número en coma flotante,
+para el que se devuelve un entero largo del mismo valor. La conversión 
+de los números de coma flotante a enteros viene determinada por la 
+librería de C, como se veía en la descripción de <tt class="function">int()</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-175"><tt class="function">map</tt></a></b> (<var>function, list, ...</var>)
+</dt><dd>
+Aplica <var>function</var> a cada elemento de <var>list</var> y devuelve una lista
+con los resultados. Si se pasan argumentos adicionales <var>list</var>,
+<var>function</var> debe tomar tantos argumentos como listas haya y se aplica
+la función en paralelo sobre todos los elementos de la misma posición
+de todas las listas argumento. Si alguna de las listas es más corta que
+el resto, se tomará el valor de <code>None</code> para los elementos que falten.
+Si <var>function</var> es <code>None</code>, se supone la función identidad; si hay
+múltiples argumentos lista, <tt class="function">map()</tt> devuelve una lista de las
+tuplas de los elementos correspondientes de cada lista (lo que supone una
+especie de transposición matricial). Los argumentos <var>list</var> 
+pueden ser cualquier tipo de secuencia; el resultado siempre es una lista.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-176"><tt class="function">max</tt></a></b> (<var>s</var><big>[</big><var>, args...</var><big>]</big>)
+</dt><dd>
+Con un solo argumento <var>s</var>, devuelve el mayor elemento de una secuencia
+no vacía. Si hay más de una argumento, devuelve el mayor de los argumentos.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-177"><tt class="function">min</tt></a></b> (<var>s</var><big>[</big><var>, args...</var><big>]</big>)
+</dt><dd>
+Con un solo argumento <var>s</var>, devuelve el menor elemento de una secuencia
+no vacía. Si hay más de una argumento, devuelve el menor de los argumentos.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-178"><tt class="function">oct</tt></a></b> (<var>x</var>)
+</dt><dd>
+  Convierte un número entero (de cualquier tamaño) a una cadena octal.
+  El resultado es una expresión de Python válida. Nota: Siempre devuelve
+  un entero sin signo, por ejemplo, en una máquina de 32 bit,
+  <code>oct(-1)</code> devuelve <code>'037777777777'</code>.  Si se evalúa en una
+  máquina de la misma longitud de palabra, este literal se evaluará como
+  -1, si el tamaño de palabra es diferente podría resultar un 
+  entero positivo grande o lanzar una excepción
+  <tt class="exception">OverflowError</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-179"><tt class="function">open</tt></a></b> (<var>filename</var><big>[</big><var>, mode</var><big>[</big><var>, bufsize</var><big>]</big><big>]</big>)
+</dt><dd>
+Devuelve un nuevo objeto fichero (descrito anteriormento bajo Tipos internos).
+Los primeros dos argumentos son los mismos que los de la función C 
+<tt class="cfunction">fopen()</tt> de la cabecera <code>stdio</code>: <var>filename</var> 
+es el nombre del fichero a  abrir, <var>mode</var> indica cómo se ha de abrir
+el fichero: <code>'r'</code> en sólo lectura, <code>'w'</code> para escritura (truncando
+el fichero si existe) y <code>'a'</code> para agregar (lo que en <i>algunos</i> sistemas
+Unix supone que <i>todas</i> las escrituras se agregan al final del 
+archivo, sin importar la posición actual del cursor de escritura.
+
+<p>
+Los modos <code>'r+'</code>, <code>'w+'</code> y <code>'a+'</code> abren el fichero para
+actualización (hay que observar que <code>'w+'</code> trunca el fichero).
+Se ha de añadir <code>'b'</code> al modo para abrir el fichero en modo binario,
+para los sistemas que diferencian los ficheros binarios y de texto
+(si no, se hace caso omiso). Si no es posible abrir el fichero, se lanza
+<tt class="exception">IOError</tt>.
+
+</p><p>
+Si se omite <var>mode</var>, toma un valor de <code>'r'</code>. Al abrir un fichero
+binario, se debe añador <code>'b'</code> al valor de  <var>mode</var> para mejorar la 
+compatibilidad (es útil hasta en sistemas que no hacen distinciones entre
+ficheros de texto y binarios, pues sirve de documentación).
+  
+  El argumento opcional <var>bufsize</var> especifica el tamaño de 
+  tampón deseado: 0 significa sin tampón, 1 indica tampón de líneas y
+  cualquier otro valor positivo especifica el tamaño del tampón a usar
+  (aproximado). Un <var>bufsize</var> negativo indica que se ha de usar
+  el valor predeterminado por el sistema, que suele ser tampón de líneas
+  para los dispositivos tty y tampón completo para otros ficheros. Si
+  se omite, se usa el valor predeterminado del 
+  sistema<a name="tex2html10" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#foot3003"><sup>2.10</sup></a>.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-180"><tt class="function">ord</tt></a></b> (<var>c</var>)
+</dt><dd>
+  Devuelve el valor ASCII de una cadena de un carácter o un carácter
+  Unicode. Por ejemplo, <code>ord('a')</code> devuelve el entero <code>97</code>,
+  <code>ord(u'
+<br>
+u2020')</code> devuelve <code>8224</code>. Es la inversa de 
+  <tt class="function">chr()</tt> para cadenas y la de <tt class="function">unichr()</tt> para caracteres 
+  Unicode.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-181"><tt class="function">pow</tt></a></b> (<var>x, y</var><big>[</big><var>, z</var><big>]</big>)
+</dt><dd>
+  Devuelve <var>x</var> elevado a <var>y</var>; si se proporciona <var>z</var>,
+  devuelve <var>x</var> elevado a  <var>y</var>, módulo <var>z</var> (calculado de
+  manera más eficaz que <code>pow(<var>x</var>, <var>y</var>) % <var>z</var></code>).
+  Los argumentos deben ser de tipo numérico. Si los tipos son mixtos,
+  se aplican las reglas de operadores binarios aritméticos habituales.
+  El tipo de operando efectivo coincide con el del resultado. Si el 
+  resultado no es expresable en este tipo, se lanzará una excepción,
+  por lo que, por ejemplo, no está permitido <code>pow(2, -1)</code> 
+  ni <code>pow(2, 35000)</code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-182"><tt class="function">range</tt></a></b> (<big>[</big><var>start,</var><big>]</big><var> stop</var><big>[</big><var>, step</var><big>]</big>)
+</dt><dd>
+Ésta es una versátil función para crear listas que contengan progresiones
+aritméticas. Su uso más popular es en los bucles <tt class="keyword">for</tt>. 
+Los argumentos deben ser enteros normales. Si se omite el argumento
+<var>step</var> toma un valor de <code>1</code>.  Si se omite el argumento <var>start</var> 
+toma un valor de <code>0</code>. La forma completa devuelve una lista de enteros
+normales <code>[<var>start</var>, <var>start</var> + <var>step</var>,
+  <var>start</var> + 2 * <var>step</var>, ...]</code>.  Si <var>step</var> es positivo,
+  el último elemento es el mayor valor <code><var>start</var> + <var>i</var> *
+  <var>step</var></code> menor que <var>stop</var>; si <var>step</var> es negativo, 
+  el último elemento es el mayor valor <code><var>start</var> + <var>i</var> * <var>step</var></code>
+  mayor que <var>stop</var>.  <var>step</var> no debe ser cero (o se lanza
+  <tt class="exception">ValueError</tt>).  Por ejemplo:
+
+<p>
+</p><dl><dd><pre class="verbatim">&gt;&gt;&gt; range(10)
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+&gt;&gt;&gt; range(1, 11)
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+&gt;&gt;&gt; range(0, 30, 5)
+[0, 5, 10, 15, 20, 25]
+&gt;&gt;&gt; range(0, 10, 3)
+[0, 3, 6, 9]
+&gt;&gt;&gt; range(0, -10, -1)
+[0, -1, -2, -3, -4, -5, -6, -7, -8, -9]
+&gt;&gt;&gt; range(0)
+[]
+&gt;&gt;&gt; range(1, 0)
+[]
+</pre></dd></dl>
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-183"><tt class="function">raw_input</tt></a></b> (<big>[</big><var>prompt</var><big>]</big>)
+</dt><dd>
+Si se proporciona el argumento <var>prompt</var>, se escribe en la salida estándar
+sin salto de línea al final. La función lee una línea de la entrada,
+la convierte a una cadena (eliminando el salto de línea final) y devuelve
+el resultado. Si se lee EOF (el carácter de fin de fichero,
+Control-Z en Windows, Control-D en Unix),
+se lanza <tt class="exception">EOFError</tt>. Ejemplos:
+
+<p>
+</p><dl><dd><pre class="verbatim">&gt;&gt;&gt; s = raw_input('--&gt; ')
+--&gt; Monty Python's Flying Circus
+&gt;&gt;&gt; s
+"Monty Python's Flying Circus"
+</pre></dd></dl>
+
+<p>
+Si se ha cargado el módulo <tt class="module">readline</tt>, <tt class="function">raw_input()</tt> 
+lo utilizará para proporcionar edición compleja de
+  línea e histórico de órdenes.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-184"><tt class="function">reduce</tt></a></b> (<var>function, sequence</var><big>[</big><var>, initializer</var><big>]</big>)
+</dt><dd>
+Aplicar <var>function</var> (una función de dos argumentos), reiteradamente
+a los argumentos de <var>sequence</var>, desde el inicio (izquierda) hasta 
+reducir la secuencia a un solo valor.  Por ejemplo,
+<code>reduce(lambda x, y: x+y, [1, 2, 3, 4, 5])</code> calcula
+<code>((((1+2)+3)+4)+5)</code>.
+Si se proporciona el parámetro opcional <var>initializer</var>, se coloca a la
+izquierda de los elementos de la secuencia antes de iniciar los cálculos y
+sirve como valor por defecto si la secuencia está vacía.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-185"><tt class="function">reload</tt></a></b> (<var>module</var>)
+</dt><dd>
+Re-analizar y re-inicializar un módulo <var>module</var> ya importado.
+El argumento debe ser un objeto módulo, por lo que ya se debe haber
+importado con éxito anteriormente. Es útil si se ha editado el módulo con
+un editor externo y se desea probar la nueva versión sin abandonar y volver
+al intérprete de Python. El valor de retorno es el objeto módulo (es decir,
+el mismo argumento de entrada).
+
+<p>
+Hay que observar ciertos detalles:
+
+</p><p>
+Si un módulo es correcto sintácticamente pero falla su inicialización,
+el primer  <tt class="keyword">import</tt> que se haga no enlaza su nombre localmente,
+sino que guarda un módulo (parcialmente inicializado) en 
+<code>sys.modules</code>.  Para recargar el módulo, hay que volver a
+<tt class="keyword">import</tt>arlo (lo que enlazará el nombre localmente al módulo parcialemente
+inicializado) antes de poder recargarlo con <tt class="function">reload()</tt>.
+
+</p><p>
+Al recargar un módulo, su diccionario (que contiene las variables globales del
+módulo) se mantiene. Las redefiniciones de los nombres sobreescribirán
+las antiguas definiciones, por lo que esto nu suele suponer
+un problema. Si al nueva versión de un módulo no define un nombre
+que definía la versión anterior, la definición antigua permanece en memoria.
+Esta característica se puede utilizar si el módulo mantiene una tabla global
+o caché de objetos, pues una sentencia <tt class="keyword">try</tt> puede comprobar la presencia
+de la tabla y saltarse la inicialización si se desea.
+
+</p><p>
+Es legal, aunque no suele ser muy útil, recargar módulos internos
+o de carga dinámica, salvo <tt class="module">sys</tt>, <tt class="module">__main__</tt>
+y <tt class="module">__builtin__</tt>.  En muchos casos los módulos de extensión no
+están diseñados para ser inicializados más de una vez y pueden fallar
+de manera arbitraria si se recargan.
+
+</p><p>
+Si un módulo importa objetos de otro módulo con <tt class="keyword">from</tt>
+... <tt class="keyword">import</tt> ..., llamar a <tt class="function">reload()</tt> del 
+otro módulo no redefine los objetos importados de éste. Una manera
+de saltarse esto es re-ejecutar la sentencia <tt class="keyword">from</tt>,
+otra es usar <tt class="keyword">import</tt> y nombres cualificados 
+(<var>module</var>.<var>name</var>).
+
+</p><p>
+Si un módulo genera instancias de una clase, recargar el módulo que
+define la clase no afecta a las definiciones de métodos de las instancias,
+que seguirán utilizando la definición antigua. Lo mismo ocurre en el caso
+de clases derivadas.
+</p></dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-186"><tt class="function">repr</tt></a></b> (<var>object</var>)
+</dt><dd>
+Devuelve una cadena que contiene un representación imprimible
+del objeto. Es el mismo valor que devuelven las conversiones (comillas
+invertidas). A veces es útil acceder a esta operación en forma de función
+normal. En muchos tipos, esta función hace lo posible para devolver una
+cadena que devolvería un objeto del mismo valor que el original al
+evaluarla con <tt class="function">eval()</tt>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-187"><tt class="function">round</tt></a></b> (<var>x</var><big>[</big><var>, n</var><big>]</big>)
+</dt><dd>
+Devuelve el valor de coma flotante<var>x</var> redondeado a  <var>n</var> dígitos
+tras la coma decimal. Si se omite <var>n</var> toma el valor de cero.
+El resultado es un número de coma flotante. Los valores se redondean
+al valor más cercano a 10 elevado a menos <var>n</var>. Si hay dos múltiplos
+igual de cercanos, se redondea alejándose de 0 (así que
+  <code>round(0.5)</code> es <code>1.0</code> y <code>round(-0.5)</code> es <code>-1.0</code>).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-188"><tt class="function">setattr</tt></a></b> (<var>object, name, value</var>)
+</dt><dd>
+  Es la función contraria a  <tt class="function">getattr()</tt>.  Los argumentos son un 
+  objeto, una cadena y un valor arbitrario. La cadena puede nombrar un
+  atributo existente o nuevo. La función asigna el valor al atributo, siempre que el
+  objeto lo permita. Por ejemplo,
+  <code>setattr(<var>x</var>, '<var>foobar</var>', 123)</code> equivale a
+  <code><var>x</var>.<var>foobar</var> = 123</code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-189"><tt class="function">slice</tt></a></b> (<big>[</big><var>start,</var><big>]</big><var> stop</var><big>[</big><var>, step</var><big>]</big>)
+</dt><dd>
+Devuelve un corte que representa el conjunto de índices especificado
+por <code>range(<var>start</var>, <var>stop</var>, <var>step</var>)</code>.  Los argumentos
+<var>start</var> y <var>step</var> toman el valor por omisión de None. Los objetos
+corte tienen atributos de sólo lectura <tt class="member">start</tt>, <tt class="member">stop</tt> y
+<tt class="member">step</tt> que se limitan a devolver los valores de los argumentos
+(o su valor por defecto). No tienen ninguna otra funcionalidad explícita,
+pero son utilizados por Numerical Python 
+(la extensión de cálculo matricial) y otras extensiones de terceros. Los objetos
+corte resultan también como producto de la sintaxis de corte extendida:
+"<tt class="samp">a[start:stop:step]</tt>" o "<tt class="samp">a[start:stop, i]</tt>".
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-190"><tt class="function">str</tt></a></b> (<var>object</var>)
+</dt><dd>
+Devuelve una cadena que contiene una representación imprimible de
+un objeto. En el caso de cadenas, devuelve la propia cadena. La diferencia
+con <code>repr(<var>object</var>)</code> es que <code>str(<var>object</var>)</code> no intenta
+devolver una cadena que acepte <tt class="function">eval()</tt>, su objetivo es devolver
+una cadena imprimible.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-191"><tt class="function">tuple</tt></a></b> (<var>sequence</var>)
+</dt><dd>
+Devuelve una tupla cuyos elementos son los mismos que los de 
+<var>sequence</var> en el mismo orden. Si <var>sequence</var> ya es una tupla,
+se devuelve sin cambios. Por ejemplo, <code>tuple('abc')</code> devuelve
+<code>('a', 'b', 'c')</code> y <code>tuple([1, 2, 3])</code> devuelve
+<code>(1, 2, 3)</code>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-192"><tt class="function">type</tt></a></b> (<var>object</var>)
+</dt><dd>
+Devuelve el tipo de <var>object</var>.  El resultado es un objeto tipo. El módulo
+estándar <tt class="module">types</tt> define nombres para todos los tipos internos.
+
+Por ejemplo:
+
+<p>
+</p><dl><dd><pre class="verbatim">&gt;&gt;&gt; import types
+&gt;&gt;&gt; if type(x) == types.StringType: print "Es una cadena"
+</pre></dd></dl>
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-193"><tt class="function">unichr</tt></a></b> (<var>i</var>)
+</dt><dd>
+Devuelve la cadena Unicode de una carácter cuyo código Unicode es el entero
+<var>i</var>, es decir, <code>unichr(97)</code> devuelve la cadena <code>u'a'</code>.  
+Es la función inversa de <tt class="function">ord()</tt> para cadenas Unicode.
+El argumento debe estar en el rango [0..65535], ambos incluidos. En caso
+contrario, se lanza <tt class="exception">ValueError</tt>.
+
+Nuevo en la versión 2.0.
+
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-194"><tt class="function">unicode</tt></a></b> (<var>string</var><big>[</big><var>, encoding</var><big>[</big><var>, errors</var><big>]</big><big>]</big>)
+</dt><dd>
+Descodifica <var>string</var> usando el codec de <var>encoding</var>.  La gestión de
+errores se lleva a cabo según <var>errors</var>. El comportamiento predeterminado
+es descodificar UTF-8 en modo estricto, lo que significa que los errores de codificación
+lanzan <tt class="exception">ValueError</tt>.  Hay más información en el módulo <tt class="module"><a href="http://pyspanishdoc.sourceforge.net/lib/module-codecs.html">codecs</a></tt>.
+
+Nuevo en la versión 2.0.
+
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-195"><tt class="function">vars</tt></a></b> (<big>[</big><var>object</var><big>]</big>)
+</dt><dd>
+Sin argumentos, devuelve un diccionario correspondiente a la 
+tabla de símbolos local actual. Con un módulo, clase o instancia de
+clase como argumento (o cualquier cosa que tenga un atributo 
+<tt class="member">__dict__</tt> attribute), devuelve un diccionario correspondiente
+a la tabla de símbolos del objeto. El diccionario devuelto no debería
+modificarse, pues los efectos sobre la tabla de símbolos no están
+definidos<a name="tex2html11" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#foot2949"><sup>2.11</sup></a>.
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-196"><tt class="function">xrange</tt></a></b> (<big>[</big><var>start,</var><big>]</big><var> stop</var><big>[</big><var>, step</var><big>]</big>)
+</dt><dd>
+Esta función es muy similar a <tt class="function">range()</tt>, pero devuelve un
+``objeto xrange'' en lugar de una lista. Es un tipo secuencia opaco
+que devuelve los mismos valores que la correspondiente lista, sin
+almacenarlos simultáneamente. La ventaja de 
+<tt class="function">xrange()</tt> sobre <tt class="function">range()</tt> es mínima (pues
+<tt class="function">xrange()</tt> todavía tiene que crear los valores al pedísrselos)
+excepto en máquinas impedidas en cuestión de memoria (por ejemplo,
+MS-DOS) o cuando nunca se utilizan todos los elementos del rango
+(por ejemplo, porque se suele interrumpir la ejecución del bucle 
+con <tt class="keyword">break</tt>).
+</dd></dl>
+
+<p>
+</p><dl><dt><b><a name="l2h-197"><tt class="function">zip</tt></a></b> (<var>seq1, ...</var>)
+</dt><dd>
+Esta función devuelve una lista de tuplas, donde cada tupla contiene
+el <var>i</var>-ésimo elemento de cada una de las secuencias de argumento.
+Se requiere al menos una secuencia, o se lanzará <tt class="exception">TypeError</tt>.
+La lista devuelta se trunca a la longitud de la secuencia de argumento
+más corta. Cuando hay múltiples secuencias de argumento de la misma longitud,
+<tt class="function">zip()</tt> es similar a
+<tt class="function">map()</tt> con un argumento inicial de <code>None</code>.  Con una sola
+secuencia como argumento, devuelve una lista de tuplas de un solo elemento.
+
+Nuevo en la versión 2.0.
+
+</dd></dl>
+
+<p>
+<br></p><hr><h4>Footnotes</h4>
+<dl>
+<dt><a name="foot2562">... módulo</a><a name="foot2562" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#tex2html8"><sup>2.8</sup></a>
+</dt><dd>Se usa poco, por lo que no acabó como sentencia.
+
+</dd><dt><a name="foot2644">... C</a><a name="foot2644" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#tex2html9"><sup>2.9</sup></a>
+</dt><dd>Muy mal, la definición
+  del lenguaje debería exigir el truncamiento hacia cero.
+
+</dd><dt><a name="foot3003">... sistema</a><a name="foot3003" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#tex2html10"><sup>2.10</sup></a>
+</dt><dd>Especificar un tamaño de tampón no tiene en la actualidad ningún efecto
+  en los sistemas que carecen de una función <tt class="cfunction">setvbuf()</tt>.  
+  La interfaz para especificar el tamaño del tampón no se realiza 
+  mediante una llamada a <tt class="cfunction">setvbuf()</tt>, porque podría causar
+  una interrupción incontrolada del programa si se llama tras realizar
+  cualquier E/S y no hay un método fiable de determinar si éste es el 
+  caso.
+
+</dd><dt><a name="foot2949">...
+definidos</a><a name="foot2949" href="http://pyspanishdoc.sourceforge.net/lib/built-in-funcs.html#tex2html11"><sup>2.11</sup></a>
+</dt><dd>En la implementación actual, no es posible afectar a las variables
+  locales de este modo, aunque es posible alterar variables recuperadas
+  de otros ámbitos (por ejemplol, módulos). Esto puede cambiar.
+
+</dd></dl>
+<div class="navigation"><p></p><hr><table align="center" width="100%" cellpadding="0" cellspacing="2">
+<tbody><tr>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/module-exceptions.html"><img src="./Funciones internas ALL_files/previous.png" border="0" height="32" alt="Página anterior" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/builtin.html"><img src="./Funciones internas ALL_files/up.png" border="0" height="32" alt="Nivel superior" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/python.html"><img src="./Funciones internas ALL_files/next.png" border="0" height="32" alt="Página siguiente" width="32"></a></td>
+<td align="center" width="100%">Referencia de la Biblioteca de Python</td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/contents.html"><img src="./Funciones internas ALL_files/contents.png" border="0" height="32" alt="Contenido" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/modindex.html" title="Module Index"><img src="./Funciones internas ALL_files/modules.png" border="0" height="32" alt="Índice de módulos" width="32"></a></td>
+<td><a href="http://pyspanishdoc.sourceforge.net/lib/genindex.html"><img src="./Funciones internas ALL_files/index.png" border="0" height="32" alt="Índice" width="32"></a></td>
+</tr></tbody></table>
+<b class="navlabel">Anterior:</b> <a class="sectref" href="http://pyspanishdoc.sourceforge.net/lib/module-exceptions.html">2.2 Excepciones internas</a>
+<b class="navlabel">Niv. superior:</b> <a class="sectref" href="http://pyspanishdoc.sourceforge.net/lib/builtin.html">2. Tipos, excepciones y</a>
+<b class="navlabel">Siguiente:</b> <a class="sectref" href="http://pyspanishdoc.sourceforge.net/lib/python.html">3. Servicios de ejecución</a>
+</div>
+<!--End of Navigation Panel-->
+<address>
+<hr>Ver <i><a href="http://pyspanishdoc.sourceforge.net/lib/about.html">Sobre este documento...</a></i> para obtener información sobre sugerencias.
+</address>
+
+
+</body></html>

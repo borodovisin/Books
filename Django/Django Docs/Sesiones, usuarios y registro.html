@@ -1,0 +1,1425 @@
+
+<!-- saved from url=(0042)http://the-geek.org/django-book/chapter12/ -->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head><body>/tmp/tmp.2e73529882766d9fd5115435379fd70e/tmp.2e73529882766d9fd5115435379fd70e.rst:1018: (ERROR/3) Unknown directive type "annotation".
+
+.. annotation::
+   \xbfEs alg\xfan tipo de droga?
+
+   No, un **salted hash** no tiene nada que ver con la marihuana; es una manera
+   bastante com\xfan de almacenar claves de manera segura. Un **hash** es una
+   funci\xf3n criptogr\xe1fica de una sola direcci\xf3n; es decir, que se puede computar
+   de forma sencilla el *hash* de un valor dado, pero es casi imposible
+   reconstruir el valor original partiendo del *hash*.
+
+   Si almacen\xe1semos las claves como texto sencillo, cualquiera que consiguiese
+   acceder a la base de datos de claves podr\xeda saber al instante las claves de
+   todo el mundo. Almacenar las claves como *hashes* reduce el valor de una
+   base de datos comprometida.
+
+   Sin embargo, un atacante con la base de claves podr\xeda a\xfan intentar un ataque
+   por **fuerza bruta**, obteniendo el *hash* de millones de claves y
+   compar\xe1ndolas con los valores almacenados. Esto podr\xeda llevar tiempo, pero
+   menos del que piensa (los computadores son incre\xedblemente r\xe1pidos)
+
+   Lo que es peor, existen las llamadas **rainbow tables** (bases con *hashes*
+   precalculados de millones de claves) y est\xe1n disponibles de forma p\xfablica.
+   Con una de estas tablas un atacante puede descubrir la mayor\xeda de las
+   claves en segundos.
+
+   A\xf1adir un **salt** (b\xe1sicamente, un valor inicial aleatorio) al *hash*
+   almacenado a\xf1ade otra capa de dificultad. Dado que el *salt* cambia de una
+   clave a otra, los *salt* tambi\xe9n previenten ante el uso de tablas
+   *rainbow*, forzando as\xed a los atacantes a volver al ataque por fuerza
+   bruta (a su vez m\xe1s dif\xedcil debido a la entrop\xeda adicional creada en
+   el *hash* por el *salt*)
+
+   Aunque \xe9sta no es exactamente la manera m\xe1s segura de almacenar claves,
+   son un punto medio bastante bueno entre la seguridad y la conveniencia.
+
+/tmp/tmp.2e73529882766d9fd5115435379fd70e/tmp.2e73529882766d9fd5115435379fd70e.rst:1088: (WARNING/2) Literal block expected; none found.
+<!--?xml version="1.0" encoding="utf-8" ?-->
+
+
+
+
+<meta name="generator" content="Docutils 0.4: http://docutils.sourceforge.net/">
+<title>Capítulo 12: Sesiones, usuarios y registro</title>
+<style type="text/css">
+
+/*
+:Author: David Goodger
+:Contact: goodger@users.sourceforge.net
+:Date: $Date$
+:Revision: $Revision$
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin-left: 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left {
+  clear: left }
+
+img.align-right {
+  clear: right }
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font-family: serif ;
+  font-size: 100% }
+
+pre.literal-block, pre.doctest-block {
+  margin-left: 2em ;
+  margin-right: 2em ;
+  background-color: #eeeeee }
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+tt.docutils {
+  background-color: #eeeeee }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+
+
+<div class="document" id="cap-tulo-12-sesiones-usuarios-y-registro">
+<h1 class="title">Capítulo 12: Sesiones, usuarios y registro</h1>
+<p>Es hora de confesar algo: hemos estado ignorando deliberadamente un aspecto
+increíblemente importante del desarrollo web hasta este punto. Hasta aquí,
+hemos pensado en el tráfico que visita nuestros sitios como una masa sin
+rostro y anónima embistiendo contra nuestras páginas diseñadas con tanto
+cuidado.</p>
+<p>Por supuesto, esto no escierto; los navegadores que llegan a nuestros
+sitios tienen tras ellos personas reales (a menudo, al menos). Esto es algo
+muy grande como para ignorarlo: lo mejor de la Internet se ve cuando sirve
+para conectar a gente, no a máquinas. Si vamos a desarrollar sitios realmente
+atractivos, en algún momento tendremos que tratar con los cuerpos tras el
+navegador.</p>
+<p>Por desgracia, esto no es tan sencillo. HTTP se diseñó como protocolo sin
+estado (<em>stateless</em>); es decir, cada petición sucede en el vacío. No hay
+persistencia entre una petición y la siguiente y no podemos contar con
+que ningún aspecto de una petición (dirección IP, user-agent, etc.)
+indique de forma consistente peticiones sucesivas de una misma persona.</p>
+<p>Los desarrolladores de navegadores reconocieron hace mucho que esta falta de
+estado de HTTP suponía un enorme problema para los desarrolladores de webs,
+y así nacieron las cookies. Una cookie es una pequeña porción de información
+que almacenan los navegadores a petición de los servidores web; cada vez que
+un navegador solicita una página de un servidor en concreto, le devuelve la
+cookie que recibió anteriormente.</p>
+<div class="section">
+<h1><a id="cookies" name="cookies">Cookies</a></h1>
+<p>Echemos un vistazo a la manera en que funcionaría esto. Cuando abrimos el
+navegador y escribimos <tt class="docutils literal"><span class="pre">google.com</span></tt>, el navegador envía una petición
+HTTP a Google que comienza parecido a esto:</p>
+<pre class="literal-block">GET / HTTP/1.1
+Host: google.com
+...
+</pre>
+<p>Cuando Google responde, la respuesta HTTP es algo parecido a esto:</p>
+<pre class="literal-block">HTTP/1.1 200 OK
+Content-Type: text/html
+Set-Cookie: PREF=ID=5b14f22bdaf1e81c:TM=1167000671:LM=1167000671;
+          expires=Sun, 17-Jan-2038 19:14:07 GMT;
+          path=/; domain=.google.com
+Server: GWS/2.1
+...
+</pre>
+<p>Observe la cabecera <tt class="docutils literal"><span class="pre">Set-Cookie</span></tt>. El navegador guardará ese valor
+de cookie (<tt class="docutils literal"><span class="pre">PREF=ID=5b14f22bdaf1e81c:TM=1167000671:LM=1167000671</span></tt>)
+y se la servirá a Google cada vez que accedamos al sitio. Así que la
+siguiente vez que acuda a Google, el navegador enviará una petición
+parecida a ésta:</p>
+<pre class="literal-block">GET / HTTP/1.1
+Host: google.com
+Cookie: PREF=ID=5b14f22bdaf1e81c:TM=1167000671:LM=1167000671
+...
+</pre>
+<p>Google usará entonces ese valor de <tt class="docutils literal"><span class="pre">Cookie</span></tt> para saber si somos la
+misma persona que accedió anteriormente al sitio. Este valor podría
+ser por ejemplo una clave en una base de datos que guarda información
+de usuario; Google podría usarlo (y lo hace) para mostrar su nombre en
+la página.</p>
+<div class="section">
+<h2><a id="obtener-y-fijar-cookies" name="obtener-y-fijar-cookies">Obtener y fijar cookies</a></h2>
+<p>Cuando tratemos con persistencia en Django, la mayoría de las veces querremos
+usar los <em>framework</em> de alto nivel de sesión o usuario de los que hablaremos
+en breve. Sin embargo, nos detendremos a examinar la manera en que Django lee
+y escribe las cookies. Quizá le ayude a entender cómo funcionan realmente el
+resto de las partes que se discuten en este capítulo y le será útil en caso
+de que tenga que trabajar directamente con cookies alguna vez.</p>
+<p>Leer cookies que ya están fijadas es increíblemente sencillo: cada objeto
+de petición tiene un objeto <tt class="docutils literal"><span class="pre">COOKIES</span></tt> que actúa como un diccionario; lo
+podemos usar para leer cualquier cookie que el navegador haya enviado a la
+vista:</p>
+<pre class="literal-block">def mostrar_color(request):
+    if "color_favorito" in request.COOKIES:
+        return HttpResponse("Su color favorito es el %s" % \
+            request.COOKIES["color_favorito"])
+    else:
+        return HttpResponse("No tiene un color favorito.")
+</pre>
+<p>Escribir cookies el ligeramente más complicado y necesitaremos usar el
+método <tt class="docutils literal"><span class="pre">set_cookie()</span></tt> en un objeto <tt class="docutils literal"><span class="pre">HttpResponse</span></tt>. Aquí tiene un ejemplo
+en el que establecemos la cookie <tt class="docutils literal"><span class="pre">color_favorito</span></tt> basándonos en un
+parámetro <tt class="docutils literal"><span class="pre">GET</span></tt>:</p>
+<pre class="literal-block">def fijar_color(request):
+    if "color_favorito" in request.GET:
+
+        # Creamos un objeto HttpResponse...
+        response = HttpResponse("Ahora su color favorito es %s" % \
+            request.GET["color_favorito"])
+
+        # ... y creamos una cookie para la respuesta
+        response.set_cookie("color_favorito",
+                            request.GET["color_favorito"])
+
+    else:
+        return HttpResponse("No ha indicado un color favorito.")
+</pre>
+<p>También podemos pasar a <tt class="docutils literal"><span class="pre">request.set_cookie()</span></tt> varios argumentos opcionales
+que controlan aspectos de la cookie:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%">
+<col width="18%">
+<col width="67%">
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Parámetro</th>
+<th class="head">Por omisión</th>
+<th class="head">Descripción</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>max_age</td>
+<td>None</td>
+<td>Segundos que debería durar la cookie. Si es
+<tt class="docutils literal"><span class="pre">None</span></tt>, la cookie durará sólo hasta que se
+cierre el navegador.</td>
+</tr>
+<tr><td>expires</td>
+<td>None</td>
+<td>La fecha/hora real en que debería expirar la
+cookie. Debe crearse con el formato
+<tt class="docutils literal"><span class="pre">"Wdy,</span> <span class="pre">DD-Mth-YY</span> <span class="pre">HH:MM:SS</span> <span class="pre">GMT"</span></tt>. Si se da,
+tiene precedencia frente al parámetro
+<tt class="docutils literal"><span class="pre">max_age</span></tt></td>
+</tr>
+<tr><td>path</td>
+<td>"/"</td>
+<td><p class="first">El prefijo de la ruta para la que es válida
+esta cookie. Los navegadores sólo enviarán la
+cookie a als páginas que se encuentren bajo
+este prefijo, así que podemos usarlo para
+evitar que se envíen cookies a otras secciones
+de nuestro sitio.</p>
+<p class="last">Especialmente útil en caso de que no controlar
+niveles superiores de nuestro dominio.</p>
+</td>
+</tr>
+<tr><td>domain</td>
+<td>None</td>
+<td><p class="first">El dominio para el que es válida esta cookie.
+Podemos usar esto para establecer cookies entre
+dominios diferentes. Por ejemplo,
+domain=".ejemplo.com" creará una cookie que
+pueden leer los dominios <tt class="docutils literal"><span class="pre">www.ejemplo.com</span></tt>,
+<tt class="docutils literal"><span class="pre">www2.ejemplo.com</span></tt> y
+<tt class="docutils literal"><span class="pre">otro.sub.dominio.ejemplo.com</span></tt>.</p>
+<p class="last">Si es <tt class="docutils literal"><span class="pre">None</span></tt>, la cookie la podrá leer sólo el
+dominio que la ha establecido.</p>
+</td>
+</tr>
+<tr><td>secure</td>
+<td>False</td>
+<td>Si se pone a <tt class="docutils literal"><span class="pre">True</span></tt>, le indica al navegador
+que sólo ha de enviar la cookie a páginas a las
+que se accede mediante HTTPS.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h2><a id="la-bendici-n-maldita-de-las-cookies" name="la-bendici-n-maldita-de-las-cookies">La bendición maldita de las cookies</a></h2>
+<p>Puede que haya notado ya varios problemas potenciales en la manera en que
+trabajan las cookies. Examinemos los más importantes:</p>
+<ul>
+<li><p class="first">Las cookies son esencialmente voluntarias; el navegador no garantiza su
+almacenamiento. De hecho, cada navegador del planeta le permitirá tener
+control sobre su política para aceptación de cookies. Si quiere ver
+cuan vitales son las cookies en la web, prueba a activar la opción
+"solicitar permiso por cada cookie" de su navegador. ¡Incluso un enorme
+monstruo azul se empacharía con tanta "galleta"!</p>
+<p>Esto significa, por supuesto, que las cookies son la definición de la
+falta de fiabilidad; los desarrolladores deberían comprobar que un usuario
+está aceptando realmente las cookies antes de confiar en ellas.</p>
+<p>Aún más importante es que nunca debería almacenar datos importantes en las
+cookies. La web está llena de historias de horror de desarrolladores que
+han almacenado información irrecuperable en cookies de navegador sólo para
+ver cómo el navegador purga esos datos por una razón y otra.</p>
+</li>
+<li><p class="first">Las cookies no son seguras de ninguna manera. Dado que los datos HTTP se
+envían como texto en claro, las cookies son extremadamente vulnerables a
+ataques espía. Es decir, un atacante que espíe una conexión puede
+interceptar una cookie y leerla. Esto significa que nunca debería almacenarse
+información sensible en una cookie.</p>
+<p>Existe un ataque incluso más insidioso llamado "<em>man in the middle</em>", u
+"hombre en el medio", donde un atacante intercepta una cookie y la usa para
+suplantar a otro usuario. El Capítulo 20 comenta en profundidad los ataques
+de esta naturaleza, así como maneras de prevenirlos.</p>
+</li>
+<li><p class="first">Las cookies no son seguras ni siquiera viniendo de sus receptores legítimos.
+La mayoría de los navegadores proporcionan medios para editar el contenido
+de las cookies y los usuarios con recursos siempre pueden utilizar
+herramientas como <a class="reference" href="http://wwwsearch.sourceforge.net/mechanize/">mechanize</a> para construir peticiones HTTP manualmente.</p>
+<p>Así que no podemos guardar en cookies datos susceptibles de ser
+falsificados. El error típico en estos casos es almacenar algo así como
+<tt class="docutils literal"><span class="pre">IsLoggedIn=1</span></tt> en una cookie cuando el usuario se identifica. Le asombraría
+la cantidad de sitios que cometen fallos como éste. Sólo lleva unos segundos
+engañar a los sistemas de "seguridad" de estos sitios.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="section">
+<h1><a id="framework-de-sesiones-de-django" name="framework-de-sesiones-de-django">Framework de sesiones de Django</a></h1>
+<p>Con todas estas limitaciones y agujeros de seguridad potenciales, es obvio
+que las cookies y las sesiones persistentes son otros de esos "puntos
+dolorosos" del desarrollo web. Por supuesto, el objetivo de Django es ser
+un analgésico efectivo, así que Django incorpora un <em>framework</em> de sesiones
+diseñado para aliviarle estas dificultades.</p>
+<p>Este <em>framework</em> le permite almacenar y recuperar datos arbitrarios por cada
+visitante del sitio. Almacena datos en el servidor y abstrae el envío y
+recepción de cookies. Las cookies usan sólo un ID de sesión (no lo sdatos en
+sí) protegiéndole así de la mayoría de problemas comunes de las cookies.</p>
+<div class="section">
+<h2><a id="habilitaci-n-de-las-sesiones" name="habilitaci-n-de-las-sesiones">Habilitación de las sesiones</a></h2>
+<p>Las sesiones están implementadas mediante <em>middleware</em> (véase el Capítulo 16)
+y un modelo de Django. Para habilitar las sesiones tendremos que:</p>
+<ol class="arabic simple">
+<li>Editar la opción <tt class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt> y asegurarnos de que contiene
+<tt class="docutils literal"><span class="pre">'django.contrib.sessions.middleware.SessionMiddleware'</span></tt>.</li>
+<li>Asegurarnos de que <tt class="docutils literal"><span class="pre">'django.contrib.sessions'</span></tt> está en nuestra opción
+<tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> (y ejecutar <tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt> si hemos tenido que
+añadirlo).</li>
+</ol>
+<p>El esqueleto que genera <tt class="docutils literal"><span class="pre">startproject</span></tt> ya tiene ambas opciones instaladas
+así que, a menos que las hayamos eliminado nosotros mismos, es probable que
+no tengamos que cambiar nada para que las sesiones funcionen.</p>
+<p>Si no quiere usar las sesiones, quizá prefiera eliminar de
+<tt class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt> la línea con <tt class="docutils literal"><span class="pre">SessionMiddleware</span></tt> y
+<tt class="docutils literal"><span class="pre">'django.contrib.sessions'</span></tt> de <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt>. Sólo le supondrá un
+alivio muy pequeño en cuanto a la carga del sitio, pero cada poquito
+cuenta.</p>
+</div>
+<div class="section">
+<h2><a id="uso-de-sesiones-en-las-vistas" name="uso-de-sesiones-en-las-vistas">Uso de sesiones en las vistas</a></h2>
+<p>Cuando se activa <tt class="docutils literal"><span class="pre">SessionMiddleware</span></tt>, cada objeto <tt class="docutils literal"><span class="pre">HttpRequest</span></tt> (el primer
+argumento de cualquier función de vista de Django) tendrá un atributo
+<tt class="docutils literal"><span class="pre">session</span></tt>, que es un objeto tipo diccionario. Puede leerlo y escribir en él
+de la misma manera que con un diccionario normal. Por ejemplo, en una vista
+podríamos hacer algo así:</p>
+<pre class="literal-block"># Establecer el valor de una sesión:
+request.session["color_fav"] = "azul"
+
+# Obtener un valor de una sesión (podría hacerse la llamada en otra
+# vista, o muchas peticiones más tarde (o ambas):
+color_fav = request.session["color_fav"]
+
+# Eliminar un elemento de una sesión:
+del request.session["color_fav"]
+
+# Comprobar si la sesión tiene una clave dada:
+if "color_fav" in request.session:
+    ...
+</pre>
+<p>También se pueden usar sobre <tt class="docutils literal"><span class="pre">request.session</span></tt> otros métodos de acceso como
+<tt class="docutils literal"><span class="pre">keys()</span></tt> e <tt class="docutils literal"><span class="pre">items()</span></tt>.</p>
+<p>Hay un par de reglas sencillas para usar las sesiones de Django de forma
+efectiva:</p>
+<ul class="simple">
+<li>Utilice cadenas normales de Python como claves de diccionario en
+<tt class="docutils literal"><span class="pre">request.session</span></tt> (en lugar de enteros, otros objetos, etc). Es más una
+convención que una regla estricta, pero merece la pena seguirla.</li>
+<li>Las claves de diccionario de sesiones cuyo nombre empieza por un guión bajo
+están reservadas para uso interno de Django. En la práctica el <em>framework</em>
+sólo usa unas pocas de estas variables de sesión, pero a menos que sepa
+todos sus nombres (y esté dispuesto a seguir la pista a cualquier cambio en
+el propio Django), es mejor evitar estos prefijos para evitar que Django
+interfiera con nuestra aplicación.</li>
+<li>No sustituya <tt class="docutils literal"><span class="pre">request.session</span></tt> con un nuevo objeto, ni acceda o cambie
+sus atributos. Úselo como un diccionario normal de Python.</li>
+</ul>
+<p>Echemos un vistazo a unos ejemplos rápidos. Esta vista simple pone a <tt class="docutils literal"><span class="pre">True</span></tt>
+una variable <tt class="docutils literal"><span class="pre">ha_comentado</span></tt> después de que un usuario envíe un comentario.
+No le permite comentar al usuario más de una vez:</p>
+<pre class="literal-block">def post_comment(request, nuevo_comentario):
+    if request.session.get('ha_comentado', False):
+        return HttpResponse("Ya ha comentado.")
+    c = comments.Comment(comment=nuevo_comentario)
+    c.save()
+    request.session['ha_comentado'] = True
+    return HttpResponse('¡Gracias por su comentario!')
+</pre>
+<p>Esta otra vista simple identifica a un "miembro" de un sitio:</p>
+<pre class="literal-block">def login(request):
+    m = miembro.get_object(usuario=request.POST['usuario'])
+    if m.clave == request.POST['clave']:
+        request.session['id_miembro'] = m.id
+        return HttpResponse("Se ha identificado.")
+    else:
+        return HttpResponse("No coinciden usuario y clave.")
+</pre>
+<p>Y esta otra lo desconecta, de acuerdo con el <tt class="docutils literal"><span class="pre">login()</span></tt> anterior:</p>
+<pre class="literal-block">def logout(request):
+    try:
+        del request.session['id_miembro']
+    except KeyError:
+        pass
+    return HttpResponse("Se ha desconectado.")
+</pre>
+<div class="admonition-nota admonition">
+<p class="first admonition-title">Nota</p>
+<p class="last">En la práctica, ésta es una manera algo descuidada de identificar a los
+usuarios. El <em>framework</em> de autentificación que se comenta más adelante
+se encarga de esto por usted de manera mucho más robusta y útil; estos
+ejemplos se los damos sólo porque son fáciles de entender.</p>
+</div>
+</div>
+<div class="section">
+<h2><a id="creaci-n-de-cookies-de-prueba" name="creaci-n-de-cookies-de-prueba">Creación de cookies de prueba</a></h2>
+<p>Como mencionamos antes, no se puede confiar en que todos los navegadores
+acepten cookies. Por tanto y por conveniencia, Django proporciona una
+manera sencilla de probar si el navegador del usuario acepta cookies. Sólo
+necesita invocar a <tt class="docutils literal"><span class="pre">request.session.set_test_cookie()</span></tt> en una vidsta, y
+comprobar <tt class="docutils literal"><span class="pre">request.session.test_cookie_worked()</span></tt> en una vista posterior
+(no en la misma).</p>
+<p>Esta división entre <tt class="docutils literal"><span class="pre">set_test_cookie()</span></tt> y <tt class="docutils literal"><span class="pre">test_cookie_worked()</span></tt> es
+necesaria debido a la manera en que funciona las cookies. Cuando se establece
+una, no se puede decir realmente si el navegador la ha aceptado hasta su
+siguiente petición.</p>
+<p>Es una buena práctica usar <tt class="docutils literal"><span class="pre">delete_test_cookie()</span></tt> para limpiar tras
+nosotros. Hágalo una vez que haya verificado si funcionó la creación de la
+cookie de prueba.</p>
+<p>He aquí un ejemplo típico de uso:</p>
+<pre class="literal-block">def login(request):
+
+    # Si hemos enviado el formulario...
+    if request.method == 'POST':
+
+        # Comprobar si la cookie de prueba ah funcionado (le damos valor
+        # más adelante):
+        if request.session.test_cookie_worked():
+
+            # Ha funcionado, así que la borramos.
+            request.session.delete_test_cookie()
+
+            # En la práctica, necesitaríamos algo para comprobar el usuario
+            # y su clave, pero como es un ejemplo...
+            return HttpResponse("Se ha identificado.")
+
+        # La prueba de cookie ha fallado, así que mostramos un mensaje de
+        # error. Si esto fuera un sitio real querríamos mostrar un mensaje
+        # más amistoso.
+        else:
+            return HttpResponse("Por favor, active las cookies e inténtelo de nuevo.")
+
+    # Si no hemos hecho 'post', enviamos la cookie de prueba junto con el
+    # formulario de ingreso.
+    request.session.set_test_cookie()
+    return render_to_response('foo/formulario_login.html')
+</pre>
+<div class="admonition-nota admonition">
+<p class="first admonition-title">Nota</p>
+<p class="last">De nuevo, las funciones incorporadas para ingreso y desconexión se
+ocupan por usted de hacer estas comprobaciones.</p>
+</div>
+</div>
+<div class="section">
+<h2><a id="uso-de-sesiones-fuera-de-las-vistas" name="uso-de-sesiones-fuera-de-las-vistas">Uso de sesiones fuera de las vistas</a></h2>
+<p>Internamente, cada sesión es sólo un modelo normal de Django definido en
+<tt class="docutils literal"><span class="pre">django.contrib.sessions.models</span></tt>. Debido a que es un modelo normal, se
+puede acceder a cada sesión usando el API de base de datos de Django:</p>
+<pre class="literal-block">&gt;&gt;&gt; from django.contrib.sessions.models import Session
+&gt;&gt;&gt; s = Session.objects.get_object(pk='2b1189a188b44ad18c35e113ac6ceead')
+&gt;&gt;&gt; s.expire_date
+datetime.datetime(2005, 8, 20, 13, 35, 12)
+</pre>
+<p>Tendremos a invocar a <tt class="docutils literal"><span class="pre">get_decoded()</span></tt> para obtener los datos reales de la
+sesión. Esto es necesario porque el diccionario se almacena en un formato
+codificado:</p>
+<pre class="literal-block">&gt;&gt;&gt; s.session_data
+'KGRwMQpTJ19hdXRoX3VzZXJfaWQnCnAyCkkxCnMuMTExY2ZjODI2Yj...'
+&gt;&gt;&gt; s.get_decoded()
+{'user_id': 42}
+</pre>
+</div>
+<div class="section">
+<h2><a id="cu-ndo-se-guardan-las-sesiones" name="cu-ndo-se-guardan-las-sesiones">Cuándo se guardan las sesiones</a></h2>
+<p>Por omisión, Django sólo guarda en la base de datos de sesiones cuando éstas
+son modificadas (es decir, cuando se almacena o elimina algún valor en ellas):</p>
+<pre class="literal-block"># Se modifica la sesión.
+request.session['foo'] = 'bar'
+
+# Se modifica la sesión.
+del request.session['foo']
+
+# Se modifica la sesión.
+request.session['foo'] = {}
+
+# Fallo: NO se ha modificado la sesión, ya que esto
+# altera request.session['foo'] en lugar de request.session.
+request.session['foo']['bar'] = 'baz'
+</pre>
+<p>Para modificar este comportamiento, ponga <tt class="docutils literal"><span class="pre">True</span></tt> en la opción
+<tt class="docutils literal"><span class="pre">SESSION_SAVE_EVERY_REQUEST</span></tt>. Si <tt class="docutils literal"><span class="pre">SESSION_SAVE_EVERY_REQUEST</span></tt> es <tt class="docutils literal"><span class="pre">True</span></tt>,
+Django guardará la sesión en la base de datos tras cada petición, incluso si
+no ha cambiado.</p>
+<p>Obsérvese que la cookie de sesión sólo se envía cuando se ha creado o
+modificado una sesión. Si <tt class="docutils literal"><span class="pre">SESSION_SAVE_EVERY_REQUEST</span></tt> es <tt class="docutils literal"><span class="pre">True</span></tt>, la
+cookie de sesión se va a enviar tras cada petición.</p>
+<p>De forma similar, el valor <tt class="docutils literal"><span class="pre">expires</span></tt> de una cookie de sesión se actualiza
+cada vez que se envía al navegador.</p>
+</div>
+<div class="section">
+<h2><a id="sesiones-persistentes-frente-a-duraci-n-del-navegador" name="sesiones-persistentes-frente-a-duraci-n-del-navegador">Sesiones persistentes frente a duración del navegador</a></h2>
+<p>Quizá haya observado antes que la cookie que envió Google contenía
+<tt class="docutils literal"><span class="pre">expires=Sun,</span> <span class="pre">17-Jan-2038</span> <span class="pre">19:14:07</span> <span class="pre">GMT;</span></tt>. Las cookies pueden contener
+opcionalmente una fecha de expiracion que aconseja al navegador sobre el
+momento de eliminar la cookie. Si una cookie no contiene una fecha de
+expiración, el navegador la eliminará cuando el usuario cierre la ventana.
+Se puede controlar el comportamiento del <em>framework</em> de sesiones a este
+respecto con la opción <tt class="docutils literal"><span class="pre">SESSION_EXPIRE_AT_BROWSER_CLOSE</span></tt>.</p>
+<p>Por omisión, <tt class="docutils literal"><span class="pre">SESSION_EXPIRE_AT_BROWSER_CLOSE</span></tt> se encuentra a <tt class="docutils literal"><span class="pre">False</span></tt>,
+lo que significa que las cookies de sesión se almacenarán en el navegador
+del usuario durante <tt class="docutils literal"><span class="pre">SESSION_COOKIE_AGE</span></tt> segundos (que por omisión son
+dos semanas - 1209600 segundos). Utilícelo si no quiere que la gente tenga
+que identificarse cada vez que abre un navegador.</p>
+<p>Si se cambia <tt class="docutils literal"><span class="pre">SESSION_EXPIRE_AT_BROWSER_CLOSE</span></tt> a <tt class="docutils literal"><span class="pre">True</span></tt>, Django usará
+cookies que expiran al cerrar el navegador.</p>
+</div>
+<div class="section">
+<h2><a id="otras-opciones-para-sesiones" name="otras-opciones-para-sesiones">Otras opciones para sesiones</a></h2>
+<p>Aparte de las opciones que ya hemos mencionado, hay unas pocas más que
+influyen en la manera en que el <em>framework</em> de sesiones de Django usa las
+cookies:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%">
+<col width="41%">
+<col width="27%">
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Opción</th>
+<th class="head">Explicación</th>
+<th class="head">Valor por omisión</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>SESSION_COOKIE_DOMAIN</td>
+<td>El dominio que ha de usarse
+para las cookies de sesión.
+Ponga aquí una cadena como
+<tt class="docutils literal"><span class="pre">".lawrence.com"</span></tt> si
+quiere cookies para más de
+un dominio, o <tt class="docutils literal"><span class="pre">None</span></tt> para
+una estándar.</td>
+<td><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+<tr><td>SESSION_COOKIE_NAME</td>
+<td>El nombre de la cookie a
+usar para las sesiones.
+Puede ser cualquier cadena.</td>
+<td><tt class="docutils literal"><span class="pre">"sessionid"</span></tt></td>
+</tr>
+<tr><td>SESSION_COOKIE_SECURE</td>
+<td>Si se usa una cookie
+"segura" para las cookies
+de sesión. Si se pone a
+<tt class="docutils literal"><span class="pre">True</span></tt>, la cookie será
+marcada como "segura," que
+significa que el navegador
+se asegurará de que sólo se
+envia usando HTTPS.</td>
+<td><tt class="docutils literal"><span class="pre">False</span></tt></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition-detalles-t-cnicos admonition">
+<p class="first admonition-title">Detalles técnicos</p>
+<p>Hemos reunido algunas notas técnicas sobre el funcionamiento interno del
+<em>framework</em> de sesión, para los curiosos:</p>
+<ul>
+<li><p class="first">El diccionario de sesión acepta cualquier objeto de Python aceptado
+por <tt class="docutils literal"><span class="pre">pickle</span></tt>. Vea la documentación de este módulo que incorpora
+Python si desea más información sobre su funcionamiento.</p>
+</li>
+<li><p class="first">Los datos de la sesión se almacenan en una tabla de la base de datos
+llamada <tt class="docutils literal"><span class="pre">django_session</span></tt>.</p>
+</li>
+<li><p class="first">Los datos de sesión se leen de forma "perezosa": si nunca se accede
+a <tt class="docutils literal"><span class="pre">request.session</span></tt>, Django no tocará esa tabla de la base de datos.</p>
+</li>
+<li><p class="first">Django sólo envía una cookie si necesita hacerlo. Si no establece
+ningún dato de sesión, no se enviará una cookie de sesión (a manos que
+<tt class="docutils literal"><span class="pre">SESSION_SAVE_EVERY_REQUEST</span></tt> esté a <tt class="docutils literal"><span class="pre">True</span></tt>).</p>
+</li>
+<li><p class="first">El <em>framework</em> de sesiones de Django se basa por entero y en exclusiva
+en cookies. No recurre a colocar ID de sesión en las URL como último
+recuerdo, como hacen otras herramientas (PHP, JSP).</p>
+<p>Esta decisión de diseño es deliberada. Poner sesiones en las URL no
+sólo las hace horribles, sino que además hace vulnerable a su sitio a
+ciertas formas de robo de ID de sesión mediante la cabecera "Referer".</p>
+</li>
+</ul>
+<p class="last">Si sigue teniendo curiosidad, el código fuente es bastante explícito;
+mire en <tt class="docutils literal"><span class="pre">django.contrib.sessions</span></tt> si desea información privilegiada.</p>
+</div>
+</div>
+</div>
+<div class="section">
+<h1><a id="usuarios-y-autentificaci-n" name="usuarios-y-autentificaci-n">Usuarios y autentificación</a></h1>
+<p>Así que estamos a medio camino de conectar los navegadores directamente a la
+Gente Real. Las sesiones nos dan una manera de hacer persistir a los datos
+entre múltiples peticiones del navegador; la segunda parte de la ecuación es
+usar esas sesiones para la identificación del usuario. Por supuesto, no podemos
+fiarnos simplemente de que los usuarios sean quien dicen ser, así que
+tendremos que autentificarlos.</p>
+<p>Naturalmente, Django proporciona herramientas para gestionar estas tareas
+comunes (y muchas otras). El sistema de autentificación de Django trata con
+cuentas de usuario, grupos, peromisos y sesiones de usuario basadas en
+cookies. A este sistema se le suele denominar "auth/auth" (autentificación
+y autorización). Este nombre reconoce que tratar con los usuarios a menudo
+es un proceso de dos pasos; necesitamos</p>
+<ol class="arabic simple">
+<li>verificar (<strong>autentificar</strong>) que un usuario es quien dice ser (normalmente
+comprobando un nombre de usuario y una clave en una base de datos de
+usuarios), y entonces</li>
+<li>verificar que el usuario está <strong>autorizado</strong> a realizar alguna operación
+dada (normalmente comprobando una tabla de permisos).</li>
+</ol>
+<p>De acuerdo con estas necesidades, el sistema auth/auth de Django consiste en
+varias partes:</p>
+<ul class="simple">
+<li>Usuarios</li>
+<li>Permisos: marcadores binarios (sí/no) que indican si un usuario puede
+realizar una determinada tarea.</li>
+<li>Grupos: una manera genérica de aplicar etiquetas y permisos a más de un
+usuario.</li>
+<li>Mensajes: una manera sencilla de poner en cola y mostrar mensajes del
+sistema a los usuarios.</li>
+<li>Perfiles: un mecanismo para extender el objeto de usuario con campos
+personalizados.</li>
+</ul>
+<p>Si ha usado la herramienta de administración (Capítulo 6), ya habrá visto
+muchas de estas herramientras, y si ha editado usuarios o grupos en el
+administrador en realidad habrá estado editando datos en las tablas de la
+base de datos del sistema de autentificación.</p>
+<div class="section">
+<h2><a id="instalaci-n" name="instalaci-n">Instalación</a></h2>
+<p>Al igual que con las herramientas de sesión, el soporte de la autentificación
+está incluido en la aplicación de Django <tt class="docutils literal"><span class="pre">django.contrib</span></tt> que hace falta
+instalar. Igual que el sistema de sesiones, está instalado por omisión, pero
+si lo hemos eliminado tendremos que seguir los siguientes pasos para
+instalarlo:</p>
+<ol class="arabic simple">
+<li>Asegurarnos de que el <em>framework</em> de sesiones está instalado (véase
+más arriba). Llevar el seguimiento de los usuarios precisa cookies,
+obviamente, y por tanto se apoya en el <em>framework</em> de sesiones.</li>
+<li>Ponga <tt class="docutils literal"><span class="pre">'django.contrib.auth'</span></tt> en la opción <tt class="docutils literal"><span class="pre">INSTALLED_APPS</span></tt> y ejecute
+<tt class="docutils literal"><span class="pre">manage.py</span> <span class="pre">syncdb</span></tt>.</li>
+<li>Asegúrese de que tiene en su opción <tt class="docutils literal"><span class="pre">MIDDLEWARE_CLASSES</span></tt> la entrada
+<tt class="docutils literal"><span class="pre">'django.contrib.auth.middleware.AuthenticationMiddleware'</span></tt> (<em>después</em>
+de <tt class="docutils literal"><span class="pre">SessionMiddleware</span></tt>).</li>
+</ol>
+<p>Habiendo terminado la instalación, estamos listos para tratar con usuarios en
+las funciones de vista. La interfaz principal que vamos a usar para acceder
+a los usuarios dentro de una vista es <tt class="docutils literal"><span class="pre">request.user</span></tt>, que es un objeto que
+representa al usuario identificado en ese momento. Si el usuario no está
+identificado, en su lugar será un <tt class="docutils literal"><span class="pre">AnonymousUser</span></tt> (más adelante hay más
+detalles).</p>
+<p>Podemos decir fácilmente si un usuario está identificado usando el método
+<tt class="docutils literal"><span class="pre">is_authenticated()</span></tt>:</p>
+<pre class="literal-block">if request.user.is_authenticated():
+    # Hacer algo con el usuario autentificado.
+else:
+    # Hacer algo con el usuario anónimo.
+</pre>
+</div>
+<div class="section">
+<h2><a id="trabajo-con-usuarios" name="trabajo-con-usuarios">Trabajo con usuarios</a></h2>
+<p>Una vez que hemos obtenido un usuario (a menudo desde <tt class="docutils literal"><span class="pre">request.user</span></tt>, pero
+quizá mediante alguno de los métodos que discutiremos), ese objeto pone a
+nuestra disposición varios campos y métodos. Los objetos <tt class="docutils literal"><span class="pre">AnonymousUser</span></tt>
+emulan algunos de esos campos y métodos, pero no todos, así que siempre
+tendríamos que comprobar <tt class="docutils literal"><span class="pre">user.is_authenticated()</span></tt> antes de asumir que
+estamos tratando con un objeto de usuario completo.</p>
+<div class="section">
+<h3><a id="campos-en-los-objetos-user" name="campos-en-los-objetos-user">Campos en los objetos User</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="38%">
+<col width="63%">
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Campo</th>
+<th class="head">Descripción</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>username</td>
+<td>Preciso. 30 caracteres o menos. Sólo
+caracteres alfanuméricos (letras, dígitos y
+guiones bajos).</td>
+</tr>
+<tr><td>first_name</td>
+<td>Opcional. 30 caracteres o menos.</td>
+</tr>
+<tr><td>last_name</td>
+<td>Opcional. 30 caracteres o menos.</td>
+</tr>
+<tr><td>email</td>
+<td>Opcional. Dirección de correo electrónico.</td>
+</tr>
+<tr><td>password</td>
+<td>Preciso. Una suma de comprobación de la
+clave y metadatos asociados (Django no
+almacena claves en plano). Lea la sección
+"Claves" si quiere más detalles sobre este
+valor.</td>
+</tr>
+<tr><td>is_staff</td>
+<td>Booleano. Indica si este usuario puede
+acceder al sitio de administración.</td>
+</tr>
+<tr><td>is_active</td>
+<td>Booleano. Indica si esta cuenta se puede
+usar para ingresar al sitio. Ponga este
+marcador a <tt class="docutils literal"><span class="pre">False</span></tt> en lugar de borrar
+cuentas.</td>
+</tr>
+<tr><td>is_superuser</td>
+<td>Booleano. Indica que este usuario tiene
+todos los permisos sin tener que asignarlos
+de forma explícita.</td>
+</tr>
+<tr><td>last_login</td>
+<td>Fecha y hora del último ingreso del
+usuario. Está configurada para ser la fecha
+y hora actual por omisión.</td>
+</tr>
+<tr><td>date_joined</td>
+<td>Fecha y hora que indica el momento en que
+fue creada la cuenta. Está fijada a la
+fecha y hora del momento de creación de la
+cuenta.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section">
+<h3><a id="m-todos-en-los-objetos-user" name="m-todos-en-los-objetos-user">Métodos en los objetos User</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="39%">
+<col width="61%">
+</colgroup>
+<thead valign="bottom">
+<tr><th class="head">Método</th>
+<th class="head">Descripción</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr><td>is_authenticated()</td>
+<td>Siempre devuelve <tt class="docutils literal"><span class="pre">True``para</span> <span class="pre">objetos</span>
+<span class="pre">``User</span></tt> "reales". Ésta es la manera de
+averiguar si el usuario se ha autentificado.
+Esto no implica ningún permiso, y no
+comprueba si el usuario está activo (sólo
+que el usuario se ha autentificado con
+éxito).</td>
+</tr>
+<tr><td>is_anonymous()</td>
+<td>Devuelve <tt class="docutils literal"><span class="pre">True</span></tt> sólo en objetos
+<tt class="docutils literal"><span class="pre">AnonymousUser</span></tt> (y <tt class="docutils literal"><span class="pre">False</span></tt> para objetos
+<tt class="docutils literal"><span class="pre">User</span></tt> "reales"). Por lo general, debería
+preferirse el uso de <tt class="docutils literal"><span class="pre">is_authenticated()</span></tt>
+en lugar de  este método.</td>
+</tr>
+<tr><td>get_full_name()</td>
+<td>Devuelve el <tt class="docutils literal"><span class="pre">first_name</span></tt> sumado al
+<tt class="docutils literal"><span class="pre">last_name</span></tt>, con un espacio entre ellos.</td>
+</tr>
+<tr><td>set_password(clave)</td>
+<td>Establece la clave dada como la del usuario,
+ocupándose de crear el <em>hash</em>. Este método
+no guarda los datos del objeto <tt class="docutils literal"><span class="pre">User</span></tt>.</td>
+</tr>
+<tr><td>check_password(clave)</td>
+<td>Devuelve <tt class="docutils literal"><span class="pre">True</span></tt> si la clave en plano dada
+es la correcta para el usuario. Se ocupa de
+crear el <em>hash</em> para hacer la comparación.</td>
+</tr>
+<tr><td>get_group_permissions()</td>
+<td>Devuelve una lista de cadenas con permisos
+de que dispone el usuario debido a los
+grupos a los que pertenece.</td>
+</tr>
+<tr><td>get_all_permissions()</td>
+<td>Devuelve una lista de cadenas de permisos
+que posee, tanto por su pertenencia a grupos
+como los personales.</td>
+</tr>
+<tr><td>has_perm(perm)</td>
+<td>Devuelve <tt class="docutils literal"><span class="pre">True</span></tt> si el usuario tiene el
+permiso especificado, estando <tt class="docutils literal"><span class="pre">perm</span></tt> en el
+formato <tt class="docutils literal"><span class="pre">"paquete.nombrencódigo"</span></tt>. Si el
+usuario está inactivo, este método devuelve
+siempre <tt class="docutils literal"><span class="pre">False</span></tt>.</td>
+</tr>
+<tr><td>has_perms(lista_perm)</td>
+<td>Devuelve <tt class="docutils literal"><span class="pre">True</span></tt> si el usuario tiene todos
+los permisos especificados. Si el usuario se
+encuentra inactivo, este método devuelve
+siempre <tt class="docutils literal"><span class="pre">False</span></tt>.</td>
+</tr>
+<tr><td>has_module_perms(nombreapp)</td>
+<td>Devuelve <tt class="docutils literal"><span class="pre">True``si</span> <span class="pre">el</span> <span class="pre">usuario</span> <span class="pre">tiene</span> <span class="pre">algún</span>
+<span class="pre">permiso</span> <span class="pre">sobre</span> <span class="pre">la</span> <span class="pre">aplicación</span> <span class="pre">dada.</span> <span class="pre">Si</span> <span class="pre">el</span>
+<span class="pre">usuario</span> <span class="pre">está</span> <span class="pre">inactivo,</span> <span class="pre">este</span> <span class="pre">método</span> <span class="pre">devolverá</span>
+<span class="pre">siempre</span> <span class="pre">``False</span></tt>.</td>
+</tr>
+<tr><td>get_and_delete_messages()</td>
+<td>Devuelve una lista de objetos <tt class="docutils literal"><span class="pre">Message</span></tt> en
+la cola del usuario y elimina de ella los
+mensajes.</td>
+</tr>
+<tr><td>email_user(tema, mensaje)</td>
+<td>Envía un mensaje de correo electrónico al
+usuario. Este mensaje tendrá como remite la
+dirección indicada en la opción
+<tt class="docutils literal"><span class="pre">DEFAULT_FROM_EMAIL</span></tt>. También se puede
+pasar un tercer argumento, <tt class="docutils literal"><span class="pre">from_email</span></tt>,
+para usarlo como remite.</td>
+</tr>
+<tr><td>get_profile()</td>
+<td>Devuelve un perfil de este usuario que es
+específico al sitio web; vea más adelante la
+sección sobre perfiles si quiere saber más
+sobre este método.</td>
+</tr>
+</tbody>
+</table>
+<p>Por último, los objetos <tt class="docutils literal"><span class="pre">User</span></tt> tienen dos campos muchos-a-muchos: <tt class="docutils literal"><span class="pre">groups</span></tt>
+y <tt class="docutils literal"><span class="pre">permissions</span></tt>. Los objetos <tt class="docutils literal"><span class="pre">User</span></tt> pueden acceder a sus objetos
+relacionados de la misma manera que con cualquier otro campo muchos-a-muchos:</p>
+<pre class="literal-block"># Establece los grupos de un usuario:
+miusuario.groups = lista_grupos
+
+# Añade un usuario a varios grupos:
+miusuario.groups.add(grupo1, grupo2,...)
+
+# Elimina un usuario de varios grupos:
+miusuario.groups.remove(grupo1, grupo2,...)
+
+# Elimina un usuario de todos los grupos:
+miusuario.groups.clear()
+
+# Los permisos funcionan igual
+miusuario.permissions = lista_permisos
+miusuario.permissions.add(permiso1, permiso2, ...)
+miusuario.permissions.remove(permiso1, permiso2, ...)
+miusuario.permissions.clear()
+</pre>
+</div>
+</div>
+<div class="section">
+<h2><a id="ingreso-y-desconexi-n" name="ingreso-y-desconexi-n">Ingreso y desconexión</a></h2>
+<p>Django proporciona funciones de vista para gestionar el ingreso y desconexión
+(y algunas otras cosas interesantes), pero antes de que llegemos a eso vamos
+a echar un vistazo a la manera de identificar y desconectar "a mano" a los
+usuarios. Django proporciona dos funcioens para realizar estas acciones en
+<tt class="docutils literal"><span class="pre">django.contrib.auth</span></tt>: <tt class="docutils literal"><span class="pre">authenticate()</span></tt> y <tt class="docutils literal"><span class="pre">login()</span></tt>.</p>
+<p>Para autentificar un usuario y clave dados, usamos <tt class="docutils literal"><span class="pre">authenticate()</span></tt>. Lleva
+dos argumentos por nombre, <tt class="docutils literal"><span class="pre">username</span></tt> y <tt class="docutils literal"><span class="pre">password</span></tt>, y devuelve un objeto
+<tt class="docutils literal"><span class="pre">User</span></tt> si la clave es válida para el usuario dado. Si es incorrecta,
+<tt class="docutils literal"><span class="pre">authenticate()</span></tt> devuelve <tt class="docutils literal"><span class="pre">None</span></tt>:</p>
+<pre class="literal-block">&gt;&gt;&gt; from django.contrib import auth authenticate
+&gt;&gt;&gt; usuario = auth.authenticate(username='juan', password='secreto')
+&gt;&gt;&gt; if usuario is not None:
+...     print "¡Correcto!"
+... else:
+...     print "Ups, ¡es incorrecto!"
+Ups, ¡es incorrecto!
+</pre>
+<p>Para identificar a un usuario, en una vista, utilice <tt class="docutils literal"><span class="pre">login()</span></tt>. Toma como
+argumentos un objeto <tt class="docutils literal"><span class="pre">HttpRequest</span></tt> y un <tt class="docutils literal"><span class="pre">User</span></tt> y guarda el ID del usuario
+en la sesión, usando el <em>framework</em> de sesión de Django.</p>
+<p>Este ejemplo muestra cómo deberían usarse <tt class="docutils literal"><span class="pre">authenticate()</span></tt> y <tt class="docutils literal"><span class="pre">login()</span></tt>
+en una función de vista:</p>
+<pre class="literal-block">from django.contrib import auth
+
+def login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = auth.authenticate(username=username, password=password)
+    if user is not None and user.is_active:
+        # Clave correcta, y el usuario está marcado "activo"
+        auth.login(request, user)
+        # Redirigir a una página de éxito.
+        return HttpResponseRedirect("/account/identificado/")
+    else:
+        # Mostrar una página de error
+        return HttpResponseRedirect("/account/novalido/")
+</pre>
+<p>Para desconectar a un usuario que ha ingresado, utilice
+<tt class="docutils literal"><span class="pre">django.contrib.auth.logout()</span></tt> en la vista. Toma un objeto
+<tt class="docutils literal"><span class="pre">HttpRequest</span></tt> y no devuelve ningún valor:</p>
+<pre class="literal-block">from django.contrib import auth
+
+def logout(request):
+    auth.logout(request)
+    # Redirigir a una página de éxito.
+    return HttpResponseRedirect("/account/desconectado/")
+</pre>
+<p>Tenga en cuenta que <tt class="docutils literal"><span class="pre">logout()</span></tt> no lanza ningún error si el usuario no
+había ingresado.</p>
+<div class="section">
+<h3><a id="ingresar-y-desconectar-a-la-manera-f-cil" name="ingresar-y-desconectar-a-la-manera-f-cil">Ingresar y desconectar, a la manera fácil</a></h3>
+<p>En la práctica, normalmente no tendremos que escribir nuestras propias de
+ingreso y desconexión; el sistema de autentificación incorpora un grupo de
+vistas para gestionar estas operaciones de forma genérica.</p>
+<p>El primer paso para usar estas vistas es conectarlas en nuestra URLconf.
+Lo haremos añadiendo este pedazo de código:</p>
+<pre class="literal-block">from django.contrib.auth.views import login, logout
+
+urlpatterns = patterns('',
+    # existing patterns here...
+    (r'^accounts/login/$',  login)
+    (r'^accounts/logout/$', logout)
+)
+</pre>
+<p><tt class="docutils literal"><span class="pre">/accounts/login/</span></tt> y <tt class="docutils literal"><span class="pre">/accounts/logout/</span></tt> son las URL que usa Django por
+omisión para estas vistas, pero con un poco de esfuerzo las puede poner donde
+quiera.</p>
+<p>Si no se especifica, le vista <tt class="docutils literal"><span class="pre">login</span></tt> muestra la plantilla
+<tt class="docutils literal"><span class="pre">registration/login.html</span></tt> (puede cambiarla pasando a la vista un argumento
+adicional llamado <tt class="docutils literal"><span class="pre">template_name</span></tt>). Este formulario debe contener un campo
+<tt class="docutils literal"><span class="pre">username</span></tt> y un <tt class="docutils literal"><span class="pre">password</span></tt>. Una plantilla sencilla sería como ésta:</p>
+<pre class="literal-block">{% extends "base.html" %}
+
+{% block contenido %}
+
+  {% if form.errors %}
+    &lt;p class="error"&gt;Lo siento, el nombre de usuario y clave no son válidos&lt;/p&gt;
+  {% endif %}
+
+  &lt;form action='.' method='post'&gt;
+    &lt;label for="username"&gt;Nombre de usuario:&lt;/label&gt;
+    &lt;input type="text" name="username" value="" id="username"&gt;
+    &lt;label for="password"&gt;Clave:&lt;/label&gt;
+    &lt;input type="password" name="password" value="" id="password"&gt;
+
+    &lt;input type="submit" value="login" /&gt;
+    &lt;input type="hidden" name="next" value="{{ next }}" /&gt;
+  &lt;form action='.' method='post'&gt;
+
+{% endblock %}
+</pre>
+<p>Si el usuario ingresa con éxito, se le redirigirá a <tt class="docutils literal"><span class="pre">/accounts/profile/</span></tt>.
+Puede cambiar esto incluyendo un campo oculto llamado <tt class="docutils literal"><span class="pre">next</span></tt> que contenga
+la URL a la que hay que redirigir tras el ingreso. También se puede pasar
+este valor como parámetro <tt class="docutils literal"><span class="pre">GET</span></tt> a la vista <tt class="docutils literal"><span class="pre">login</span></tt> y se añadirá
+automáticamente al contexto como variable llamada <tt class="docutils literal"><span class="pre">next</span></tt> que se podrá
+insertar en un campo oculto.</p>
+<p>La vista de desconexión trabaja de forma ligeramente diferente; normalmente
+mostrará la plantilla <tt class="docutils literal"><span class="pre">registration/logged_out.html</span></tt> (que normalmente
+contiene un mensaje que diga "se ha desconectado con éxito"). Sin embargo,
+se puede invocar la vista añadiendo un argumento adicional, <tt class="docutils literal"><span class="pre">next_page</span></tt>,
+que le informa a la vista a dónde redirigir tras una desconexión.</p>
+</div>
+</div>
+</div>
+<div class="section">
+<h1><a id="limitaci-n-de-acceso-a-usuarios-identificados" name="limitaci-n-de-acceso-a-usuarios-identificados">Limitación de acceso a usuarios identificados</a></h1>
+<p>Por supuesto, la razón por la que nos tomamos tantas molestias es la de poder
+limitar el acceso a ciertas partes de nuestro sitio.</p>
+<p>La manera sencilla y directa de limitar el acceso a las páginas es comprobar
+<tt class="docutils literal"><span class="pre">request.user.is_authenticated()</span></tt> y redirigir a una página de ingreso:</p>
+<pre class="literal-block">from django.http import HttpResponseRedirect
+
+def mi_vista(request):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('/login/?next=%s' % request.path)
+    # ...
+</pre>
+<p>O quizá mostrar un mensaje de error:</p>
+<pre class="literal-block">def mi_vista(request):
+    if not request.user.is_authenticated():
+        return render_to_response('miapl/error_login.html')
+    # ...
+</pre>
+<p>Como atajo, podemos usar el decorador <tt class="docutils literal"><span class="pre">login_required</span></tt>:</p>
+<pre class="literal-block">from django.contrib.auth.decorators import login_required
+
+@login_required
+        def mi_vista(request):
+    # ...
+</pre>
+<p><tt class="docutils literal"><span class="pre">login_required</span></tt> hace lo siguiente:</p>
+<ul class="simple">
+<li>Si el usuario no ha ingresado, le redirige a <tt class="docutils literal"><span class="pre">/accounts/login</span></tt>, pasando
+la URL absoluta actual en la cadena de la consulta como <tt class="docutils literal"><span class="pre">next</span></tt>. Por
+ejemplo, <tt class="docutils literal"><span class="pre">/accounts/login/?next=/encuestas/3/</span></tt>.</li>
+<li>Si el usuario ha ingresado, ejecuta la vista de forma normal. El código
+de la vista puede asumir que el usuario está identificado.</li>
+</ul>
+<div class="admonition-nota admonition">
+<p class="first admonition-title">Nota</p>
+<p class="last">Si le gustan los patrones de programación, verá que este decorador y los
+que comentaremos después son ejemplos del patrón "Guard". ¿No son
+divertidos los patrones?</p>
+</div>
+</div>
+<div class="section">
+<h1><a id="limitaci-n-de-acceso-a-usuarios-que-pasan-una-prueba" name="limitaci-n-de-acceso-a-usuarios-que-pasan-una-prueba">Limitación de acceso a usuarios que pasan una prueba</a></h1>
+<p>Limitar el acceso basándose en ciertos permisos o alguna otra prueba, o
+proporcionar un destino diferente para la vista de ingreso funciona
+básicamente de la misma manera.</p>
+<p>La manera directa es realizar la prueba sobre <tt class="docutils literal"><span class="pre">request.user</span></tt> en la propia
+vista. Por ejemplo, esta vista se asegura de que el usuario está identificado
+y que tiene el permiso <tt class="docutils literal"><span class="pre">encuestas.puede_votar</span></tt> (véase más adelante el
+funcionamiento de los permisos):</p>
+<pre class="literal-block">def votar(request):
+    if request.user.is_authenticated() and request.user.has_perm('encuestas.puede_votar')):
+        # Vote aquí
+    else:
+        return HttpResponse("No puede votar en esta encuesta.")
+</pre>
+<p>De nuevo, Django proporciona un atajo. Éste se llama <tt class="docutils literal"><span class="pre">user_passes_test</span></tt>
+que en realidad es una <strong>factoría de decoradores</strong>: toma argumentos y genera
+un decorador especializado para nuestra situación particular. Por ejemplo:</p>
+<pre class="literal-block">def usuario_puede_votar(user):
+    return user.is_authenticated() and user.has_perm("encuestas.puede_votar")
+
+@user_passes_text(usuario_puede_votar, login_url="/login/")
+def votar(request):
+    # Aquí va código que puede asumir que entra un usuario identificado
+    # con los permisos correctos.
+    ...
+</pre>
+<p><tt class="docutils literal"><span class="pre">user_passes_test</span></tt> sólo toma un argumento obligatorio: un objeto invocable
+que toma como parámetro un objeto <tt class="docutils literal"><span class="pre">User</span></tt> y devuelve <tt class="docutils literal"><span class="pre">True</span></tt> si el usuario
+tiene permiso para ver la página. Fíjese en que <tt class="docutils literal"><span class="pre">user_passes_test</span></tt> no
+comprueba automáticamente que el <tt class="docutils literal"><span class="pre">User</span></tt> esté autentificado; eso debe hacerlo
+usted mismo.</p>
+<p>En este ejemplo también mostramos el argumento opcional, <tt class="docutils literal"><span class="pre">login_url</span></tt>, que le
+permite especificar la URL de la página de ingreso (<tt class="docutils literal"><span class="pre">/accounts/login</span></tt> por
+omisión).</p>
+<p>Dado que la tarea de comprobar si un usuario tiene un permiso en particular
+es relativamente común, Django proporciona un atajo para ese caso: el
+decorador <tt class="docutils literal"><span class="pre">permission_required()</span></tt>. El ejemplo anterior se podría escribir
+así usando este decorador:</p>
+<pre class="literal-block">from django.contrib.auth.decorators import permission_required
+
+@permission_required('encuestas.puede_votar', login_url="/login/")
+def votar(request):
+    # ...
+</pre>
+<p><tt class="docutils literal"><span class="pre">permission_required()</span></tt> también toma un segundo parámetro opcional
+<tt class="docutils literal"><span class="pre">login_url</span></tt> que también tiene como valor predeterminado
+<tt class="docutils literal"><span class="pre">'/accounts/login/'</span></tt>.</p>
+<div class="section">
+<h2><a id="limitaci-n-de-acceso-a-vistas-gen-ricas" name="limitaci-n-de-acceso-a-vistas-gen-ricas">Limitación de acceso a vistas genéricas</a></h2>
+<p>Una de las preguntas más frecuentes en la lista Django-users versa sobre
+la limitación de acceso a vistas genéricas. Para conseguir esto necesitaremos
+escribir un fino recubrimiento sobre la vista y apuntar la URLconf hacia él
+en lugar de a la vista genérica en sí:</p>
+<pre class="literal-block">from dango.contrib.auth.decorators import login_required
+from django.views.generic.date_based import object_detail
+
+@login_required
+def object_detail_limitado(*args, **kwargs):
+    return object_detail(*args, **kwargs)
+</pre>
+<p>Por supuesto, también se puede sustituir <tt class="docutils literal"><span class="pre">login_required</span></tt> por cualquiera de
+los otros decoradores de limitación.</p>
+</div>
+</div>
+<div class="section">
+<h1><a id="gesti-n-de-usuarios-permisos-y-grupos" name="gesti-n-de-usuarios-permisos-y-grupos">Gestión de usuarios, permisos y grupos</a></h1>
+<p>De lejos, la manera más sencilla de gestionar el sistema de autentificación
+es mediante el administrador. En el Capítulo 6 comentamos la manera de usar
+el administrador de Django para editar los usuarios y controlar sus permisos
+y acceso y la mayor parte del tiempo nos limitaremos a usar esa interfaz.</p>
+<p>Sin embargo, existen APIs de bajo nivel a las que puede descender en caso de
+necesidad de control absoluto.</p>
+<div class="section">
+<h2><a id="creaci-n-de-usuarios" name="creaci-n-de-usuarios">Creación de usuarios</a></h2>
+<p>La manera básica de crear usuarios es usar la función de apoyo
+<tt class="docutils literal"><span class="pre">create_user</span></tt>:</p>
+<pre class="literal-block">&gt;&gt;&gt; from django.contrib.auth.models import User
+&gt;&gt;&gt; usuario = User.objects.create_user(username='john',
+...                                    email='jlennon@beatles.com',
+...                                    password='glass onion')
+</pre>
+<p>Llegados aquí, <tt class="docutils literal"><span class="pre">usuario</span></tt> es una instancia de <tt class="docutils literal"><span class="pre">User</span></tt> preparada para
+ser guardada en la base de datos. También podemos hacer algunos cambios
+más antes de guardarla:</p>
+<pre class="literal-block">&gt;&gt;&gt; usuario.is_staff = True
+&gt;&gt;&gt; usuario.save()
+</pre>
+</div>
+<div class="section">
+<h2><a id="cambio-de-claves" name="cambio-de-claves">Cambio de claves</a></h2>
+<p>Podemos cambiar una clave con <tt class="docutils literal"><span class="pre">set_password()</span></tt>:</p>
+<pre class="literal-block">&gt;&gt;&gt; usuario = User.objects.get(username='john')
+&gt;&gt;&gt; usuario.set_password('goo goo goo joob')
+&gt;&gt;&gt; usuario.save()
+</pre>
+<p>No cambie directamente el atributo <tt class="docutils literal"><span class="pre">password</span></tt> a menos que sepa bien lo que
+está haciendo; la forma en que se almacena realmente la clave es la de
+<strong>salted hash</strong> y por tanto no se puede editar de forma directa.</p>
+<p>Siendo más formales, el atributo <tt class="docutils literal"><span class="pre">password</span></tt> de un objeto <tt class="docutils literal"><span class="pre">User</span></tt> es una
+cadena con este formato:</p>
+<pre class="literal-block">tipohash$salt$hash
+</pre>
+<p>El tipo de <em>hash</em>, el <em>salt</em> y el <em>hash</em> en sí, separados por el caracter del
+dólar.</p>
+<p><tt class="docutils literal"><span class="pre">tipohash</span></tt> puede ser bien <tt class="docutils literal"><span class="pre">sha1</span></tt> (predeterminado) o <tt class="docutils literal"><span class="pre">md5</span></tt> (el algoritmo
+que se va a usar para crear un <em>hash</em> unidireccional de la clave). <em>Salt</em> es
+una cadena al azar que se usa para perturbar la clave original al crear el
+<em>hash</em>.</p>
+<p>Por ejemplo:</p>
+<pre class="literal-block">sha1$a1976$a36cc8cbf81742a8fb52e221aaeab48ed7f58ab4
+</pre>
+<p>Las funciones <tt class="docutils literal"><span class="pre">User.set_password()</span></tt> y <tt class="docutils literal"><span class="pre">User.check_password()</span></tt> gestionan
+tras el telón la modificación y comprobación de estos valores.</p>
+<div class="system-message">
+<p class="system-message-title">System Message: ERROR/3 (<tt class="docutils">/tmp/tmp.2e73529882766d9fd5115435379fd70e/tmp.2e73529882766d9fd5115435379fd70e.rst</tt>, line 1018)</p>
+<p>Unknown directive type "annotation".</p>
+<pre class="literal-block">.. annotation::
+   ¿Es algún tipo de droga?
+
+   No, un **salted hash** no tiene nada que ver con la marihuana; es una manera
+   bastante común de almacenar claves de manera segura. Un **hash** es una
+   función criptográfica de una sola dirección; es decir, que se puede computar
+   de forma sencilla el *hash* de un valor dado, pero es casi imposible
+   reconstruir el valor original partiendo del *hash*.
+
+   Si almacenásemos las claves como texto sencillo, cualquiera que consiguiese
+   acceder a la base de datos de claves podría saber al instante las claves de
+   todo el mundo. Almacenar las claves como *hashes* reduce el valor de una
+   base de datos comprometida.
+
+   Sin embargo, un atacante con la base de claves podría aún intentar un ataque
+   por **fuerza bruta**, obteniendo el *hash* de millones de claves y
+   comparándolas con los valores almacenados. Esto podría llevar tiempo, pero
+   menos del que piensa (los computadores son increíblemente rápidos)
+
+   Lo que es peor, existen las llamadas **rainbow tables** (bases con *hashes*
+   precalculados de millones de claves) y están disponibles de forma pública.
+   Con una de estas tablas un atacante puede descubrir la mayoría de las
+   claves en segundos.
+
+   Añadir un **salt** (básicamente, un valor inicial aleatorio) al *hash*
+   almacenado añade otra capa de dificultad. Dado que el *salt* cambia de una
+   clave a otra, los *salt* también previenten ante el uso de tablas
+   *rainbow*, forzando así a los atacantes a volver al ataque por fuerza
+   bruta (a su vez más difícil debido a la entropía adicional creada en
+   el *hash* por el *salt*)
+
+   Aunque ésta no es exactamente la manera más segura de almacenar claves,
+   son un punto medio bastante bueno entre la seguridad y la conveniencia.
+
+</pre>
+</div>
+</div>
+<div class="section">
+<h2><a id="gesti-n-de-registros" name="gesti-n-de-registros">Gestión de registros</a></h2>
+<p>Podemos usar estas herramientas de bajo nivel para crear vistas que permitan
+el registro de nuevos usuarios. Casi cualquier desarrollador querrá implementar
+este proceso de una manera diferente, así que Django le deja a usted la tarea
+de escribir una vista de registro; por suerte, es muy fácil.</p>
+<p>Lo más simple sería proporcionar una pequeña vista que solicite al usuario
+la información necesaria y cree el usuario. Django incorpora un formulario
+que se puede usar para este propósito y que usaremos en este ejemplo:</p>
+<pre class="literal-block">from django import oldforms as forms
+from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.contrib.auth.forms import UserCreationForm
+
+def registro(request):
+    formulario = UserCreationForm()
+
+    if request.method == 'POST':
+        datos = request.POST.copy()
+        errores = formulario.get_validation_errors(data)
+        if not errores:
+            nuevo_usuario = formulario.save()
+            return HttpResponseRedirect("/accounts/created/")
+    else:
+        datos, errores = {}, {}
+
+    return render_to_response("registration/register.html", {
+        'form' : forms.FormWrapper(formulario, datos, errores)
+    })
+</pre>
+<p>Esto asume la existencia de una plantilla llamada
+<tt class="docutils literal"><span class="pre">registration/register.html</span></tt>; y aquí tiene un ejemplo de cómo podría ser
+tal plantilla:</p>
+<div class="system-message">
+<p class="system-message-title">System Message: WARNING/2 (<tt class="docutils">/tmp/tmp.2e73529882766d9fd5115435379fd70e/tmp.2e73529882766d9fd5115435379fd70e.rst</tt>, line 1088)</p>
+Literal block expected; none found.</div>
+</div>
+</div>
+</div>
+
+</body></html>

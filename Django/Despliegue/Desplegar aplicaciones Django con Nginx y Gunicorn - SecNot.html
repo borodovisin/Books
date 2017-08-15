@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)http://www.secnot.com/django-nginx-gunicorn.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <link href="http://www.secnot.com/images/favicon.png" rel="icon">
+
+<link rel="canonical" href="http://www.secnot.com/django-nginx-gunicorn.html">
+
+        <meta name="author" content="SecNot">
+        <meta name="keywords" content="Django,Nginx,Gunicorn,Linux">
+        <meta name="description" content="Aprende a desplegar aplicaciones django usando gunicorn y nginx.">
+
+        <meta property="og:site_name" content="SecNot">
+        <meta property="og:type" content="article">
+        <meta property="og:title" content="Desplegar aplicaciones Django con Nginx y Gunicorn">
+        <meta property="og:url" content="http://www.SecNot.com/django-nginx-gunicorn.html">
+        <meta property="og:description" content="Aprende a desplegar aplicaciones django usando gunicorn y nginx.">
+        <meta property="article:published_time" content="2014-02-08">
+            <meta property="article:section" content="Desarrollo Web">
+            <meta property="article:tag" content="Django">
+            <meta property="article:tag" content="Nginx">
+            <meta property="article:tag" content="Gunicorn">
+            <meta property="article:tag" content="Linux">
+            <meta property="article:author" content="SecNot">
+
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/bootstrap.min.css" type="text/css">
+    <link href="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/font-awesome.min.css" rel="stylesheet">
+
+    <link href="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/secnot.css" rel="stylesheet">
+    <link rel="stylesheet" href="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/style.css" type="text/css">
+
+        <link href="http://www.secnot.com/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="SecNot ATOM Feed">
+
+<script type="text/javascript" async="" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/ga.js"></script><script type="text/javascript" async="" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/embed.js"></script><script async="" type="text/javascript" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/count.js"></script><script type="text/javascript" charset="utf-8" async="" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/button.c9025956238e7d486d74379e14f50282.js"></script></head>
+<body>
+
+<!-- Navbar-->
+<div class="container">
+<div class="navbar navbar-inverse" role="navigation">
+	<div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="http://www.secnot.com/" class="navbar-brand">
+SecNot            </a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav pull-right">
+                         <li><a href="http://www.secnot.com/pages/contacto.html">
+                             Contacto
+                          </a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="http://www.secnot.com/archives.html"><i class="fa fa-th-list"></i><span class="icon-label">Archivo</span></a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+</div> <!-- /.navbar -->
+</div>
+<!-- Banner -->
+<!-- End Banner -->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-9">
+
+    <section id="content">
+        <article itemscope="" itemtype="http://schema.org/BlogPosting">
+            <header class="page-header">
+                <h1 itemprop="headline">
+                    <a href="http://www.secnot.com/django-nginx-gunicorn.html" itemprop="url" rel="bookmark" title="Permalink to Desplegar aplicaciones Django con Nginx y Gunicorn">
+                        Desplegar aplicaciones Django con Nginx y Gunicorn
+                    </a>
+                </h1>
+                <div class="article-info">
+<footer class="post-info">
+    <span class="label label-default">Publicado</span>
+    <span class="published">
+        <i class="fa fa-calendar"></i><time itemprop="datePublished" datetime="2014-02-08T21:33:00+01:00"> sáb 08 febrero 2014</time>
+    </span>
+
+
+    
+<span class="label label-default">Tags</span>
+<span itemprop="keywords">
+	<a href="http://www.secnot.com/tag/django.html">Django</a>
+        /
+	<a href="http://www.secnot.com/tag/nginx.html">Nginx</a>
+        /
+	<a href="http://www.secnot.com/tag/gunicorn.html">Gunicorn</a>
+        /
+	<a href="http://www.secnot.com/tag/linux.html">Linux</a>
+</span>
+    
+</footer><!-- /.post-info -->                </div>
+            </header>
+            <div itemprop="articleBody" class="entry-content">
+                <p>Si estás desarrollando una aplicación web, algún día tendrás que dar el paso
+y hacerla pública. Inicialmente puedes usar un servicio como
+<a class="reference external" href="https://www.heroku.com/">Heroku</a> pero si tienes éxito, no te quedará mas
+remedio que gestionar tus propios servidores o VPS.</p>
+<p>Por fortuna desplegar una aplicación django usando nginx y gunicorn, es
+más sencillo de lo que podría parecer. En esta pequeña guia trato de describir
+el proceso paso a paso:</p>
+<div class="section" id="crear-un-usuario-para-la-aplicacion-django">
+<h2>1 - Crear un usuario para la aplicación django</h2>
+<p>El primer paso es crear un usuario con el que ejecutar la aplicación
+Django, esto nos permite organizar con facilidad un servidor donde estemos
+ejecutando varias aplicaciones, proporciona separación de privilegios, y limita
+el posible daño que pueda hacerse al sistema si la aplicación es comprometida.</p>
+<p>Creamos un grupo al que pertenecerán todos los usuarios de las aplicaciones
+django, y un usuario al que le asignamos el nombre de la aplicación.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo addgroup --system webapps
+<span class="nv">$ </span>sudo adduser  --system --ingroup webapps --home /webapps/appname appname
+</pre></div>
+<p>Al usar en modificador <em>--system</em>, al usuario se le asigna /bin/false como
+shell, y no tiene clave, por lo que no puede hacer login. Aunque esto es
+una buena medida de seguridad, es muy incomodo mientras se está configurando
+el sistema, así que asignamos un shell temporalmente:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo chsh -s /bin/bash appname
+</pre></div>
+<p>Esto nos permite usar <strong>sudo su appname</strong> para seguir con la instalación como
+el nuevo usuario.</p>
+</div>
+<div class="section" id="instalar-y-configurar-virtualenv">
+<h2>2 - Instalar y configurar virtualenv</h2>
+<p>Virtualenv es la herramienta que nos permite aislar los paquetes requeridos
+por las aplicaciones, de manera que si dos aplicaciones necesitan paquetes
+que están en conflicto, no interfieran la una con la otra como ocurriría si
+instalásemos todos los paquetes directamente en el sistema.
+Instalamos virtualenv con:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install python-virtualenv python-pip
+</pre></div>
+<p>Una vez instalado, hacemos login con el usuario que hemos creado, y dentro de
+su directorio usamos virtualenv para generar un nuevo entorno virtual:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo su appname
+<span class="nv">$ </span><span class="nb">cd</span>
+<span class="nv">$ </span>mkdir virtualenvs
+<span class="nv">$ </span>virtualenv --no-site-packages virtualenvs/app_env
+<span class="nv">$ </span><span class="nb">source </span>virtualenvs/app_env/bin/activate
+</pre></div>
+<p>Dentro del entorno, hay que instalar todos los paquetes que sean necesarios
+para la aplicación, puedes hacerlo uno a uno, o en bloque si tienes el archivo
+requirements.txt:</p>
+<div class="highlight"><pre><span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>pip install django
+<span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>pip install django-countries
+<span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>pip install django-mptt
+<span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>....
+</pre></div>
+<div class="highlight"><pre><span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>pip install -r requirements.txt
+</pre></div>
+<p>Si quieres profundizar en el funcionamiento de virtualenv sigue este
+<a class="reference external" href="http://www.secnot.com/django-virtualenv.html">tutorial</a></p>
+</div>
+<div class="section" id="gunicorn-supervisor">
+<h2>3 - Gunicorn + Supervisor</h2>
+<p>Gunicorn es el servidor WSGI que se encarga de servir la aplicación, pero
+necesita un programa que lo inicie al arranque, y lo monitorice para
+reiniciarlo si hay algún problema. La mejor solución es usar el gestor de
+procesos como <a class="reference external" href="http://supervisord.org/">supervisor</a>.
+La instalación es sencilla:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install supervisor
+</pre></div>
+<p>Para instalar gunicorn el método más sencillo es hacerlo dentro del entorno
+virtual de tu aplicación django.</p>
+<div class="highlight"><pre><span class="nv">$ </span><span class="nb">source </span>virtualenvs/app_env/bin/activate
+<span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>pip install gunicorn
+</pre></div>
+<p>Una vez todo está instalado, creamos un archivo de configuración para gunicorn
+<strong>gunicorn_conf.py</strong> en el directorio HOME del usuario, en el que indicamos la
+dirección y puerto en los que estará escuchando gunicorn:</p>
+<div class="highlight"><pre><span class="c"># gunicorn_conf.py</span>
+<span class="n">workers</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">bind</span> <span class="o">=</span> <span class="s">'127.0.0.1:9000'</span>
+</pre></div>
+<p>A partir de aquí ya podemos salir del entorno virtual de la aplicación:</p>
+<div class="highlight"><pre><span class="o">(</span>app_env<span class="o">)</span><span class="nv">$ </span>deactivate
+</pre></div>
+<p>El siguiente paso es crear el archivo de configuración de supervisor en
+<strong>/etc/supervisor/conf.d/appname.conf</strong>:</p>
+<div class="highlight"><pre>[program:appname]
+command=/webapps/appname/django_app/run_gunicorn.sh
+directory = /webapps/appname/django_app/
+user=appname
+autostart=true
+autorestart=true
+priority=991
+stopsignal=KILL
+</pre></div>
+<p>Tras esto creamos en el directorio de la aplicación el script
+<strong>run_gunicorn.sh</strong> que etablece el entorno virtualenv para la aplicación y
+despuer ejecuta gunicorn:</p>
+<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+<span class="nb">source</span> /webapp/appname/virtualenvs/app_env/bin/activate
+<span class="nb">exec</span> /webapp/appname/virtualenvs/app_env/bin/gunicorn -c /webapps/appname/gunicorn_conf.py django_app.wsgi:application
+</pre></div>
+<p>Una vez configurado indicamos a supervisor que debe iniciar el nuevo servicio:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo supervisorctl start reread
+appname: available
+<span class="nv">$ </span>sudo supervisorctl update
+appname: added process group
+<span class="nv">$ </span>sudo supervisorctl status appname
+appname                          RUNNING    pid 21710, uptime 0:00:07
+</pre></div>
+<p>Para detener e iniciar la aplicación podemos usar:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo supervisorctl stop appname
+appname: stopped
+<span class="nv">$ </span>sudo supervisorctl start appname
+appname: started
+</pre></div>
+<p>Llegado a este punto si todo funciona correctamente, ya podemos desactivar
+el shell del usuario creado para la aplicación.</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo -s /bin/false appname
+</pre></div>
+<p>Si prefieres que sea posible hacer login con el usuario, es recomendable que
+le asignes una clave.</p>
+</div>
+<div class="section" id="nginx">
+<h2>4 - Nginx</h2>
+<p>Usamos Nginx para hacer de pasarela entre los clientes y gunicorn, y para
+servir los archivos estáticos de la aplicación. Para instalarlo:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo apt-get install nginx
+</pre></div>
+<p>Para configurar nginx, hay que crear un archivo <strong>/etc/ngix/sites-available/</strong>,
+en el especificaremos donde se debe conectar a gunicorn en la sección upstream,
+y la ruta a los archivos estáticos de tu aplicación en la sección server:</p>
+<div class="highlight"><pre><span class="k">upstream</span> <span class="s">django_app_server</span> <span class="p">{</span>
+    <span class="c1"># Dirección en la que está escuchando gunicorn</span>
+    <span class="kn">server</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span> <span class="s">fail_timeout=0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">server</span> <span class="p">{</span>
+    <span class="c1"># listen 80 default deferred; # for Linux</span>
+    <span class="c1"># listen 80 default accept_filter=httpready; # for FreeBSD</span>
+    <span class="kn">listen</span> <span class="mi">80</span> <span class="s">default</span><span class="p">;</span>
+
+    <span class="kn">client_max_body_size</span> <span class="s">4G</span><span class="p">;</span>
+    <span class="kn">server_name</span> <span class="s">www.dominio.com</span><span class="p">;</span>
+
+    <span class="c1"># ~2 seconds is often enough for most folks to parse HTML/CSS and</span>
+    <span class="c1"># retrieve needed images/icons/frames, connections are cheap in</span>
+    <span class="c1"># nginx so increasing this is generally safe...</span>
+    <span class="kn">keepalive_timeout</span> <span class="mi">5</span><span class="p">;</span>
+
+    <span class="c1"># Ruta a tus archivos estaticos.</span>
+    <span class="kn">location</span> <span class="s">/static/</span> <span class="p">{</span>
+      <span class="kn">alias</span> <span class="s">/webapps/appname/django_app/static/</span><span class="p">;</span>
+      <span class="kn">autoindex</span> <span class="no">on</span><span class="p">;</span>
+    <span class="p">}</span>
+
+
+    <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+      <span class="c1"># an HTTP header important enough to have its own Wikipedia entry:</span>
+      <span class="c1">#   http://en.wikipedia.org/wiki/X-Forwarded-For</span>
+      <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+
+      <span class="c1"># enable this if and only if you use HTTPS, this helps Rack</span>
+      <span class="c1"># set the proper protocol for doing redirects:</span>
+      <span class="c1"># proxy_set_header X-Forwarded-Proto https;</span>
+
+      <span class="c1"># pass the Host: header from the client right along so redirects</span>
+      <span class="c1"># can be set properly within the Rack application</span>
+      <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$http_host</span><span class="p">;</span>
+
+      <span class="c1"># we don't want nginx trying to do something clever with</span>
+      <span class="c1"># redirects, we set the Host: header above already.</span>
+      <span class="kn">proxy_redirect</span> <span class="no">off</span><span class="p">;</span>
+
+      <span class="c1"># set "proxy_buffering off" *only* for Rainbows! when doing</span>
+      <span class="c1"># Comet/long-poll stuff.  It's also safe to set if you're</span>
+      <span class="c1"># using only serving fast clients with Unicorn + nginx.</span>
+      <span class="c1"># Otherwise you _want_ nginx to buffer responses to slow</span>
+      <span class="c1"># clients, really.</span>
+      <span class="c1"># proxy_buffering off;</span>
+
+      <span class="c1"># Try to serve static files from nginx, no point in making an</span>
+      <span class="c1"># *application* server like Unicorn/Rainbows! serve static files.</span>
+      <span class="kn">proxy_pass</span> <span class="s">http://django_app_server</span><span class="p">;</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p><a class="reference external" href="http://www.secnot.com/scripts/gunicorn-base-nginx.conf">Descargar</a></p>
+<p>Una vez configurado, hay que enlazar el archivo que hemos creado en
+<strong>/etc/nginx/sites-available/</strong> a <strong>/etc/nginx/sites-enabled/</strong>, de esta manera
+nginx empezará a usar la configuración:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo ln -s /etc/nginx/sites-available/midominio /etc/nginx/sites-enabled/midominio
+</pre></div>
+<p>Por último reiniciamos nginx:</p>
+<div class="highlight"><pre><span class="nv">$ </span>sudo service nginx restart
+</pre></div>
+<p><em>Nota: Los autores de gunicorn tiene un ejemplo más completo de un archivo de
+configuración</em>
+<a class="reference external" href="https://raw.github.com/benoitc/gunicorn/master/examples/nginx.conf">nginx.conf</a></p>
+</div>
+<div class="section" id="alternativas">
+<h2>Alternativas</h2>
+<p>Por supuesto esta no es la única opción para desplegar django, ni es la mejor
+para todas las situaciones. Si estas administrando múltiples aplicaciones,
+y/o múltiples servidores quizás <a class="reference external" href="http://www.docker.io/">Docker</a> o
+<a class="reference external" href="https://github.com/progrium/dokku">Dokku</a> se ajuste mejor a tus necesidades.
+Y como comenté al inicio <a class="reference external" href="https://www.heroku.com/">Heroku</a> es una buena
+alternativa para páginas con poco tráfico.</p>
+</div>
+<div class="section" id="enlaces">
+<h2>Enlaces</h2>
+<ul class="simple">
+<li><a class="reference external" href="http://supervisord.org/">Documentación Supervisor</a></li>
+<li><a class="reference external" href="http://docs.gunicorn.org/en/latest">Documentación Gunicorn</a></li>
+<li><a class="reference external" href="http://nginx.org/en/docs/">Documentación Nginx</a></li>
+<li><a class="reference external" href="http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/">Nginx+Gunicorn+Django Tutorial</a></li>
+</ul>
+</div>
+
+            </div>
+            <!-- /.entry-content -->
+    <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" title="Twitter Tweet Button" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/tweet_button.c6def25548e9590b13abaa1b3330b811.en.html" style="position: static; visibility: visible; width: 76px; height: 28px;"></iframe>
+    <script id="twitter-wjs" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/widgets.js"></script><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    <hr>
+    <section class="comments" id="comments">
+        <div id="disqus_thread"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 591px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'secnot'; // required: replace example with your forum shortname
+
+                    var disqus_identifier = 'django-nginx-gunicorn';
+                var disqus_url = 'http://www.SecNot.com/django-nginx-gunicorn.html';
+
+            var disqus_config = function () {
+                this.language = "es";
+            };
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.type = 'text/javascript';
+                dsq.async = true;
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the &lt;a href="http://disqus.com/?ref_noscript"&gt;comments powered by
+            Disqus.&lt;/a&gt;</noscript>
+        
+
+    </section>
+        </article>
+    </section>
+
+        </div>
+        <div class="col-md-3 visible-md visible-lg" id="sidebar">
+            <aside>
+
+<section class="sidebar">
+    <ul class="list-group list-group-flush">
+
+            <li class="list-group-item"><h4><span class="icon-label">Categorías</span></h4>
+                <ul class="list-group" id="categories">
+                    <li class="list-group-item">
+                        <a href="http://www.secnot.com/category/administracion.html">
+                            Administración
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://www.secnot.com/category/desarrollo-web.html">
+                            Desarrollo Web
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://www.secnot.com/category/programacion.html">
+                            Programación
+                        </a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="http://www.secnot.com/category/seguridad.html">
+                            Seguridad
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        
+    <li class="list-group-item"><h4><span class="icon-label">Enlaces</span></h4>
+      <ul class="list-group" id="links">
+        <li class="list-group-item">
+            <a href="http://www.djangoproject.com/" target="_blank">
+                Django
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://ccbv.co.uk/" target="_blank">
+                Classy Class-Based Views
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://python.org/" target="_blank">
+                Python.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://insecure.org/" target="_blank">
+                Insecure.org
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://stackoverflow.com/" target="_blank">
+                StackOverflow.com
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://serverfault.com/" target="_blank">
+                serverfault.com
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.fullstackpython.com/" target="_blank">
+                Full Stack Python
+            </a>
+        </li>
+        <li class="list-group-item">
+            <a href="http://www.secnot.com/commandos-utiles.html" target="_blank">
+                Comandos Útiles
+            </a>
+        </li>
+      </ul>
+    </li>
+        
+		<li class="list-group-item">
+			<ul class="list-group">
+				<li class="list-group-item">
+					<a href="https://twitter.com/SecNot" style="padding-right:10px;"><i class="fa fa-twitter-square fa-2x"></i></a>
+					<a href="https://github.com/secnot/" style="padding-right:10px;"><i class="fa fa-github-square fa-2x"></i></a>
+				</li>
+			</ul>
+		</li>
+
+
+    </ul>
+</section>
+            </aside>
+        </div>
+    </div>
+</div>
+<footer>
+   <div class="container">
+      <div class="row">
+         <div class="col-xs-10"><p>© 2015 SecNot -              <small>    Contenidos
+  bajo <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Licencia Creative Commons 4.0 </a><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/80x15.png"></a>
+
+</small></p>
+         </div>
+      </div>
+   </div>
+</footer>
+<!--<script src="http://www.SecNot.com/theme/js/jquery.min.js"></script>-->
+
+<script src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/jquery-2.1.1.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/respond.min.js"></script>
+
+    <!-- Disqus -->
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'secnot'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script');
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <!-- End Disqus Code -->
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-47470582-1']);
+        _gaq.push(['_trackPageview']);
+
+        (function () {
+            var ga = document.createElement('script');
+            ga.type = 'text/javascript';
+            ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+    <!-- End Google Analytics Code -->
+
+
+<iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/saved_resource(1).html"></iframe><iframe style="display: none;" src="./Desplegar aplicaciones Django con Nginx y Gunicorn - SecNot_files/saved_resource(2).html"></iframe></body></html>

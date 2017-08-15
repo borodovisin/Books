@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<!-- saved from url=(0087)http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/ -->
+<html lang="es-ES" prefix="og: http://ogp.me/ns#" style="height: auto;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador</title>
+<link rel="profile" href="http://gmpg.org/xfn/11">
+<link rel="pingback" href="http://blog.hcosta.info/xmlrpc.php">
+<!--[if lt IE 9]>
+<script src="http://blog.hcosta.info/wp-content/themes/annina/js/html5shiv.min.js" type="text/javascript"></script>
+<![endif]-->
+
+<title>Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v2.3.5 - https://yoast.com/wordpress/plugins/seo/ -->
+<link rel="canonical" href="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador">
+<meta property="og:description" content="Me lo han pedido varias veces ya, así que ahí va el tutorial. Introducción A continuación os resumo para qué...">
+<meta property="og:url" content="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/">
+<meta property="og:site_name" content="HektorProgramador">
+<meta property="article:tag" content="deploy">
+<meta property="article:tag" content="desplegar">
+<meta property="article:tag" content="Django Framework">
+<meta property="article:tag" content="gunicorn">
+<meta property="article:tag" content="nginx">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="supervisor">
+<meta property="article:section" content="Django Framework">
+<meta property="article:published_time" content="2014-05-10T14:37:47+00:00">
+<meta property="article:modified_time" content="2014-05-22T12:05:21+00:00">
+<meta property="og:updated_time" content="2014-05-22T12:05:21+00:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Me lo han pedido varias veces ya, así que ahí va el tutorial. Introducción A continuación os resumo para qué...">
+<meta name="twitter:title" content="Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador">
+<meta name="twitter:site" content="@hcostaguzman">
+<meta name="twitter:domain" content="HektorProgramador">
+<meta name="twitter:creator" content="@hcostaguzman">
+<!-- / Yoast SEO plugin. -->
+
+<link rel="alternate" type="application/rss+xml" title="HektorProgramador » Feed" href="http://blog.hcosta.info/feed/">
+<link rel="alternate" type="application/rss+xml" title="HektorProgramador » RSS de los comentarios" href="http://blog.hcosta.info/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="HektorProgramador » Desplegar Django en producción con Gunicorn, Nginx, y Supervisor RSS de los comentarios" href="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/feed/">
+<link rel="stylesheet" id="annina-style-css" href="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="annina-fontAwesome-css" href="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="annina-googlefonts-css" href="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/css" type="text/css" media="all">
+<link rel="stylesheet" id="easy_table_style-css" href="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/style(1).css" type="text/css" media="all">
+<script async="" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/saved_resource"></script><script src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/cb=gapi.loaded_2" async=""></script><script src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/cb=gapi.loaded_1" async=""></script><script src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/cb=gapi.loaded_0" async=""></script><script async="" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/analytics.js"></script><script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/jquery.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/jquery-migrate.min.js"></script>
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.hcosta.info/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.hcosta.info/wp-includes/wlwmanifest.xml"> 
+<meta name="generator" content="WordPress 4.1.13">
+<link rel="shortlink" href="http://blog.hcosta.info/?p=2118">
+<script type="text/javascript">
+	window._wp_rp_static_base_url = 'https://wprp.zemanta.com/static/';
+	window._wp_rp_wp_ajax_url = "http://blog.hcosta.info/wp-admin/admin-ajax.php";
+	window._wp_rp_plugin_version = '3.5.4';
+	window._wp_rp_post_id = '2118';
+	window._wp_rp_num_rel_posts = '5';
+	window._wp_rp_thumbnails = true;
+	window._wp_rp_post_title = 'Desplegar+Django+en+producci%C3%B3n+con+Gunicorn%2C+Nginx%2C+y+Supervisor';
+	window._wp_rp_post_tags = ['nginx', 'django+framework', 'deploy', 'python', 'gunicorn', 'desplegar', 'supervisor', 'tutoriales', 'django+framework', 'python', 'en', 'green', 'lo', 'han', 'unicorn', 'python', 'linux', 'nano', 'django', 'el', 'del', 'de', 'rubi', 'proxi', 'nginx'];
+	window._wp_rp_promoted_content = true;
+</script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/loader.js" async=""></script>
+<link rel="stylesheet" href="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/vertical-m.css">
+<style type="text/css">
+.related_post_title {
+   font-size: 1.55em;
+}
+ul.related_post {
+}
+ul.related_post li {
+}
+ul.related_post li a {
+}
+ul.related_post li img {
+}</style>
+
+<style type="text/css">
+		
+		
+		
+		button,
+	input[type="button"],
+	input[type="reset"],
+	input[type="submit"],
+	.comment-navigation .nav-previous,
+	.comment-navigation .nav-next,
+	.post-navigation .meta-nav, 
+	.paging-navigation .meta-nav,
+	#wp-calendar > caption,
+	.content-annina-title,
+	.tagcloud a {
+		background: #4887bf;
+	}
+	blockquote::before,
+	button:hover:not(.menu-toggle),
+	input[type="button"]:hover,
+	input[type="reset"]:hover,
+	input[type="submit"]:hover,
+	a,
+	.main-navigation ul li:hover > a, 
+	.main-navigation li a:focus, 
+	.main-navigation li.current-menu-item > a, 
+	.main-navigation li.current-menu-parent > a, 
+	.main-navigation li.current-page-ancestor > a,
+	.main-navigation .current_page_item > a, 
+	.main-navigation .current_page_parent > a, 
+	.main-navigation ul > li:hover .indicator, 
+	.main-navigation li.current-menu-parent .indicator, 
+	.main-navigation li.current-menu-item .indicator,
+	.post-navigation .meta-nav:hover,
+	.paging-navigation .meta-nav:hover,
+	.tagcloud a:hover,
+	.entry-meta, 
+	.read-more, 
+	.edit-link, 
+	.tags-links,
+	.sticky:before {
+		color: #4887bf;
+	}
+	button:hover:not(.menu-toggle),
+	input[type="button"]:hover,
+	input[type="reset"]:hover,
+	input[type="submit"]:hover,
+	.post-navigation .meta-nav:hover,
+	.paging-navigation .meta-nav:hover,
+	#wp-calendar tbody td#today,
+	.tagcloud a:hover {
+		border: 1px solid #4887bf;
+	}
+	blockquote {
+		border-left: 4px solid #4887bf;
+		border-right: 2px solid #4887bf;
+	}
+	.main-navigation ul li:hover > a, 
+	.main-navigation li a:focus, 
+	.main-navigation li.current-menu-item > a, 
+	.main-navigation li.current-menu-parent > a, 
+	.main-navigation li.current-page-ancestor > a,
+	.main-navigation .current_page_item > a, 
+	.main-navigation .current_page_parent > a, 
+	.main-navigation ul > li:hover .indicator, 
+	.main-navigation li.current-menu-parent .indicator, 
+	.main-navigation li.current-menu-item .indicator {
+		border-left: 2px solid #4887bf;
+	}
+	.widget-title h3 {
+		border-bottom: 2px solid #4887bf;
+	}
+		
+</style>
+    <!-- Vipers Video Quicktags v6.5.2 | http://www.viper007bond.com/wordpress-plugins/vipers-video-quicktags/ -->
+<style type="text/css">
+.vvqbox { display: block; max-width: 100%; visibility: visible !important; margin: 10px auto; } .vvqbox img { max-width: 100%; height: 100%; } .vvqbox object { max-width: 100%; } 
+</style>
+<script type="text/javascript">
+// <![CDATA[
+	var vvqflashvars = {};
+	var vvqparams = { wmode: "opaque", allowfullscreen: "true", allowscriptaccess: "always" };
+	var vvqattributes = {};
+	var vvqexpressinstall = "http://blog.hcosta.info/wp-content/plugins/vipers-video-quicktags/resources/expressinstall.swf";
+// ]]>
+</script>
+<style type="text/css" id="syntaxhighlighteranchor"></style>
+ <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-46010003-1', 'auto');
+  ga('send', 'pageview');
+
+ </script>
+
+<script type="text/javascript" async="" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/embed.js"></script><script async="" type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/count.js"></script><script src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/count-data.js"></script><style>.gc-bubbleDefault{background-color:transparent !important;text-align:left;padding:0 !important;margin:0 !important;border:0 !important;table-layout:auto !important}.gc-reset{background-color:transparent !important;border:0 !important;padding:0 !important;margin:0 !important;text-align:left}.pls-bubbleTop{border-bottom:1px solid #ccc !important}.pls-topTail,.pls-vertShimLeft,.pls-contentLeft{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/border_3.gif) !important}.pls-topTail{background-repeat:repeat-x !important;background-position:bottom !important}.pls-vertShim{background-color:#fff !important;text-align:right}.tbl-grey .pls-vertShim{background-color:#f5f5f5 !important}.pls-vertShimLeft{background-repeat:repeat-y !important;background-position:right !important;height:4px}.pls-vertShimRight{height:4px}.pls-confirm-container .pls-vertShim{background-color:#fff3c2 !important}.pls-contentWrap{background-color:#fff !important;position:relative !important;vertical-align:top}.pls-contentLeft{background-repeat:repeat-y;background-position:right;vertical-align:top}.pls-dropRight{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropR_3.png) !important;background-repeat:repeat-y !important;vertical-align:top}.pls-vert,.pls-tailleft,.pls-dropTR .pls-dropBR,.pls-dropBL,.pls-vert img{vertical-align:top}.pls-dropBottom{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleDropB_3.png) !important;background-repeat:repeat-x !important;width:100%;vertical-align:top}.pls-topLeft{background:inherit !important;text-align:right;vertical-align:bottom}.pls-topRight{background:inherit !important;text-align:left;vertical-align:bottom}.pls-bottomLeft{background:inherit !important;text-align:right}.pls-bottomRight{background:inherit !important;text-align:left;vertical-align:top}.pls-tailtop,.pls-tailright,.pls-tailbottom,.pls-tailleft{display:none;position:relative}.pls-tailbottom,.pls-tailtop,.pls-tailright,.pls-tailleft,.pls-dropTR,.pls-dropBR,.pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite_3.png) !important;background-repeat:no-repeat}.tbl-grey .pls-tailbottom,.tbl-grey .pls-tailtop,.tbl-grey .pls-tailright,.tbl-grey .pls-tailleft,.tbl-grey .pls-dropTR,.tbl-grey .pls-dropBR,.tbl-grey .pls-dropBL{background-image:url(//ssl.gstatic.com/s2/oz/images/stars/po/bubblev1/bubbleSprite-grey.png) !important}.pls-tailbottom{background-position:-23px 0}.pls-confirm-container .pls-tailbottom{background-position:-23px -10px}.pls-tailtop{background-position:-19px -20px}.pls-tailright{background-position:0 0}.pls-tailleft{background-position:-10px 0}.pls-tailtop{vertical-align:top}.gc-bubbleDefault td{line-height:0;font-size:0}.pls-topLeft img,.pls-topRight img,.pls-tailbottom{vertical-align:bottom}.pls-bottomLeft img,.bubbleDropTR,.pls-dropBottomL img,.pls-dropBottom img,.pls-dropBottomR img,.pls-bottomLeft{vertical-align:top}.pls-dropTR{background-position:0 -22px}.pls-dropBR{background-position:0 -27px}.pls-dropBL{background-position:0 -16px}.pls-spacertop,.pls-spacerright,.pls-spacerbottom,.pls-spacerleft{position:static !important}.pls-spinner{bottom:0;position:absolute;left:0;margin:auto;right:0;top:0} </style><script src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/alfie.f51946af45e0b561c60f768335c9eb79.js" async="" charset="UTF-8"></script></head>
+<body class="single single-post postid-2118 single-format-standard custom-background">
+<div id="page" class="hfeed site">
+<!-- Start: Search Form -->
+					<div id="search-full">
+						<div class="search-container">
+							<form role="search" method="get" id="search-form" action="http://blog.hcosta.info/">
+								<label>
+									<span class="screen-reader-text">Search for:</span>
+									<input type="search" name="s" id="search-field" placeholder="Type here and hit enter...">
+								</label>
+							</form>
+							<span><a id="close-search"><i class="fa fa-close spaceRight"></i>Close</a></span>
+						</div>
+					</div>
+<!-- End: Search Form -->
+
+	<a class="skip-link screen-reader-text" href="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/#content">Skip to content</a>
+
+	<header id="masthead" class="site-header" role="banner">
+		<div class="site-branding annCenter">
+			<h1 class="site-title"><a href="http://blog.hcosta.info/" rel="home">HektorProgramador</a></h1>
+			<p class="site-description">From baby steps to giant strides</p>
+		</div>
+
+		<nav id="site-navigation" class="main-navigation" role="navigation">
+			<button class="menu-toggle">Main Menu<i class="fa fa-align-justify"></i></button>
+			<div class="menu-superior-container"><ul id="menu-superior" class="menu nav-menu"><li id="menu-item-2292" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-2292"><a href="http://www.escueladevideojuegos.net/">Escuela de Videojuegos</a></li>
+<li id="menu-item-2702" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2702"><a href="http://blog.hcosta.info/sobre-mi/">Sobre mí</a></li>
+</ul></div>		</nav><!-- #site-navigation -->
+
+			<div class="socialLine annCenter">
+										
+									<a href="https://twitter.com/edvideojuegos" title="Twitter"><i class="fa fa-twitter spaceRightDouble"><span class="screen-reader-text">Twitter</span></i></a>
+										
+									<a href="https://plus.google.com/+HektorProgramador" title="Google Plus"><i class="fa fa-google-plus spaceRightDouble"><span class="screen-reader-text">Google Plus</span></i></a>
+										
+										
+										
+									<a href="https://www.youtube.com/c/HektorProgramador" title="YouTube"><i class="fa fa-youtube spaceRightDouble"><span class="screen-reader-text">YouTube</span></i></a>
+										
+										
+								
+								
+									<div id="open-search" class="top-search"><i class="fa spaceRightDouble fa-search"></i></div>
+							</div>
+	</header><!-- #masthead -->
+
+	<div id="content" class="site-content">
+
+	<div id="primary" class="content-area">
+		<main id="main" class="site-main" role="main">
+
+		
+			
+<article id="post-2118" class="post-2118 post type-post status-publish format-standard hentry category-django category-python category-tutorials tag-deploy tag-desplegar tag-django tag-gunicorn tag-nginx tag-python tag-supervisor">
+	<div class="content-annina">
+	
+		
+	<header class="entry-header">
+		<h2 class="entry-title"><a href="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/" rel="bookmark">Desplegar Django en producción con Gunicorn, Nginx, y Supervisor</a></h2>
+		<div class="entry-meta smallPart">
+			<span class="posted-on"><i class="fa fa-calendar spaceRight"></i><a href="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/" rel="bookmark"><time class="entry-date published" datetime="2014-05-10T14:37:47+00:00">10 mayo, 2014</time><time class="updated" datetime="2014-05-22T12:05:21+00:00">22 mayo, 2014</time></a></span><span class="byline"> <i class="fa fa-user spaceLeftRight"></i><span class="author vcard"><a class="url fn n" href="http://blog.hcosta.info/author/admin/">hektor</a></span></span><span class="cat-links"><i class="fa fa-folder-open-o spaceLeftRight"></i><a href="http://blog.hcosta.info/category/programacion/python/django/" rel="category tag">Django Framework</a> / <a href="http://blog.hcosta.info/category/programacion/python/" rel="category tag">Python</a> / <a href="http://blog.hcosta.info/category/tutorials/" rel="category tag">Tutoriales</a></span><span class="comments-link"><i class="fa fa-comments-o spaceLeftRight"></i><a href="http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/#disqus_thread" title="Comment on Desplegar Django en producción con Gunicorn, Nginx, y Supervisor" data-disqus-identifier="2118 http://blog.hcosta.info/?p=2118">1 Comment</a></span>		</div><!-- .entry-meta -->
+	</header><!-- .entry-header -->
+
+	<div class="entry-content">
+		<p>Me lo han pedido varias veces ya, así que ahí va el tutorial.</p>
+<h3>Introducción</h3>
+<p>A continuación os resumo para qué sirve cada uno de los componentes que se utilizan en un despliegue genérico.</p>
+<ul>
+<li>Gunicorn: Green Unicorn es un servidor WSGI HTTP para Python (pre-fork de unicorn de ruby). Consume poco y es bastante rápido.</li>
+<li>Nginx: Es un servidor web/proxy inverso ligero de alto rendimiento y un proxy para protocolos de correo electrónico. Nos ayudará a servir ficheros estáticos.</li>
+<li>Supervisor: Es un gestor de procesos para linux. Nos permitirá crear un proceso en segundo plano de nuestro servidor gunicorn.</li>
+</ul>
+<h3>Requisitos previos</h3>
+<p>– Virtualenv preparado con django funcionando en desarrollo<br>
+– Borrar del urls.py que django sirva los ficheros estáticos (si fuera el caso)<br>
+– Indispensable tener configurado correctamente el STATIC_ROOT en el settings.py:</p>
+<pre>import os
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+STATIC_ROOT = os.path.join(BASE_DIR, 'static’)
+</pre>
+<h3>Gunicorn</h3>
+<p>Instalamos gunicorn en el virtualenv:</p>
+<pre>pip install gunicorn
+</pre>
+<p>Lanzamos gunicorn manualmente desde la raiz (dónde está el manage.py):</p>
+<pre>gunicorn &lt;proyecto&gt;.wsgi:application --bind=127.0.0.1:8000 # se puede cambiar el puerto
+</pre>
+<p>Si entramos a <a href="http://127.0.0.1:8000/">http://127.0.0.1:8000</a> debería funcionar todo menos los ficheros estáticos. Si es así vamos bien.</p>
+<h3>Nginx</h3>
+<p>Instalamos nginx:</p>
+<pre>sudo apt-get install nginx
+sudo service nginx start
+</pre>
+<p>Creamos un nuevo dominio en los sites-enabled (como en apache):</p>
+<pre>sudo nano /etc/nginx/sites-available/&lt;proyecto&gt;
+</pre>
+<p>Añadimos una configuración simple:</p>
+<pre>server {
+        listen 8001;
+        server_name 127.0.0.1;
+
+        access_log off;
+
+        location /static/ {
+            alias /path/al/proyecto/static/;
+        }
+
+        location / {
+            proxy_pass http://127.0.0.1:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+}
+</pre>
+<p>Guardamos y creamos un enlace simbólico en sites-enabled:</p>
+<pre>cd /etc/nginx/sites-enabled
+sudo ln -s ../sites-available/&lt;proyecto&gt;
+</pre>
+<p>Reiniciamos nginx:</p>
+<pre>sudo service nginx restart
+</pre>
+<p>Si entramos a <a href="http://127.0.0.1:8001/">http://127.0.0.1:8001</a> ya debería funcionar y cargar también los ficheros estáticos.</p>
+<p>Básicamente definimos un proxy en 127.0.0.1:8001 del 127.0.0.1:8000 pero que también servirá los ficheros static, con lo que tendremos dos puertos ocupados. En producción real cambiaríamos el 8001 por el 80 y listos.</p>
+<p>Sin embargo no es muy útil tener gunicorn en marcha manualmente, vamos a crear un pequeño demonio en segundo plano con supervisor.</p>
+<h3>Supervisor</h3>
+<p>Antes de continuar parad gunicorn si lo tenéis abierto manualmente.</p>
+<p>Instalamos supervisor:</p>
+<pre>sudo apt-get install supervisor
+</pre>
+<p>Creamos un archivo de configuración del proyecto</p>
+<pre>sudo nano /etc/supervisor/conf.d/&lt;proyecto&gt;.conf
+</pre>
+<p>Añadimos una configuración simple:</p>
+<pre>[program:&lt;proyecto&gt;]
+command = /path/al/proyecto/env/bin/python /path/al/proyecto/env/bin/gunicorn &lt;proyecto&gt;.wsgi:application
+directory = /path/al/proyecto/&lt;proyecto&gt;
+user = root
+</pre>
+<p>Es muy importante poner correctamente los paths al python y al gunicorn del virtualenv de nuestro proyecto. El usuario puede ser otro, pero debe tener los permisos adecuados.</p>
+<p>Guardamos y activamos el proyecto</p>
+<pre>sudo supervisorctl reread
+sudo supervisorctl update
+sudo supervisorctl start &lt;proyecto&gt;
+</pre>
+<p>Si ahora entramos de nuevo a <a href="http://127.0.0.1:8001/">http://127.0.0.1:8001</a> deberíamos tener funcionando el proyecto con gunicorn en segundo plano.</p>
+<p>Para profundizar más sobre las opciones de configuración, como crear registros de errores y todo éso os dejo las documentaciones oficiales.</p>
+<p>Documentación de Gunicorn:</p>
+<p><a href="http://docs.gunicorn.org/en/develop/configure.html#config-file">http://docs.gunicorn.org/en/develop/configure.html#config-file</a></p>
+<p>Documentación de Nginx:</p>
+<p><a href="https://library.linode.com/web-servers/nginx/configuration/basic">https://library.linode.com/web-servers/nginx/configuration/basic</a></p>
+<p>Documentación de Supervisor:</p>
+<p><a href="http://supervisord.org/configuration.html">http://supervisord.org/configuration.html</a></p>
+<p>Pronto haré un videotutorial al respecto, por ahora espero que os sirva.</p>
+<p>Saludos <img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/icon_smile.gif" alt=":)" class="wp-smiley"></p>
+
+<div class="wp_rp_wrap  wp_rp_vertical_m" id="wp_rp_first"><div class="wp_rp_content"><h3 class="related_post_title">Te podría interesar...</h3><ul class="related_post wp_rp"><li data-position="0" data-poid="in-2577" data-post-type="none"><a href="http://blog.hcosta.info/devlog-configuracion-y-despliegue-de-node-sobre-nginx/" class="wp_rp_thumbnail"><img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/quebien-150x150.png" alt="Despliegue de Nodejs sobre nginx" width="150" height="150"></a><a href="http://blog.hcosta.info/devlog-configuracion-y-despliegue-de-node-sobre-nginx/" class="wp_rp_title">Despliegue de Nodejs sobre nginx</a></li><li data-position="1" data-poid="in-1707" data-post-type="none"><a href="http://blog.hcosta.info/extender-metodos-de-los-formularios-del-admin-de-django/" class="wp_rp_thumbnail"><img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/22.jpg" alt="Extender métodos de los formularios del admin de django" width="150" height="150"></a><a href="http://blog.hcosta.info/extender-metodos-de-los-formularios-del-admin-de-django/" class="wp_rp_title">Extender métodos de los formularios del admin de django</a></li><li data-position="2" data-poid="in-1720" data-post-type="none"><a href="http://blog.hcosta.info/instalar-virtualenv-y-configurar-django-en-alwaysdata-y-dreamhost/" class="wp_rp_thumbnail"><img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/27.jpg" alt="Instalar virtualenv y configurar django en alwaysdata y Dreamhost" width="150" height="150"></a><a href="http://blog.hcosta.info/instalar-virtualenv-y-configurar-django-en-alwaysdata-y-dreamhost/" class="wp_rp_title">Instalar virtualenv y configurar django en alwaysdata y Dreamhost</a></li><li data-position="3" data-poid="in-2016" data-post-type="none"><a href="http://blog.hcosta.info/tutorial-django-1-6-empaquetar-apps-e-instalarlas-parte-7/" class="wp_rp_thumbnail"><img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/30.jpg" alt="Tutorial Django 1.6 – Empaquetar apps e instalarlas – Parte 7" width="150" height="150"></a><a href="http://blog.hcosta.info/tutorial-django-1-6-empaquetar-apps-e-instalarlas-parte-7/" class="wp_rp_title">Tutorial Django 1.6 – Empaquetar apps e instalarlas – Parte 7</a></li><li data-position="4" data-poid="in-2000" data-post-type="none"><a href="http://blog.hcosta.info/tutorial-django-1-6-mi-primera-app-parte-2/" class="wp_rp_thumbnail"><img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/7.jpg" alt="Tutorial Django 1.6 – Panel de administrador y personalización de sus templates – Parte 2" width="150" height="150"></a><a href="http://blog.hcosta.info/tutorial-django-1-6-mi-primera-app-parte-2/" class="wp_rp_title">Tutorial Django 1.6 – Panel de administrador y personalización de sus templates – Parte 2</a></li></ul></div></div>
+			</div><!-- .entry-content -->
+
+	<footer class="entry-footer smallPart">
+		<span class="tags-links"><i class="fa fa-tags spaceRight"></i><a href="http://blog.hcosta.info/tag/deploy/" rel="tag">deploy</a> / <a href="http://blog.hcosta.info/tag/desplegar/" rel="tag">desplegar</a> / <a href="http://blog.hcosta.info/tag/django/" rel="tag">Django Framework</a> / <a href="http://blog.hcosta.info/tag/gunicorn/" rel="tag">gunicorn</a> / <a href="http://blog.hcosta.info/tag/nginx/" rel="tag">nginx</a> / <a href="http://blog.hcosta.info/tag/python/" rel="tag">Python</a> / <a href="http://blog.hcosta.info/tag/supervisor/" rel="tag">supervisor</a></span>	</footer><!-- .entry-footer -->
+	</div><!-- .content-annina -->
+</article><!-- #post-## -->
+
+				<nav class="navigation post-navigation" role="navigation">
+		<h1 class="screen-reader-text">Post navigation</h1>
+		<div class="nav-links">
+			<div class="nav-previous"><a href="http://blog.hcosta.info/instalar-windows-7-despues-de-linux/" rel="prev"><div class="meta-nav" title="Instalar Windows 7 después de Linux" aria-hidden="true"><i class="fa fa-angle-left spaceRight"></i><span>Previous Post</span></div> <span class="screen-reader-text">Previous post:</span> </a></div><div class="nav-next"><a href="http://blog.hcosta.info/pensamiento-objetivo-como-base-para-la-educacion/" rel="next"><div class="meta-nav" title="Pensamiento objetivo como base para la educación" aria-hidden="true"><span>Next Post</span><i class="fa fa-angle-right spaceLeft"></i></div> <span class="screen-reader-text">Next Post:</span> </a></div>		</div><!-- .nav-links -->
+	</nav><!-- .navigation -->
+	
+			
+<div id="disqus_thread"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 676px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+
+<script type="text/javascript">
+var disqus_url = 'http://blog.hcosta.info/desplegar-django-en-produccion-con-gunicorn-nginx-y-supervisor/';
+var disqus_identifier = '2118 http://blog.hcosta.info/?p=2118';
+var disqus_container_id = 'disqus_thread';
+var disqus_shortname = 'hcosta';
+var disqus_title = "Desplegar Django en producción con Gunicorn, Nginx, y Supervisor";
+var disqus_config_custom = window.disqus_config;
+var disqus_config = function () {
+    /*
+    All currently supported events:
+    onReady: fires when everything is ready,
+    onNewComment: fires when a new comment is posted,
+    onIdentify: fires when user is authenticated
+    */
+    
+    
+    this.language = '';
+        this.callbacks.onReady.push(function () {
+
+        // sync comments in the background so we don't block the page
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = '?cf_action=sync_comments&post_id=2118';
+
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(script, firstScript);
+    });
+    
+    if (disqus_config_custom) {
+        disqus_config_custom.call(this);
+    }
+};
+
+(function() {
+    var dsq = document.createElement('script'); dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+})();
+</script>
+
+
+		
+		</main><!-- #main -->
+	</div><!-- #primary -->
+
+
+<div id="secondary" class="widget-area" role="complementary">
+	<aside id="text-5" class="content-annina widget widget_text"><div class="widget-title"><h3>No te pierdas mi nuevo proyecto</h3></div>			<div class="textwidget"><div><a href="http://www.escueladevideojuegos.net/"><img src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/logo-web.png" width="100%" alt="escuela de videojuegos"></a></div>
+Cursos, tutoriales, artículos, recopilaciones de herramientas... Todo lo que necesitas para comenzar en el mundo de los videojuegos lo encontrarás en <a href="http://www.escueladevideojuegos.net/" alt="escueladevideojuegos">escueladevideojuegos.net</a></div>
+		</aside><aside id="text-4" class="content-annina widget widget_text"><div class="widget-title"><h3>Sígueme  en Youtube</h3></div>			<div class="textwidget">¡No te pierdas ninguno de mis videos y cursos gratuitos en mi canal de Youtube!<br><br>
+
+
+<script src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/platform.js" gapi_processed="true"></script>
+
+<script>
+  function onYtEvent(payload) {
+    if (payload.eventType == 'subscribe') {
+      // Add code to handle subscribe event.
+    } else if (payload.eventType == 'unsubscribe') {
+      // Add code to handle unsubscribe event.
+    }
+    if (window.console) { // for debugging only
+      window.console.log('YT event: ', payload);
+    }
+  }
+</script>
+
+<div id="___ytsubscribe_0" style="text-indent: 0px; margin: 0px; padding: 0px; border-style: none; float: none; line-height: normal; font-size: 1px; vertical-align: baseline; display: inline-block; width: 182px; height: 48px; background: transparent;"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position: static; top: 0px; width: 182px; margin: 0px; border-style: none; left: 0px; visibility: visible; height: 48px;" tabindex="0" vspace="0" width="100%" id="I0_1475182724019" name="I0_1475182724019" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/subscribe_embed.html" data-gapiattached="true"></iframe></div></div>
+		</aside>		<aside id="recent-posts-3" class="content-annina widget widget_recent_entries">		<div class="widget-title"><h3>Entradas recientes</h3></div>		<ul>
+					<li>
+				<a href="http://blog.hcosta.info/el-mundo-es-una-mierda/">¿El mundo es una mierda?</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/gamemaker-curso-remake-pong/">GameMaker: Curso Remake de Pong</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/gamemaker-curso-gml-basico/">GameMaker: Curso GML Básico</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/porque-desactive-las-valoraciones-en-mi-canal-de-youtube/">Porqué desactivé las valoraciones en mi canal de Youtube</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/mejorar-la-experiencia-en-game-maker-fin/">Mejorar la Experiencia en Game Maker [FIN]</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/alarmas-y-aleatoriedad-en-game-maker/">Alarmas y Aleatoriedad en Game Maker</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/primer-contacto-con-gml-en-game-maker/">Primer Contacto con GML en Game Maker</a>
+						</li>
+					<li>
+				<a href="http://blog.hcosta.info/condicion-fin-de-juego-y-reinicio-en-game-maker/">Condición Fin de Juego y Reinicio en Game Maker</a>
+						</li>
+				</ul>
+		</aside><aside id="category-cloud" class="content-annina widget widget_catcloud"><div class="widget-title"><h3>Nube de categorías</h3></div><p class="catcloud" style="text-align:left;">
+<a href="http://blog.hcosta.info/category/tutorials/" title="50 posts filed under Tutoriales" style="font-size:155%">Tutoriales</a> 
+<a href="http://blog.hcosta.info/category/programacion/" title="42 posts filed under Programación" style="font-size:143%">Programación</a> 
+<a href="http://blog.hcosta.info/category/proyectos/" title="38 posts filed under Proyectos" style="font-size:136%">Proyectos</a> 
+<a href="http://blog.hcosta.info/category/programacion/gamemaker-studio/" title="29 posts filed under GameMaker: Studio" style="font-size:122%">GameMaker: Studio</a> 
+<a href="http://blog.hcosta.info/category/programacion/python/django/" title="24 posts filed under Django Framework" style="font-size:114%">Django Framework</a> 
+<a href="http://blog.hcosta.info/category/articulos/" title="19 posts filed under Artículos" style="font-size:106%">Artículos</a> 
+<a href="http://blog.hcosta.info/category/programacion/python/" title="18 posts filed under Python" style="font-size:104%">Python</a> 
+<a href="http://blog.hcosta.info/category/programacion/videojuegos/" title="18 posts filed under Videojuegos" style="font-size:104%">Videojuegos</a> 
+<a href="http://blog.hcosta.info/category/cursos/" title="15 posts filed under Cursos" style="font-size:99%">Cursos</a> 
+<a href="http://blog.hcosta.info/category/administracion/gnulinux/" title="12 posts filed under GNU/Linux" style="font-size:95%">GNU/Linux</a> 
+<a href="http://blog.hcosta.info/category/programacion/java-programacion/spring-framework/" title="11 posts filed under Spring Framework" style="font-size:93%">Spring Framework</a> 
+<a href="http://blog.hcosta.info/category/programacion/php/" title="8 posts filed under PHP" style="font-size:88%">PHP</a> 
+<a href="http://blog.hcosta.info/category/tutorials/videotutorials/" title="7 posts filed under Videotutoriales" style="font-size:87%">Videotutoriales</a> 
+<a href="http://blog.hcosta.info/category/programacion/javascript/jquery/" title="6 posts filed under jQuery" style="font-size:85%">jQuery</a> 
+<a href="http://blog.hcosta.info/category/informaticos/" title="6 posts filed under Informáticos" style="font-size:85%">Informáticos</a> 
+<a href="http://blog.hcosta.info/category/internet/recursos-web/" title="5 posts filed under Recursos" style="font-size:83%">Recursos</a> 
+<a href="http://blog.hcosta.info/category/programacion/python/openerp/" title="5 posts filed under OpenERP" style="font-size:83%">OpenERP</a> 
+<a href="http://blog.hcosta.info/category/internet/seguridad-web/" title="4 posts filed under Seguridad" style="font-size:82%">Seguridad</a> 
+<a href="http://blog.hcosta.info/category/programacion/pseudocodigo/" title="4 posts filed under Pseudocódigo" style="font-size:82%">Pseudocódigo</a> 
+<a href="http://blog.hcosta.info/category/administracion/ms-windows/" title="4 posts filed under MS Windows" style="font-size:82%">MS Windows</a> 
+<a href="http://blog.hcosta.info/category/programacion/android/" title="4 posts filed under Android" style="font-size:82%">Android</a> 
+<a href="http://blog.hcosta.info/category/programacion/javascript/phaser-programacion-videojuegos/" title="4 posts filed under Phaser Framework" style="font-size:82%">Phaser Framework</a> 
+<a href="http://blog.hcosta.info/category/administracion/" title="4 posts filed under Administración" style="font-size:82%">Administración</a> 
+<a href="http://blog.hcosta.info/category/programacion/javascript/nodejs/" title="4 posts filed under Nodejs" style="font-size:82%">Nodejs</a> 
+<a href="http://blog.hcosta.info/category/programacion/android/apache-cordova/" title="3 posts filed under Apache Cordova" style="font-size:80%">Apache Cordova</a> 
+<a href="http://blog.hcosta.info/category/programacion/xml-programacion/" title="3 posts filed under XML" style="font-size:80%">XML</a> 
+<a href="http://blog.hcosta.info/category/programacion/c/" title="3 posts filed under C#" style="font-size:80%">C#</a> 
+<a href="http://blog.hcosta.info/category/videoteca/" title="3 posts filed under Videoteca" style="font-size:80%">Videoteca</a> 
+<a href="http://blog.hcosta.info/category/dia-a-dia/" title="3 posts filed under Día a día" style="font-size:80%">Día a día</a> 
+<a href="http://blog.hcosta.info/category/miscelanea/" title="3 posts filed under Miscelánea" style="font-size:80%">Miscelánea</a> 
+<a href="http://blog.hcosta.info/category/programacion/java-programacion/" title="3 posts filed under Java" style="font-size:80%">Java</a> 
+<a href="http://blog.hcosta.info/category/general/" title="3 posts filed under General" style="font-size:80%">General</a> 
+<a href="http://blog.hcosta.info/category/programacion/css/" title="3 posts filed under CSS" style="font-size:80%">CSS</a> </p><p style="font-size:xx-small;font-style:italic;text-align:right;"><a href="http://leekelleher.com/wordpress/plugins/category-cloud-widget/">-- Powered by Category Cloud</a></p></aside><aside id="tag_cloud-2" class="content-annina widget widget_tag_cloud"><div class="widget-title"><h3>Etiquetas</h3></div><div class="tagcloud"><a href="http://blog.hcosta.info/tag/android-2/" class="tag-link-458" title="5 temas">android</a>
+<a href="http://blog.hcosta.info/tag/animacion/" class="tag-link-392" title="5 temas">animacion</a>
+<a href="http://blog.hcosta.info/tag/app/" class="tag-link-372" title="4 temas">app</a>
+<a href="http://blog.hcosta.info/tag/aprender/" class="tag-link-102" title="11 temas">aprender</a>
+<a href="http://blog.hcosta.info/tag/c/" class="tag-link-22" title="4 temas">C#</a>
+<a href="http://blog.hcosta.info/tag/canvas/" class="tag-link-387" title="6 temas">canvas</a>
+<a href="http://blog.hcosta.info/tag/curso/" class="tag-link-472" title="21 temas">Curso</a>
+<a href="http://blog.hcosta.info/tag/desarrollo/" class="tag-link-573" title="7 temas">desarrollo</a>
+<a href="http://blog.hcosta.info/tag/desde-cero/" class="tag-link-500" title="18 temas">desde cero</a>
+<a href="http://blog.hcosta.info/tag/devlog/" class="tag-link-534" title="13 temas">devlog</a>
+<a href="http://blog.hcosta.info/tag/django/" class="tag-link-281" title="21 temas">Django Framework</a>
+<a href="http://blog.hcosta.info/tag/ejemplo/" class="tag-link-51" title="9 temas">ejemplo</a>
+<a href="http://blog.hcosta.info/tag/empezar/" class="tag-link-499" title="15 temas">empezar</a>
+<a href="http://blog.hcosta.info/tag/emprender/" class="tag-link-365" title="8 temas">emprender</a>
+<a href="http://blog.hcosta.info/tag/error/" class="tag-link-283" title="4 temas">error</a>
+<a href="http://blog.hcosta.info/tag/first-video-game/" class="tag-link-580" title="14 temas">First Video Game</a>
+<a href="http://blog.hcosta.info/tag/framework/" class="tag-link-111" title="13 temas">framework</a>
+<a href="http://blog.hcosta.info/tag/fundamentos/" class="tag-link-132" title="20 temas">fundamentos</a>
+<a href="http://blog.hcosta.info/tag/game-maker/" class="tag-link-546" title="23 temas">game maker</a>
+<a href="http://blog.hcosta.info/tag/gamemaker-studio/" class="tag-link-538" title="21 temas">gamemaker studio</a>
+<a href="http://blog.hcosta.info/tag/gms/" class="tag-link-537" title="18 temas">GM:S</a>
+<a href="http://blog.hcosta.info/tag/gml/" class="tag-link-560" title="4 temas">gml</a>
+<a href="http://blog.hcosta.info/tag/html5/" class="tag-link-376" title="5 temas">html5</a>
+<a href="http://blog.hcosta.info/tag/introduccion/" class="tag-link-389" title="6 temas">introduccion</a>
+<a href="http://blog.hcosta.info/tag/java/" class="tag-link-104" title="10 temas">java</a>
+<a href="http://blog.hcosta.info/tag/jquery/" class="tag-link-27" title="5 temas">jQuery</a>
+<a href="http://blog.hcosta.info/tag/objetos/" class="tag-link-590" title="5 temas">Objetos</a>
+<a href="http://blog.hcosta.info/tag/openerp-2/" class="tag-link-276" title="5 temas">openerp</a>
+<a href="http://blog.hcosta.info/tag/osge/" class="tag-link-533" title="13 temas">osge</a>
+<a href="http://blog.hcosta.info/tag/phaser/" class="tag-link-391" title="5 temas">phaser</a>
+<a href="http://blog.hcosta.info/tag/php-2/" class="tag-link-160" title="6 temas">php</a>
+<a href="http://blog.hcosta.info/tag/primer-videojuego/" class="tag-link-581" title="19 temas">primer videojuego</a>
+<a href="http://blog.hcosta.info/tag/programacion-2/" class="tag-link-289" title="40 temas">programacion</a>
+<a href="http://blog.hcosta.info/tag/pruebas/" class="tag-link-260" title="4 temas">pruebas</a>
+<a href="http://blog.hcosta.info/tag/python/" class="tag-link-240" title="25 temas">Python</a>
+<a href="http://blog.hcosta.info/tag/serie-de-videos/" class="tag-link-582" title="14 temas">serie de vídeos</a>
+<a href="http://blog.hcosta.info/tag/sin-experiencia/" class="tag-link-585" title="17 temas">sin experiencia</a>
+<a href="http://blog.hcosta.info/tag/sopamania/" class="tag-link-572" title="6 temas">sopamania</a>
+<a href="http://blog.hcosta.info/tag/spring-2/" class="tag-link-108" title="11 temas">spring</a>
+<a href="http://blog.hcosta.info/tag/sprites/" class="tag-link-588" title="4 temas">Sprites</a>
+<a href="http://blog.hcosta.info/tag/tutorial/" class="tag-link-71" title="26 temas">tutorial</a>
+<a href="http://blog.hcosta.info/tag/videojuegos/" class="tag-link-395" title="23 temas">Videojuegos</a>
+<a href="http://blog.hcosta.info/tag/videotutorial/" class="tag-link-185" title="21 temas">videotutorial</a>
+<a href="http://blog.hcosta.info/tag/windows/" class="tag-link-265" title="17 temas">windows</a>
+<a href="http://blog.hcosta.info/tag/xml/" class="tag-link-115" title="6 temas">xml</a></div>
+</aside><aside id="archives-2" class="content-annina widget widget_archive"><div class="widget-title"><h3>Archivos</h3></div>		<select name="archive-dropdown" onchange="document.location.href=this.options[this.selectedIndex].value;">
+			<option value="">Elegir mes</option>
+
+				<option value="http://blog.hcosta.info/2016/04/"> abril 2016 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2015/09/"> septiembre 2015 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2015/08/"> agosto 2015 &nbsp;(19)</option>
+	<option value="http://blog.hcosta.info/2015/07/"> julio 2015 &nbsp;(9)</option>
+	<option value="http://blog.hcosta.info/2015/06/"> junio 2015 &nbsp;(5)</option>
+	<option value="http://blog.hcosta.info/2015/05/"> mayo 2015 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2015/04/"> abril 2015 &nbsp;(11)</option>
+	<option value="http://blog.hcosta.info/2015/03/"> marzo 2015 &nbsp;(10)</option>
+	<option value="http://blog.hcosta.info/2015/02/"> febrero 2015 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2015/01/"> enero 2015 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2014/12/"> diciembre 2014 &nbsp;(4)</option>
+	<option value="http://blog.hcosta.info/2014/11/"> noviembre 2014 &nbsp;(6)</option>
+	<option value="http://blog.hcosta.info/2014/09/"> septiembre 2014 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2014/06/"> junio 2014 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2014/05/"> mayo 2014 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2014/04/"> abril 2014 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2014/03/"> marzo 2014 &nbsp;(7)</option>
+	<option value="http://blog.hcosta.info/2014/02/"> febrero 2014 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2014/01/"> enero 2014 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2013/12/"> diciembre 2013 &nbsp;(9)</option>
+	<option value="http://blog.hcosta.info/2013/11/"> noviembre 2013 &nbsp;(4)</option>
+	<option value="http://blog.hcosta.info/2013/09/"> septiembre 2013 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2013/07/"> julio 2013 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2013/04/"> abril 2013 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2013/03/"> marzo 2013 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2012/12/"> diciembre 2012 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2012/10/"> octubre 2012 &nbsp;(4)</option>
+	<option value="http://blog.hcosta.info/2012/09/"> septiembre 2012 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2012/08/"> agosto 2012 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2012/07/"> julio 2012 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2012/06/"> junio 2012 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2012/05/"> mayo 2012 &nbsp;(13)</option>
+	<option value="http://blog.hcosta.info/2012/04/"> abril 2012 &nbsp;(4)</option>
+	<option value="http://blog.hcosta.info/2012/03/"> marzo 2012 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2012/02/"> febrero 2012 &nbsp;(4)</option>
+	<option value="http://blog.hcosta.info/2012/01/"> enero 2012 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2011/12/"> diciembre 2011 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2011/11/"> noviembre 2011 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2011/10/"> octubre 2011 &nbsp;(7)</option>
+	<option value="http://blog.hcosta.info/2011/09/"> septiembre 2011 &nbsp;(9)</option>
+	<option value="http://blog.hcosta.info/2011/08/"> agosto 2011 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2011/07/"> julio 2011 &nbsp;(7)</option>
+	<option value="http://blog.hcosta.info/2011/06/"> junio 2011 &nbsp;(5)</option>
+	<option value="http://blog.hcosta.info/2010/10/"> octubre 2010 &nbsp;(5)</option>
+	<option value="http://blog.hcosta.info/2010/08/"> agosto 2010 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2010/05/"> mayo 2010 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2010/03/"> marzo 2010 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2010/01/"> enero 2010 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2009/05/"> mayo 2009 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2009/04/"> abril 2009 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2009/03/"> marzo 2009 &nbsp;(3)</option>
+	<option value="http://blog.hcosta.info/2008/03/"> marzo 2008 &nbsp;(1)</option>
+	<option value="http://blog.hcosta.info/2007/10/"> octubre 2007 &nbsp;(4)</option>
+	<option value="http://blog.hcosta.info/2007/09/"> septiembre 2007 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2007/04/"> abril 2007 &nbsp;(2)</option>
+	<option value="http://blog.hcosta.info/2007/03/"> marzo 2007 &nbsp;(1)</option>
+		</select>
+</aside></div><!-- #secondary -->
+
+	<footer id="colophon" class="site-footer" role="contentinfo">
+		<div class="site-info content-annina-title annDouble smallPart">
+			<div class="text-copy">
+			<a href="http://wordpress.org/">Proudly powered by WordPress</a>
+			<span class="sep"> | </span>
+			Annina Free by <a target="_blank" href="http://crestaproject.com/" rel="designer" title="CrestaProject">CrestaProject</a>.			</div>
+			<div id="toTop"><i class="fa fa-angle-up fa-lg"></i></div>
+		</div><!-- .site-info -->
+	</footer><!-- #colophon -->
+</div><!-- #page -->
+</div><!-- #content -->
+        <script type="text/javascript">
+        // <![CDATA[
+        var disqus_shortname = 'hcosta';
+        (function () {
+            var nodes = document.getElementsByTagName('span');
+            for (var i = 0, url; i < nodes.length; i++) {
+                if (nodes[i].className.indexOf('dsq-postid') != -1) {
+                    nodes[i].parentNode.setAttribute('data-disqus-identifier', nodes[i].getAttribute('data-dsqidentifier'));
+                    url = nodes[i].parentNode.href.split('#', 1);
+                    if (url.length == 1) { url = url[0]; }
+                    else { url = url[1]; }
+                    nodes[i].parentNode.href = url + '#disqus_thread';
+                }
+            }
+            var s = document.createElement('script'); 
+            s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+        // ]]>
+        </script>
+        <script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/masonry.min.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/jquery.masonry.min.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/jquery.annina.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/navigation.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/imagesloaded.pkgd.min.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/SmoothScroll.min.js"></script>
+<script type="text/javascript" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/comment-reply.min.js"></script>
+
+
+
+<iframe style="display: none;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/saved_resource(1).html"></iframe><iframe name="oauth2relay459417489" id="oauth2relay459417489" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/postmessageRelay.html" tabindex="-1" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><div style="display: block; visibility: hidden; position: absolute; width: 106px; left: -1000px; top: -1000px;"><table cellpadding="0" cellspacing="0" dir="ltr" style="width:106px;" frame="void" rules="none" class=" gc-bubbleDefault pls-container"><tbody><tr class="gc-reset"><td class="pls-topLeft gc-reset"><img class="gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/border_3.gif"></td><td class="pls-topTail gc-reset"><img class="pls-tailbottom gc-reset" style="width:15px !important; height:9px !important; max-width: 15px !important; max-height: 9px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"><img class="pls-spacerbottom gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td><td class="pls-topRight gc-reset"><img class="gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/border_3.gif"></td></tr><tr class="gc-reset"><td class="pls-vertShimLeft gc-reset"><img class="gc-reset" style="width:1px !important; height:4px !important; max-width: 1px !important; max-height: 4px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td><td class="pls-vertShim gc-reset"><img class="gc-reset" style="width:1px !important; height:4px !important; max-width: 1px !important; max-height: 4px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td><td class="pls-vertShimRight gc-reset"><img class="pls-dropTR gc-reset" style="width:5px !important; height:4px !important; max-width: 5px !important; max-height: 4px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td></tr><tr class="gc-reset"><td class="pls-contentLeft gc-reset"><img class="pls-tailright gc-reset" style="width:9px !important; height:15px !important; max-width: 9px !important; max-height: 15px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"><img class="pls-spacerright gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td><td class="pls-contentWrap gc-reset"><div class="goog-bubble-content gc-reset"><iframe frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="margin:0px;position:absolute;z-index:1;border-style:none;outline:none;width:100px;" tabindex="0" vspace="0" width="100%" id="I0_1475182727007" name="I0_1475182727007" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/subscribe_embed(1).html"></iframe></div></td><td class="pls-dropRight gc-reset"><img class="pls-tailleft gc-reset" style="width:12px !important; height:19px !important; max-width: 12px !important; max-height: 19px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"><img class="pls-spacerleft gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td></tr><tr class="gc-reset"><td class="pls-bottomLeft gc-reset"><img class="gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/border_3.gif"></td><td class="gc-reset"><table cellpadding="0" cellspacing="0" style="width:100%" class="gc-reset"><tbody><tr class="gc-reset"><td class="pls-vert gc-reset"><img class="pls-dropBL gc-reset" style="width:4px !important; height:5px !important; max-width: 4px !important; max-height: 5px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td><td class="pls-dropBottom gc-reset"><img class="pls-tailtop gc-reset" style="width:19px !important; height:13px !important; max-width: 19px !important; max-height: 13px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"><img class="pls-spacertop gc-reset" style="width:1px !important; height:1px !important; max-width: 1px !important; max-height: 1px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td></tr></tbody></table></td><td class="pls-vert gc-reset"><img class="pls-dropBR gc-reset" style="width:5px !important; height:5px !important; max-width: 5px !important; max-height: 5px !important;" src="./Desplegar Django en producción con Gunicorn, Nginx, y Supervisor - HektorProgramador_files/spacer.gif"></td></tr></tbody></table></div></body></html>

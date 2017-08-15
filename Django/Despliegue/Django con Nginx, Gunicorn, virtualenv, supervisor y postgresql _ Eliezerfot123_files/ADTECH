@@ -1,0 +1,8 @@
+document.write("<iframe seamless=\"seamless\" style=\"width:0px;height:0px;border:none;position:absolute;\" src=\"//delivery.g.switchadhub.com/adserver/passback.html\"></iframe>\n");
+
+
+document.write('<img src="https://atpixelus.alephd.com/post_adtech?xH3z8opNzJvJ6rtndTDAjCF-nK18PSlu4ycpBzErLGE75.WPacY3uEF8UcLg3jtgrKDI-UqwHCGQGEmCql7GqkPx6JDkLbKCpLRSiM6ctwmBNVQormOYvfktwyCQHDmp6qrjTdQAkeABi9GDEcUbwvrC37EUqqwusUS-r.oTFasAh.rla6rbxcGL-Syt2g0UDdAEpg.phciMCYdKDH2hUrtKDA7oYfTHhMYB56wxzhytaN8VfKGvToamiDFSXMsPU7HjTwLO8nj2NQ8sr2BDEQ==" width="1" height="1"  style="display:none;">');
+document.write('<img src="https://pixel.quantserve.com/pixel/p-NcBg8UA4xqUFp.gif?idmatch=0" width="1" height="1" style="display:none;">');
+document.write('<img src="https://rp.gwallet.com/r1/cm/p81r" width="1" height="1" style="display:none;">');
+document.write('<img src="https://idpix.media6degrees.com/orbserv/hbpix?pixId=15194&pcv=50" width="1" height="1" style="display:none;">');
+document.write('<img src="https://s.chango.com/m/aol" width="1" height="1" style="display:none;">');

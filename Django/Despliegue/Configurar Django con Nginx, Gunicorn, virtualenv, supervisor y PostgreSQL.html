@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<!-- saved from url=(0098)https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link type="text/css" rel="stylesheet" href="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/gist-embed-de68fecedb7588e2c9c61c68ea84191c5cef4febbe0dec0ea64f8496c2b11a15.css">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" type="image/png" href="https://wildunix.es/static/icons/favicon.ico">
+<meta name="Description" content="Blog sobre programación y contenido de sistemas Unix">
+<link rel="stylesheet" href="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/materialize.min.css">
+<link href="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/icon" rel="stylesheet">
+<script async="" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/analytics.js"></script><script src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/jquery.min.js"></script>
+<style media="screen">body{background-color:#f9f9f9;}</style>
+ 
+<title>Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL</title>
+<meta property="og:title" content="Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql">
+<meta property="og:image" content="https://wildunix.es/static/icons/ms-icon-144x144.png">
+<meta property="og:description" content="Configurar Django en el servidor de producción puede ser una tarea complicada y más si se quiere utilizar algunas tecnologías que han aparecido recientemente. Por esto comparto esta traducción que puede ser útil a mucha gente.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@wildunix">
+<meta name="twitter:title" content="Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL">
+<meta name="twitter:description" content="Configurar Django en el servidor de producción puede ser una tarea complicada y más si ...">
+<meta name="twitter:image" content="https://wildunix.es/static/icons/ms-icon-144x144.png">
+<style media="screen">pre{padding:16px;overflow:auto;font-size:85%;line-height:1.45;background-color:#dedede;border-radius:3px;}p>code{padding:0.2em;overflow:auto;font-size:85%;background-color:#dedede;border-radius:2px;}</style>
+<link rel="stylesheet" href="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/rrssb.css" media="screen" title="no title" charset="utf-8">
+<meta name="keywords" content="django,supervisor,gunicorn,nginx,producción,gunicorn_start,nginx.conf">
+ 
+<script type="text/javascript">
+      window.cookieconsent_options = {"message":"This website uses cookies to ensure you get the best experience on our website","dismiss":"Got it!","learnMore":"More info","link":"/cookies/","theme":"dark-bottom"};
+    </script>
+<script type="text/javascript" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/cookieconsent.min.js"></script>
+ 
+<script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-56323075-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+<script src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/embed.js" data-timestamp="1475183063649"></script><link rel="stylesheet" type="text/css" href="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/dark-bottom.css"></head>
+<body><div class="cc_banner-wrapper "><div class="cc_banner cc_container cc_container--open"><a href="https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/#null" data-cc-event="click:dismiss" target="_blank" class="cc_btn cc_btn_accept_all">Got it!</a><p class="cc_message">This website uses cookies to ensure you get the best experience on our website <a data-cc-if="options.link" target="_self" class="cc_more_info" href="https://wildunix.es/cookies/">More info</a></p><a class="cc_logo" target="_blank" href="http://silktide.com/cookieconsent">Cookie Consent plugin for the EU cookie law</a></div></div>
+<h1 class="center"><b><a href="https://wildunix.es/">WildUnix</a></b></h1>
+<div class="container">
+<div class="row">
+<div class="col s12">
+ 
+ 
+<div class="row">
+<div class="col s12 l12">
+<h1>Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL</h1>
+Publicado por <i>Yábir Garcia</i> el 30 de Julio de 2016 a las 13:57
+</div>
+</div>
+<div class="row">
+<div class="col s12 m10">
+<ul class="rrssb-buttons clearfix rrssb-1 large-format" style="font-size: 16.0065px;">
+<li class="rrssb-twitter" data-initwidth="25" data-size="53.3125" style="width: 25%;">
+ 
+<a href="https://twitter.com/intent/tweet?text=Configurar%20Django%20con%20Nginx%2C%20Gunicorn%2C%20virtualenv%2C%20supervisor%20y%20PostgreSQL%20v%C3%ADa%20@wildunix%20https%3A%2F%2Fwildunix.es%2Fposts%2Fconfigurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql" class="popup">
+<span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"></path></svg></span>
+<span class="rrssb-text">twitter</span>
+</a>
+</li>
+<li class="rrssb-facebook" data-initwidth="25" data-size="68" style="width: 25%;">
+ 
+<a href="https://www.facebook.com/sharer/sharer.php?u=http://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql" class="popup">
+<span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"></path></svg></span>
+<span class="rrssb-text">facebook</span>
+</a>
+</li>
+<li class="rrssb-reddit" data-initwidth="25" data-size="44.65625" style="width: 25%;">
+<a href="http://www.reddit.com/submit?url=https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql&amp;title=Configurar%20Django%20con%20Nginx%2C%20Gunicorn%2C%20virtualenv%2C%20supervisor%20y%20PostgreSQL&amp;text=Configurar%20Django%20en%20el%20servidor%20de%20producci%C3%B3n%20puede%20ser%20una%20tarea%20complicada%20y%20m%C3%A1s%20si%20se%20quiere%20utilizar%20algunas%20tecnolog%C3%ADas%20que%20han%20aparecido%20recientemente.%20Por%20esto%20comparto%20esta%20traducci%C3%B3n%20que%20puede%20ser%20%C3%BAtil%20a%20mucha%20gente.">
+<span class="rrssb-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M11.794 15.316c0-1.03-.835-1.895-1.866-1.895-1.03 0-1.893.866-1.893 1.896s.863 1.9 1.9 1.9c1.023-.016 1.865-.916 1.865-1.9zM18.1 13.422c-1.03 0-1.895.864-1.895 1.895 0 1 .9 1.9 1.9 1.865 1.03 0 1.87-.836 1.87-1.865-.006-1.017-.875-1.917-1.875-1.895zM17.527 19.79c-.678.68-1.826 1.007-3.514 1.007h-.03c-1.686 0-2.834-.328-3.51-1.005a.677.677 0 0 0-.958 0c-.264.265-.264.7 0 1 .943.9 2.4 1.4 4.5 1.402.005 0 0 0 0 0 .005 0 0 0 0 0 2.066 0 3.527-.46 4.47-1.402a.678.678 0 0 0 .002-.958c-.267-.334-.688-.334-.988-.043z"></path><path d="M27.707 13.267a3.24 3.24 0 0 0-3.236-3.237c-.792 0-1.517.287-2.08.76-2.04-1.294-4.647-2.068-7.44-2.218l1.484-4.69 4.062.955c.07 1.4 1.3 2.6 2.7 2.555a2.696 2.696 0 0 0 2.695-2.695C25.88 3.2 24.7 2 23.2 2c-1.06 0-1.98.616-2.42 1.508l-4.633-1.09a.683.683 0 0 0-.803.454l-1.793 5.7C10.55 8.6 7.7 9.4 5.6 10.75c-.594-.45-1.3-.75-2.1-.72-1.785 0-3.237 1.45-3.237 3.2 0 1.1.6 2.1 1.4 2.69-.04.27-.06.55-.06.83 0 2.3 1.3 4.4 3.7 5.9 2.298 1.5 5.3 2.3 8.6 2.325 3.227 0 6.27-.825 8.57-2.325 2.387-1.56 3.7-3.66 3.7-5.917 0-.26-.016-.514-.05-.768.965-.465 1.577-1.565 1.577-2.698zm-4.52-9.912c.74 0 1.3.6 1.3 1.3a1.34 1.34 0 0 1-2.683 0c.04-.655.596-1.255 1.396-1.3zM1.646 13.3c0-1.038.845-1.882 1.883-1.882.31 0 .6.1.9.21-1.05.867-1.813 1.86-2.26 2.9-.338-.328-.57-.728-.57-1.26zm20.126 8.27c-2.082 1.357-4.863 2.105-7.83 2.105-2.968 0-5.748-.748-7.83-2.105-1.99-1.3-3.087-3-3.087-4.782 0-1.784 1.097-3.484 3.088-4.784 2.08-1.358 4.86-2.106 7.828-2.106 2.967 0 5.7.7 7.8 2.106 1.99 1.3 3.1 3 3.1 4.784C24.86 18.6 23.8 20.3 21.8 21.57zm4.014-6.97c-.432-1.084-1.19-2.095-2.244-2.977.273-.156.59-.245.928-.245 1.036 0 1.9.8 1.9 1.9a2.073 2.073 0 0 1-.57 1.327z"></path></svg>
+</span>
+<span class="rrssb-text">reddit</span>
+</a>
+</li>
+<li class="rrssb-pocket" data-initwidth="25" data-size="50" style="width: 25%;">
+<a href="https://getpocket.com/save?url=https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql">
+<span class="rrssb-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M28.782.002c2.03.002 3.193 1.12 3.182 3.106-.022 3.57.17 7.16-.158 10.7-1.09 11.773-14.588 18.092-24.6 11.573C2.72 22.458.197 18.313.057 12.937c-.09-3.36-.05-6.72-.026-10.08C.04 1.113 1.212.016 3.02.008 7.347-.006 11.678.004 16.006.002c4.258 0 8.518-.004 12.776 0zM8.65 7.856c-1.262.135-1.99.57-2.357 1.476-.392.965-.115 1.81.606 2.496a746.818 746.818 0 0 0 7.398 6.966c1.086 1.003 2.237.99 3.314-.013a700.448 700.448 0 0 0 7.17-6.747c1.203-1.148 1.32-2.468.365-3.426-1.01-1.014-2.302-.933-3.558.245-1.596 1.497-3.222 2.965-4.75 4.526-.706.715-1.12.627-1.783-.034a123.71 123.71 0 0 0-4.93-4.644c-.47-.42-1.123-.647-1.478-.844z"></path></svg>
+</span>
+<span class="rrssb-text">pocket</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+<div class="row">
+<div class="col s12">
+<p>Éste es una traducción del aquel post que puede encontrar en el enlace: </p>
+<p><a href="http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/">http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/</a></p>
+<p>contando con el permiso autor para compartir en español.</p>
+<h2>Introducción</h2>
+<p>Django es un <em>framework</em> de desarrollo web eficiente, versátil y dinámico que está en continua evolución. Cuando Django empezó a ganar popularidad la configuración que se recomendaba era con Apache y mod_wsgi. El "arte" de hacer funcionar a Django ha cambiado y la configuración recomendada se ha hecho más eficiente y elástica a la par que más compleja e incluye herramientas como: Nginx, Gunicorn, virtualenv, supervisord y/o PostgreSQL.</p>
+<p>En este post se explicará como combinar todas estas herramientas en un servidor corriendo Linux.</p>
+<h2>Requisitos</h2>
+<p>Se asume que cuenta con un servidor en el que tiene privilegios de usuario. Yo (el autor original) uso un servidor corriendo Debian 7, así que todo lo aquí dicho debería funcionar en servidores con Ubuntu o otras distribuciones basadas en Debian.</p>
+<p>Si está usando una distribución basada en RPM (como CentOS), necesitará reemplazar las ordenes apt-get por sus equivalentes yum y si usa FreeBSD puede instalar los componentes por ports.</p>
+<p>Si no dispone de un servidor con el que "jugar", le recomendaría un servidor VPS económico en Digital Ocean. Si se registra con <a href="https://www.digitalocean.com/?refcode=053914aba44d">este enlace</a> me ayudará a reducir mi siguiente factura :)</p>
+<p>También se presupone que ha configurado su DNS para que apunte a la IP del servidor. Para esta guía el dominio será <code>example.com</code></p>
+<h2>Actualizar el sistema</h2>
+<p>Empezaremos asegurándonos que el sistema esté actualizado:</p>
+<pre><code>sudo apt-get update
+sudo apt-get upgrade
+</code></pre>
+<h2>PostgreSQL</h2>
+<p>Para instalarlo ejecute la orden </p>
+<pre><code>sudo apt-get install postgresql postgresql-contrib
+</code></pre>
+<p>Y a continuación cree un usuario y una nueva base de datos para el proyecto.</p>
+<pre><code>sudo su - postgres
+postgres@django:~$ createuser --interactive -P
+Enter name of role to add: hello_django
+Enter password for new role: 
+Enter it again: 
+Shall the new role be a superuser? (y/n) n
+Shall the new role be allowed to create databases? (y/n) n
+Shall the new role be allowed to create more new roles? (y/n) n
+postgres@django:~$
+
+postgres@django:~$ createdb --owner hello_django hello
+postgres@django:~$ logout
+</code></pre>
+<h2>Usuario de la aplicación</h2>
+<p>Incluso aunque Django tiene una buena lista con los <a href="http://michal.karzynski.pl/blog/2013/06/09/django-nginx-gunicorn-virtualenv-supervisor/">problemas de seguridad</a>, las aplicaciones se pueden ver comprometidas. Si la aplicación tiene acceso limitado a los recursos de su servidor, los daños potenciales también pueden limitarse. La aplicación debería funcionar con un usuario con privilegios restringidos.</p>
+<p>Cree un usuario para la aplicación llamado <code>hello</code> y asignelo a un grupo llamado <code>webapps</code></p>
+<pre><code>$ sudo groupadd --system webapps 
+$ sudo useradd --system --gid webapps --shell /bin/bash --home /webapps/hello_django hello
+</code></pre>
+<h2>Instalar virtualenv y crear un entorno para su aplicación</h2>
+<p><a href="http://virtualenv.org/">Virtualenv</a> es una herramienta que permite crear entornos Python separados de nuestro sistema. Esto permite trabajar con aplicaciones con distintos requisitos al mismo tiempo. Por ejemplo, una basado en Django 1.5 y otro en Django 1.6. Virtualenv es facil de instalar en Debian:</p>
+<pre><code>sudo apt-get install python-virtualenv
+</code></pre>
+<h2>Crear y activar un entorno para su aplicación</h2>
+<p>Me gusta que todas mis aplicaciones estén en el directorio <code>/webapps/</code>. Si lo prefiere <code>/var/www/</code> , <code>/srv/</code> o cualquier otra ubicación de su agrado. Cree un directorio para albergar su aplicación <code>/webapps/hello_django/</code> y cambie el propietario del directorio al usuario de su aplicación, <code>hello</code></p>
+<pre><code>$ sudo mkdir -p /webapps/hello_django/
+$ sudo chown hello /webapps/hello_django/
+</code></pre>
+<p>Ahora cree un entorno de virtualenv siendo el usuario de su aplicación en el directorio de esta:</p>
+<pre><code>$sudo su - hello hello@django:~$ cd /webapps/hello_django/
+hello@django:~$ virtualenv .
+
+New python executable in hello_django/bin/python Installing
+distribute..............done. Installing pip.....................done.
+
+hello@django:~$ source bin/activate (hello_django)hello@django:~$
+</code></pre>
+<p>Ahora el entorno está activado y se puede proceder a instalar Django en él.</p>
+<pre><code>(hello_django)hello@django:~$ pip install django
+
+Downloading/unpacking django
+(...)
+Installing collected packages: django
+(...)
+Successfully installed django
+Cleaning up...
+</code></pre>
+<p>El entorno con Django debería estar ya preparado. Ahora proceda a instalar Django: </p>
+<pre><code>(hello_django)hello@django:~$ django-admin.py startproject hello
+</code></pre>
+<p>Puede comprobar que todo funcione ejecutando el servidor de desarrollo: </p>
+<pre><code>(hello_django)hello@django:~$ cd hello
+(hello_django)hello@django:~$ python manage.py runserver example.com:8000
+Validating models...
+
+0 errors found
+June 09, 2013 - 06:12:00
+Django version 1.5.1, using settings 'hello.settings'
+Development server is running at http://example.com:8000/
+Quit the server with CONTROL-C.
+</code></pre>
+<p>Ahora debería poder acceder al servidor atraves de la url http://example.com:8000</p>
+<h2>Dar permisos de escritura a otros usuarios en el directorio de la aplicación</h2>
+<p>La aplicación va a funcionar como el usuario <code>hello</code>, el cual tiene permisos en todo el directorio. Si quiere que el usuario habitual pueda cambiar archivos de la apliación, puede cambiar el propietario del grupo del directorio a <code>users</code> y otorgar permisos de escritura al grupo.</p>
+<pre><code>$ sudo chown -R hello:users /webapps/hello_django
+$ sudo chmod -R g+w /webapps/hello_django
+</code></pre>
+<p>Puede comprobar los grupos de los que usted es miembro usando la orden <code>groups</code> o <code>id</code></p>
+<pre><code>$ id
+uid=1000(michal) gid=1000(michal) groups=1000(michal),27(sudo),100(users)
+</code></pre>
+<p>Si no es miembro de users, se puede agregar a usted mismo con:</p>
+<pre><code>$ sudo usermod -a -G users `whoami`
+</code></pre>
+<h2>Configurar PostgreSQL para trabajar con Django</h2>
+<p>Para poder usar PostgreSQL con Django será necesarios instalar <code>psycopg2</code> en su entorno virtual. Este paso requiere la compilación de una extensión nativa escrita en C. La compilación fallará si no puede encontrar los archivos <code>header</code> y las librerías requeridas para el enlazar los programas de C con <code>libpq</code> (librería de comunicación con Postgres) y construir los modulos de Pyton (<code>python-dev</code> package). Tenemos que instalar estos dos paquetes primero y entonces podremos instalar <code>psycopg2</code> usando <code>pip</code>:</p>
+<pre><code>$ sudo aptitude install libpq-dev python-dev
+(hello_django)hello@django:~$ pip install psycopg2
+</code></pre>
+<p>Y ahora podremos configurar nuestra base de datos en el archivo <code>settings.py</code> de Django:</p>
+<pre><code>DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hello',
+        'USER': 'hello_django',
+        'PASSWORD': '1Ak5RTQt7mtw0OREsfPhJYzXIak41gnrm5NWYEosCeIduJck10awIzoys1wvbL8',
+        'HOST': 'localhost',
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
+</code></pre>
+<p>Y por último podremos construir la base de datos desde Django:</p>
+<pre><code>(hello_django)hello@django:~$ python manage.py syncdb
+</code></pre>
+<h2>Gunicorn</h2>
+<p>En producción no usaremos el servidor de desarrollo de Django sino una aplicación dedicada a servir nuestro contenido, <a href="http://gunicorn.org/">gunicorn</a>.</p>
+<p>Lo primero será instalar <code>gunicorn</code> en el entorno virtual de nuestra aplicación:</p>
+<pre><code>(hello_django)hello@django:~$ pip install gunicorn
+Downloading/unpacking gunicorn
+  Downloading gunicorn-0.17.4.tar.gz (372Kb): 372Kb downloaded
+  Running setup.py egg_info for package gunicorn
+
+Installing collected packages: gunicorn
+  Running setup.py install for gunicorn
+
+    Installing gunicorn_paster script to /webapps/hello_django/bin
+    Installing gunicorn script to /webapps/hello_django/bin
+    Installing gunicorn_django script to /webapps/hello_django/bin
+Successfully installed gunicorn
+Cleaning up...
+</code></pre>
+<p>Puede comprobar que <code>gunicorn</code> funciona correctamente con la orden:</p>
+<pre><code>(hello_django)hello@django:~$ gunicorn hello.wsgi:application --bind example.com:8001
+</code></pre>
+<p>Ahora debería poder acceder al servidor a través de la url http://example.com:8001/ . Se ha cambiado intencionadamente 8000 por 8001 para forzar al navegador a establecer una nueva conexión.</p>
+<p>Gunicorn está ahora instalado y listo para servir su aplicación. Procedamos a establecer una configuración básica para hacerlo más útil. Estableceremos una serie de parámetros en un archivo <code>bash</code> que gurdaremos en <code>bin/gunicorn_start</code>.</p>
+<p></p><div data-gist-id="5747293" data-gist-file="gunicorn_start.bash" style="display: block;"><div class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-gunicorn_start-bash" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-shell">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-gunicorn_start-bash-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-gunicorn_start-bash-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-c">#!/bin/bash</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-gunicorn_start-bash-LC2" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-gunicorn_start-bash-LC3" class="blob-code blob-code-inner js-file-line">NAME=<span class="pl-s"><span class="pl-pds">"</span>hello_app<span class="pl-pds">"</span></span>                                  <span class="pl-c"># Name of the application</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-gunicorn_start-bash-LC4" class="blob-code blob-code-inner js-file-line">DJANGODIR=/webapps/hello_django/hello             <span class="pl-c"># Django project directory</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-gunicorn_start-bash-LC5" class="blob-code blob-code-inner js-file-line">SOCKFILE=/webapps/hello_django/run/gunicorn.sock  <span class="pl-c"># we will communicte using this unix socket</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L6" class="blob-num js-line-number" data-line-number="6"></td>
+        <td id="file-gunicorn_start-bash-LC6" class="blob-code blob-code-inner js-file-line">USER=hello                                        <span class="pl-c"># the user to run as</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L7" class="blob-num js-line-number" data-line-number="7"></td>
+        <td id="file-gunicorn_start-bash-LC7" class="blob-code blob-code-inner js-file-line">GROUP=webapps                                     <span class="pl-c"># the group to run as</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L8" class="blob-num js-line-number" data-line-number="8"></td>
+        <td id="file-gunicorn_start-bash-LC8" class="blob-code blob-code-inner js-file-line">NUM_WORKERS=3                                     <span class="pl-c"># how many worker processes should Gunicorn spawn</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L9" class="blob-num js-line-number" data-line-number="9"></td>
+        <td id="file-gunicorn_start-bash-LC9" class="blob-code blob-code-inner js-file-line">DJANGO_SETTINGS_MODULE=hello.settings             <span class="pl-c"># which settings file should Django use</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L10" class="blob-num js-line-number" data-line-number="10"></td>
+        <td id="file-gunicorn_start-bash-LC10" class="blob-code blob-code-inner js-file-line">DJANGO_WSGI_MODULE=hello.wsgi                     <span class="pl-c"># WSGI module name</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L11" class="blob-num js-line-number" data-line-number="11"></td>
+        <td id="file-gunicorn_start-bash-LC11" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L12" class="blob-num js-line-number" data-line-number="12"></td>
+        <td id="file-gunicorn_start-bash-LC12" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>Starting <span class="pl-smi">$NAME</span> as <span class="pl-s"><span class="pl-pds">`</span>whoami<span class="pl-pds">`</span></span><span class="pl-pds">"</span></span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L13" class="blob-num js-line-number" data-line-number="13"></td>
+        <td id="file-gunicorn_start-bash-LC13" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L14" class="blob-num js-line-number" data-line-number="14"></td>
+        <td id="file-gunicorn_start-bash-LC14" class="blob-code blob-code-inner js-file-line"><span class="pl-c"># Activate the virtual environment</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L15" class="blob-num js-line-number" data-line-number="15"></td>
+        <td id="file-gunicorn_start-bash-LC15" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">cd</span> <span class="pl-smi">$DJANGODIR</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L16" class="blob-num js-line-number" data-line-number="16"></td>
+        <td id="file-gunicorn_start-bash-LC16" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">source</span> ../bin/activate</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L17" class="blob-num js-line-number" data-line-number="17"></td>
+        <td id="file-gunicorn_start-bash-LC17" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> DJANGO_SETTINGS_MODULE=<span class="pl-smi">$DJANGO_SETTINGS_MODULE</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L18" class="blob-num js-line-number" data-line-number="18"></td>
+        <td id="file-gunicorn_start-bash-LC18" class="blob-code blob-code-inner js-file-line"><span class="pl-k">export</span> PYTHONPATH=<span class="pl-smi">$DJANGODIR</span>:<span class="pl-smi">$PYTHONPATH</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L19" class="blob-num js-line-number" data-line-number="19"></td>
+        <td id="file-gunicorn_start-bash-LC19" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L20" class="blob-num js-line-number" data-line-number="20"></td>
+        <td id="file-gunicorn_start-bash-LC20" class="blob-code blob-code-inner js-file-line"><span class="pl-c"># Create the run directory if it doesn't exist</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L21" class="blob-num js-line-number" data-line-number="21"></td>
+        <td id="file-gunicorn_start-bash-LC21" class="blob-code blob-code-inner js-file-line">RUNDIR=<span class="pl-s"><span class="pl-pds">$(</span>dirname <span class="pl-smi">$SOCKFILE</span><span class="pl-pds">)</span></span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L22" class="blob-num js-line-number" data-line-number="22"></td>
+        <td id="file-gunicorn_start-bash-LC22" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">test</span> -d <span class="pl-smi">$RUNDIR</span> <span class="pl-k">||</span> mkdir -p <span class="pl-smi">$RUNDIR</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L23" class="blob-num js-line-number" data-line-number="23"></td>
+        <td id="file-gunicorn_start-bash-LC23" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L24" class="blob-num js-line-number" data-line-number="24"></td>
+        <td id="file-gunicorn_start-bash-LC24" class="blob-code blob-code-inner js-file-line"><span class="pl-c"># Start your Django Unicorn</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L25" class="blob-num js-line-number" data-line-number="25"></td>
+        <td id="file-gunicorn_start-bash-LC25" class="blob-code blob-code-inner js-file-line"><span class="pl-c"># Programs meant to be run under supervisor should not daemonize themselves (do not use --daemon)</span></td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L26" class="blob-num js-line-number" data-line-number="26"></td>
+        <td id="file-gunicorn_start-bash-LC26" class="blob-code blob-code-inner js-file-line"><span class="pl-c1">exec</span> ../bin/gunicorn <span class="pl-smi">${DJANGO_WSGI_MODULE}</span>:application \</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L27" class="blob-num js-line-number" data-line-number="27"></td>
+        <td id="file-gunicorn_start-bash-LC27" class="blob-code blob-code-inner js-file-line">  --name <span class="pl-smi">$NAME</span> \</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L28" class="blob-num js-line-number" data-line-number="28"></td>
+        <td id="file-gunicorn_start-bash-LC28" class="blob-code blob-code-inner js-file-line">  --workers <span class="pl-smi">$NUM_WORKERS</span> \</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L29" class="blob-num js-line-number" data-line-number="29"></td>
+        <td id="file-gunicorn_start-bash-LC29" class="blob-code blob-code-inner js-file-line">  --user=<span class="pl-smi">$USER</span> --group=<span class="pl-smi">$GROUP</span> \</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L30" class="blob-num js-line-number" data-line-number="30"></td>
+        <td id="file-gunicorn_start-bash-LC30" class="blob-code blob-code-inner js-file-line">  --bind=unix:<span class="pl-smi">$SOCKFILE</span> \</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L31" class="blob-num js-line-number" data-line-number="31"></td>
+        <td id="file-gunicorn_start-bash-LC31" class="blob-code blob-code-inner js-file-line">  --log-level=debug \</td>
+      </tr>
+      <tr>
+        <td id="file-gunicorn_start-bash-L32" class="blob-num js-line-number" data-line-number="32"></td>
+        <td id="file-gunicorn_start-bash-LC32" class="blob-code blob-code-inner js-file-line">  --log-file=-</td>
+      </tr>
+</tbody></table>
+
+  </div>
+
+  </div>
+  
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/postrational/5747293/raw/483545cb741318e5755e428bef1a3882f2063331/gunicorn_start.bash" style="float:right">view raw</a>
+        <a href="https://gist.github.com/postrational/5747293#file-gunicorn_start-bash">gunicorn_start.bash</a>
+        hosted with ❤ by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div></div><p></p>
+<p>Y una vez guardado deberá darle permisos de ejecución:</p>
+<pre><code>    $ sudo chmod u+x bin/gunicorn_start
+</code></pre>
+<p>Puede comprobar que todo funciona ejecutando el script como <code>hello</code>:</p>
+<pre><code>$ sudo su - hello
+hello@django:~$ bin/gunicorn_start
+Starting hello_app as hello
+2013-06-09 14:21:45 [10724] [INFO] Starting gunicorn 18.0
+2013-06-09 14:21:45 [10724] [DEBUG] Arbiter booted
+2013-06-09 14:21:45 [10724] [INFO] Listening at: unix:/webapps/hello_django/run/gunicorn.sock (10724)
+2013-06-09 14:21:45 [10724] [INFO] Using worker: sync
+2013-06-09 14:21:45 [10735] [INFO] Booting worker with pid: 10735
+2013-06-09 14:21:45 [10736] [INFO] Booting worker with pid: 10736
+2013-06-09 14:21:45 [10737] [INFO] Booting worker with pid: 10737
+
+^C (CONTROL-C to kill Gunicorn)
+
+2013-06-09 14:21:48 [10736] [INFO] Worker exiting (pid: 10736)
+2013-06-09 14:21:48 [10735] [INFO] Worker exiting (pid: 10735)
+2013-06-09 14:21:48 [10724] [INFO] Handling signal: int
+2013-06-09 14:21:48 [10737] [INFO] Worker exiting (pid: 10737)
+2013-06-09 14:21:48 [10724] [INFO] Shutting down: Master
+$ exit
+</code></pre>
+<p>Necesitará modificar los parámetros y caminos en el archivo <code>gunicorn_start</code> para que coincidan con los de su aplicación.</p>
+<p>Como regla establezca <code>--workers</code> (<code>NUM_WORKERS</code>) de acuerdo con la fórmula siguiente: <code>2 * CPUs + 1</code>. La idea es que en algún momento la mitad de sus trabajadores estará haciendo tareas de I/O. Para una máquina de un núcleo establezca, de acuerdo con la regla, 3 trabajadores.</p>
+<p>El argumento <code>--name</code> (<code>NAME</code>) será con el que se identifique al proceso en ordenes como <code>ps</code> ó <code>top</code>. Por defecto es <code>gunicorn</code>, lo cual puede provocar que sea difícil de identificar si hay varias aplicaciones funcionando.</p>
+<p>Para que <code>--name</code> funcione será necesario que instale un módulo de Python llamado <code>setproctitle</code>. Para construir esta extensión nativa <code>pip</code> necesita tener acceso a los archivos <code>header</code> en C para Python. Puede añadirlos con el paquete <code>python-dev</code> y entonces instalar <code>setproctitle</code>.</p>
+<pre><code>$ sudo aptitude install python-dev
+(hello_django)hello@django:~$ pip install setproctitle
+</code></pre>
+<p>Ahora cuando liste sus procesos, podrá ver que proceso de gunicorn corresponde a cada aplicación:</p>
+<pre><code>$ ps aux
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+(...)
+hello    11588  0.7  0.2  58400 11568 ?        S    14:52   0:00 gunicorn: master [hello_app]
+hello    11602  0.5  0.3  66584 16040 ?        S    14:52   0:00 gunicorn: worker [hello_app]
+hello    11603  0.5  0.3  66592 16044 ?        S    14:52   0:00 gunicorn: worker [hello_app]
+hello    11604  0.5  0.3  66604 16052 ?        S    14:52   0:00 gunicorn: worker [hello_app]
+</code></pre>
+<h2>Iniciar y controlar Gunicorn con Supervisor</h2>
+<p>Su script <code>gunicorn_start</code> debería estar ahora listo y funcionando. Necesitamos estar seguros de que puede iniciarse automáticamente con el sistema y que puede reiniciarse si por alguna razón se apaga inesperadamente. Estas tareas pueden ser fácilmente administradas por un servicio llamado <code>supervisord</code>. Su instalación es muy sencilla: </p>
+<pre><code>$ sudo aptitude install supervisor
+</code></pre>
+<p>Cuando <code>Supervisor</code> este instalado, usted puede asignarle programas que iniciar y vigilar creando archivos en la carpeta <code>/etc/supervisor/conf.d</code>. Para nuestra aplicación <code>hello</code> crearemos un archivo llamado <code>/etc/supervisor/conf.d/hello.conf</code> con el siguiente contenido:</p>
+<div data-gist-id="5747293" data-gist-file="hello.conf" style="display: block;"><div class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-hello-conf" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-text">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-hello-conf-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-hello-conf-LC1" class="blob-code blob-code-inner js-file-line">[program:hello]</td>
+      </tr>
+      <tr>
+        <td id="file-hello-conf-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-hello-conf-LC2" class="blob-code blob-code-inner js-file-line">command = /webapps/hello_django/bin/gunicorn_start                    ; Command to start app</td>
+      </tr>
+      <tr>
+        <td id="file-hello-conf-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-hello-conf-LC3" class="blob-code blob-code-inner js-file-line">user = hello                                                          ; User to run as</td>
+      </tr>
+      <tr>
+        <td id="file-hello-conf-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-hello-conf-LC4" class="blob-code blob-code-inner js-file-line">stdout_logfile = /webapps/hello_django/logs/gunicorn_supervisor.log   ; Where to write log messages</td>
+      </tr>
+      <tr>
+        <td id="file-hello-conf-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-hello-conf-LC5" class="blob-code blob-code-inner js-file-line">redirect_stderr = true                                                ; Save stderr in the same log</td>
+      </tr>
+      <tr>
+        <td id="file-hello-conf-L6" class="blob-num js-line-number" data-line-number="6"></td>
+        <td id="file-hello-conf-LC6" class="blob-code blob-code-inner js-file-line">environment=LANG=en_US.UTF-8,LC_ALL=en_US.UTF-8                       ; Set UTF-8 as default encoding</td>
+      </tr>
+</tbody></table>
+
+  </div>
+
+  </div>
+  
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/postrational/5747293/raw/483545cb741318e5755e428bef1a3882f2063331/hello.conf" style="float:right">view raw</a>
+        <a href="https://gist.github.com/postrational/5747293#file-hello-conf">hello.conf</a>
+        hosted with ❤ by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div></div>
+<p>Puede asignarle muchas <a href="http://supervisord.org/configuration.html#program-x-section-settings">más opciones</a>, pero esta configuración básica debería ser suficiente.</p>
+<p>Ahora cree un archivo para almacenar los "logs" de la aplicación:</p>
+<pre><code>hello@django:~$ mkdir -p /webapps/hello_django/logs/
+hello@django:~$ touch /webapps/hello_django/logs/gunicorn_supervisor.log
+</code></pre>
+<p>Después de guardar el archivo de configuración para su programa puede pedirle a <code>supervisor</code> que vuelva a leer los archivos de configuración y que actualize (lo cual hará que se inicie la nueva aplicación).</p>
+<pre><code>$ sudo supervisorctl reread
+hello: available
+$ sudo supervisorctl update
+hello: added process group
+</code></pre>
+<p>También puede comprobar el estado de su aplicación, iniciarla, detenerla o reiniciarla usando supervisor.</p>
+<pre><code>$ sudo supervisorctl status hello                       
+hello                            RUNNING    pid 18020, uptime 0:00:50
+$ sudo supervisorctl stop hello  
+hello: stopped
+$ sudo supervisorctl start hello                        
+hello: started
+$ sudo supervisorctl restart hello 
+hello: stopped
+hello: started
+</code></pre>
+<p>Su aplicación debería ahora iniciarse automáticamente después de un reinicio del sistema o reiniciarse tras un error inesperado.</p>
+<h2>Nginx</h2>
+<p>Ahora es momento de configurar Nginx como servidor para nuestra aplicación y los archivos estáticos (<code>static files</code>) . </p>
+<pre><code>$ sudo apt-get install nginx
+$ sudo service nginx start
+</code></pre>
+<p>Puede navegar a la url de su servidor (http://example.com) con su navegador y Nginx debería saludarle con las palabras <code>“Welcome to nginx!”</code></p>
+<h3>Crear una configuración para django en el servidor virtual de Nginx.</h3>
+<p>Cada servidor virtual de Nginx podría describirse como un archivo en
+el directorio <code>/etc/nginx/sites-available</code>. Pude seleccionar qué sitios quiere hacer disponibles creando enlaces simbólicos a éstos en la carpeta <code>/etc/nginx/sites-enabled</code></p>
+<p>Cree un nuevo archivo de configuración de Nginx para su aplicación de Django funcionando en <code>example.com</code> en <code>/etc/nginx/sites-available/hello</code>. El archivo debería contener algo parecido a las siguientes líneas. Una explicación más detallada está disponible de la <a href="https://github.com/benoitc/gunicorn/blob/master/examples/nginx.conf">gente que hace Gunicorn</a></p>
+<div data-gist-id="5747293" data-gist-file="hello.nginxconf" style="display: block;"><div class="gist">
+    <div class="gist-file">
+      <div class="gist-data">
+        <div class="js-gist-file-update-container js-task-list-container file-box">
+  <div id="file-hello-nginxconf" class="file">
+    
+
+  <div itemprop="text" class="blob-wrapper data type-nginx">
+      <table class="highlight tab-size js-file-line-container" data-tab-size="8">
+      <tbody><tr>
+        <td id="file-hello-nginxconf-L1" class="blob-num js-line-number" data-line-number="1"></td>
+        <td id="file-hello-nginxconf-LC1" class="blob-code blob-code-inner js-file-line"><span class="pl-k">upstream</span> <span class="pl-en">hello_app_server </span>{</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L2" class="blob-num js-line-number" data-line-number="2"></td>
+        <td id="file-hello-nginxconf-LC2" class="blob-code blob-code-inner js-file-line">  <span class="pl-c"># fail_timeout=0 means we always retry an upstream even if it failed</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L3" class="blob-num js-line-number" data-line-number="3"></td>
+        <td id="file-hello-nginxconf-LC3" class="blob-code blob-code-inner js-file-line">  <span class="pl-c"># to return a good HTTP response (in case the Unicorn master nukes a</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L4" class="blob-num js-line-number" data-line-number="4"></td>
+        <td id="file-hello-nginxconf-LC4" class="blob-code blob-code-inner js-file-line">  <span class="pl-c"># single worker for timing out).</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L5" class="blob-num js-line-number" data-line-number="5"></td>
+        <td id="file-hello-nginxconf-LC5" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L6" class="blob-num js-line-number" data-line-number="6"></td>
+        <td id="file-hello-nginxconf-LC6" class="blob-code blob-code-inner js-file-line">  <span class="pl-k">server</span> unix:/webapps/hello_django/run/gunicorn.sock fail_timeout=0;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L7" class="blob-num js-line-number" data-line-number="7"></td>
+        <td id="file-hello-nginxconf-LC7" class="blob-code blob-code-inner js-file-line">}</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L8" class="blob-num js-line-number" data-line-number="8"></td>
+        <td id="file-hello-nginxconf-LC8" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L9" class="blob-num js-line-number" data-line-number="9"></td>
+        <td id="file-hello-nginxconf-LC9" class="blob-code blob-code-inner js-file-line"><span class="pl-k">server</span> {</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L10" class="blob-num js-line-number" data-line-number="10"></td>
+        <td id="file-hello-nginxconf-LC10" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L11" class="blob-num js-line-number" data-line-number="11"></td>
+        <td id="file-hello-nginxconf-LC11" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">listen</span>   <span class="pl-s">80</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L12" class="blob-num js-line-number" data-line-number="12"></td>
+        <td id="file-hello-nginxconf-LC12" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">server_name</span> example.com;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L13" class="blob-num js-line-number" data-line-number="13"></td>
+        <td id="file-hello-nginxconf-LC13" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L14" class="blob-num js-line-number" data-line-number="14"></td>
+        <td id="file-hello-nginxconf-LC14" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">client_max_body_size</span> <span class="pl-c1">4G</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L15" class="blob-num js-line-number" data-line-number="15"></td>
+        <td id="file-hello-nginxconf-LC15" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L16" class="blob-num js-line-number" data-line-number="16"></td>
+        <td id="file-hello-nginxconf-LC16" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">access_log</span> /webapps/hello_django/logs/nginx-access.log;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L17" class="blob-num js-line-number" data-line-number="17"></td>
+        <td id="file-hello-nginxconf-LC17" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">error_log</span> /webapps/hello_django/logs/nginx-error.log;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L18" class="blob-num js-line-number" data-line-number="18"></td>
+        <td id="file-hello-nginxconf-LC18" class="blob-code blob-code-inner js-file-line"> </td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L19" class="blob-num js-line-number" data-line-number="19"></td>
+        <td id="file-hello-nginxconf-LC19" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">location</span> <span class="pl-en">/static/ </span>{</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L20" class="blob-num js-line-number" data-line-number="20"></td>
+        <td id="file-hello-nginxconf-LC20" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">alias</span>   /webapps/hello_django/static/;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L21" class="blob-num js-line-number" data-line-number="21"></td>
+        <td id="file-hello-nginxconf-LC21" class="blob-code blob-code-inner js-file-line">    }</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L22" class="blob-num js-line-number" data-line-number="22"></td>
+        <td id="file-hello-nginxconf-LC22" class="blob-code blob-code-inner js-file-line">    </td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L23" class="blob-num js-line-number" data-line-number="23"></td>
+        <td id="file-hello-nginxconf-LC23" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">location</span> <span class="pl-en">/media/ </span>{</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L24" class="blob-num js-line-number" data-line-number="24"></td>
+        <td id="file-hello-nginxconf-LC24" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">alias</span>   /webapps/hello_django/media/;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L25" class="blob-num js-line-number" data-line-number="25"></td>
+        <td id="file-hello-nginxconf-LC25" class="blob-code blob-code-inner js-file-line">    }</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L26" class="blob-num js-line-number" data-line-number="26"></td>
+        <td id="file-hello-nginxconf-LC26" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L27" class="blob-num js-line-number" data-line-number="27"></td>
+        <td id="file-hello-nginxconf-LC27" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">location</span> <span class="pl-en">/ </span>{</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L28" class="blob-num js-line-number" data-line-number="28"></td>
+        <td id="file-hello-nginxconf-LC28" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># an HTTP header important enough to have its own Wikipedia entry:</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L29" class="blob-num js-line-number" data-line-number="29"></td>
+        <td id="file-hello-nginxconf-LC29" class="blob-code blob-code-inner js-file-line">        <span class="pl-c">#   http://en.wikipedia.org/wiki/X-Forwarded-For</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L30" class="blob-num js-line-number" data-line-number="30"></td>
+        <td id="file-hello-nginxconf-LC30" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">proxy_set_header</span> X-Forwarded-For <span class="pl-smi">$proxy_add_x_forwarded_for</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L31" class="blob-num js-line-number" data-line-number="31"></td>
+        <td id="file-hello-nginxconf-LC31" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L32" class="blob-num js-line-number" data-line-number="32"></td>
+        <td id="file-hello-nginxconf-LC32" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># enable this if and only if you use HTTPS, this helps Rack</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L33" class="blob-num js-line-number" data-line-number="33"></td>
+        <td id="file-hello-nginxconf-LC33" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># set the proper protocol for doing redirects:</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L34" class="blob-num js-line-number" data-line-number="34"></td>
+        <td id="file-hello-nginxconf-LC34" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># proxy_set_header X-Forwarded-Proto https;</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L35" class="blob-num js-line-number" data-line-number="35"></td>
+        <td id="file-hello-nginxconf-LC35" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L36" class="blob-num js-line-number" data-line-number="36"></td>
+        <td id="file-hello-nginxconf-LC36" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># pass the Host: header from the client right along so redirects</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L37" class="blob-num js-line-number" data-line-number="37"></td>
+        <td id="file-hello-nginxconf-LC37" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># can be set properly within the Rack application</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L38" class="blob-num js-line-number" data-line-number="38"></td>
+        <td id="file-hello-nginxconf-LC38" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">proxy_set_header</span> Host <span class="pl-smi">$http_host</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L39" class="blob-num js-line-number" data-line-number="39"></td>
+        <td id="file-hello-nginxconf-LC39" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L40" class="blob-num js-line-number" data-line-number="40"></td>
+        <td id="file-hello-nginxconf-LC40" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># we don't want nginx trying to do something clever with</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L41" class="blob-num js-line-number" data-line-number="41"></td>
+        <td id="file-hello-nginxconf-LC41" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># redirects, we set the Host: header above already.</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L42" class="blob-num js-line-number" data-line-number="42"></td>
+        <td id="file-hello-nginxconf-LC42" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">proxy_redirect</span><span class="pl-c1"> off</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L43" class="blob-num js-line-number" data-line-number="43"></td>
+        <td id="file-hello-nginxconf-LC43" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L44" class="blob-num js-line-number" data-line-number="44"></td>
+        <td id="file-hello-nginxconf-LC44" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># set "proxy_buffering off" *only* for Rainbows! when doing</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L45" class="blob-num js-line-number" data-line-number="45"></td>
+        <td id="file-hello-nginxconf-LC45" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># Comet/long-poll stuff.  It's also safe to set if you're</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L46" class="blob-num js-line-number" data-line-number="46"></td>
+        <td id="file-hello-nginxconf-LC46" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># using only serving fast clients with Unicorn + nginx.</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L47" class="blob-num js-line-number" data-line-number="47"></td>
+        <td id="file-hello-nginxconf-LC47" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># Otherwise you _want_ nginx to buffer responses to slow</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L48" class="blob-num js-line-number" data-line-number="48"></td>
+        <td id="file-hello-nginxconf-LC48" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># clients, really.</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L49" class="blob-num js-line-number" data-line-number="49"></td>
+        <td id="file-hello-nginxconf-LC49" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># proxy_buffering off;</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L50" class="blob-num js-line-number" data-line-number="50"></td>
+        <td id="file-hello-nginxconf-LC50" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L51" class="blob-num js-line-number" data-line-number="51"></td>
+        <td id="file-hello-nginxconf-LC51" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># Try to serve static files from nginx, no point in making an</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L52" class="blob-num js-line-number" data-line-number="52"></td>
+        <td id="file-hello-nginxconf-LC52" class="blob-code blob-code-inner js-file-line">        <span class="pl-c"># *application* server like Unicorn/Rainbows! serve static files.</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L53" class="blob-num js-line-number" data-line-number="53"></td>
+        <td id="file-hello-nginxconf-LC53" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">if</span> (!-f <span class="pl-smi">$request_filename</span>) {</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L54" class="blob-num js-line-number" data-line-number="54"></td>
+        <td id="file-hello-nginxconf-LC54" class="blob-code blob-code-inner js-file-line">            <span class="pl-k">proxy_pass</span> http://hello_app_server;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L55" class="blob-num js-line-number" data-line-number="55"></td>
+        <td id="file-hello-nginxconf-LC55" class="blob-code blob-code-inner js-file-line">            <span class="pl-c1">break</span>;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L56" class="blob-num js-line-number" data-line-number="56"></td>
+        <td id="file-hello-nginxconf-LC56" class="blob-code blob-code-inner js-file-line">        }</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L57" class="blob-num js-line-number" data-line-number="57"></td>
+        <td id="file-hello-nginxconf-LC57" class="blob-code blob-code-inner js-file-line">    }</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L58" class="blob-num js-line-number" data-line-number="58"></td>
+        <td id="file-hello-nginxconf-LC58" class="blob-code blob-code-inner js-file-line">
+</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L59" class="blob-num js-line-number" data-line-number="59"></td>
+        <td id="file-hello-nginxconf-LC59" class="blob-code blob-code-inner js-file-line">    <span class="pl-c"># Error pages</span></td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L60" class="blob-num js-line-number" data-line-number="60"></td>
+        <td id="file-hello-nginxconf-LC60" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">error_page</span> <span class="pl-s">500</span> <span class="pl-s">502</span> <span class="pl-s">503</span> <span class="pl-s">504</span> /500.html;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L61" class="blob-num js-line-number" data-line-number="61"></td>
+        <td id="file-hello-nginxconf-LC61" class="blob-code blob-code-inner js-file-line">    <span class="pl-k">location</span> <span class="pl-en">= /500.html </span>{</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L62" class="blob-num js-line-number" data-line-number="62"></td>
+        <td id="file-hello-nginxconf-LC62" class="blob-code blob-code-inner js-file-line">        <span class="pl-k">root</span> /webapps/hello_django/static/;</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L63" class="blob-num js-line-number" data-line-number="63"></td>
+        <td id="file-hello-nginxconf-LC63" class="blob-code blob-code-inner js-file-line">    }</td>
+      </tr>
+      <tr>
+        <td id="file-hello-nginxconf-L64" class="blob-num js-line-number" data-line-number="64"></td>
+        <td id="file-hello-nginxconf-LC64" class="blob-code blob-code-inner js-file-line">}</td>
+      </tr>
+</tbody></table>
+
+  </div>
+
+  </div>
+  
+</div>
+
+      </div>
+      <div class="gist-meta">
+        <a href="https://gist.github.com/postrational/5747293/raw/483545cb741318e5755e428bef1a3882f2063331/hello.nginxconf" style="float:right">view raw</a>
+        <a href="https://gist.github.com/postrational/5747293#file-hello-nginxconf">hello.nginxconf</a>
+        hosted with ❤ by <a href="https://github.com/">GitHub</a>
+      </div>
+    </div>
+</div></div>
+<p>Cree un enlace simbólico en la carpeta <code>sites-enabled</code>:</p>
+<pre><code>$ sudo ln -s /etc/nginx/sites-available/hello /etc/nginx/sites-enabled/hello
+</code></pre>
+<p>Reinicie Nginx:</p>
+<pre><code>$ sudo service nginx restart
+</code></pre>
+<p>Si navega a su sitio web, debería poder observar su página de bienvenida de Django servida por <code>Nginx</code> y <code>Gunicorn</code>. </p>
+<p>En este momento podría ocurrir que observase la página por defecto de <code>“Welcome to nginx!”</code> en lugar de la de bienvenida de Django. Esto podría deberse al archivo de configuración por defecto de Nginx. Si no planea usarlo, elimine el enlace simbólico a este archivo del directorio <code>/etc/nginx/sites-enabled</code>.</p>
+<p>Si encuentra algún problema con la configuración no dude en escribirme (tanto al autor original como a mí).</p>
+<h2>Estructura final del directorio</h2>
+<pre><code>/webapps/hello_django/
+├── bin                          &lt;= Directory created by virtualenv
+│   ├── activate                 &lt;= Environment activation script
+│   ├── django-admin.py
+│   ├── gunicorn
+│   ├── gunicorn_django
+│   ├── gunicorn_start           &lt;= Script to start application with Gunicorn
+│   └── python
+├── hello                        &lt;= Django project directory, add this to PYTHONPATH
+│   ├── manage.py
+│   ├── project_application_1
+│   ├── project_application_2
+│   └── hello                    &lt;= Project settings directory
+│       ├── __init__.py
+│       ├── settings.py          &lt;= hello.settings - settings module Gunicorn will use
+│       ├── urls.py
+│       └── wsgi.py              &lt;= hello.wsgi - WSGI module Gunicorn will use
+├── include
+│   └── python2.7 -&gt; /usr/include/python2.7
+├── lib
+│   └── python2.7
+├── lib64 -&gt; /webapps/hello_django/lib
+├── logs                         &lt;= Application logs directory
+│   ├── gunicorn_supervisor.log
+│   ├── nginx-access.log
+│   └── nginx-error.log
+├── media                        &lt;= User uploaded files folder
+├── run
+│   └── gunicorn.sock 
+└── static                       &lt;= Collect and serve static files from here
+</code></pre>
+<h2>Desinstalar la aplicación de Django</h2>
+<p>Si en algún momento quiere desinstalar la aplicación siga los siguientes pasos.</p>
+<p>Eliminar los servidores virtuales de la carpeta <code>sites-enabled</code>:</p>
+<pre><code>$ sudo rm /etc/nginx/sites-enabled/hello_django
+</code></pre>
+<p>Reiniciar Nginx:</p>
+<pre><code>$ sudo service nginx restart
+</code></pre>
+<p>Si no piensa volver a usar esta aplicación la puede eliminar de la carpeta <code>sites-available</code>:</p>
+<pre><code>$ sudo rm /etc/nginx/sites-available/hello_django
+</code></pre>
+<p>Detener la aplicación con Supervisor:</p>
+<pre><code>$ sudo supervisorctl stop hello
+</code></pre>
+<p>Eliminar la aplicación del script de configuración de supervisor:</p>
+<pre><code>$ sudo rm /etc/supervisor/conf.d/hello.conf
+</code></pre>
+<p>Si no va a volver a usar la aplicación puede eliminarla de <code>/webapps</code></p>
+<pre><code>$ sudo rm -r /webapps/hello_django
+</code></pre>
+<h2>Servir varias aplicaciones</h2>
+<p>Si precisase alguna ayuda configurando el servidor Nginx para mantener varias aplicaciones de Django, no dude en visitar el <a href="http://michal.karzynski.pl/blog/2013/10/29/serving-multiple-django-applications-with-nginx-gunicorn-supervisor/">siguiente post del autor</a>.</p>
+</div>
+</div>
+ 
+<div class="row">
+<div class="col s12 m10">
+<ul class="rrssb-buttons clearfix rrssb-2 large-format" style="font-size: 16.0065px;">
+<li class="rrssb-twitter" data-initwidth="25" data-size="53.3125" style="width: 25%;">
+ 
+<a href="https://twitter.com/intent/tweet?text=Configurar%20Django%20con%20Nginx%2C%20Gunicorn%2C%20virtualenv%2C%20supervisor%20y%20PostgreSQL%20v%C3%ADa%20@wildunix%20https%3A%2F%2Fwildunix.es%2Fposts%2Fconfigurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql" class="popup">
+<span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M24.253 8.756C24.69 17.08 18.297 24.182 9.97 24.62a15.093 15.093 0 0 1-8.86-2.32c2.702.18 5.375-.648 7.507-2.32a5.417 5.417 0 0 1-4.49-3.64c.802.13 1.62.077 2.4-.154a5.416 5.416 0 0 1-4.412-5.11 5.43 5.43 0 0 0 2.168.387A5.416 5.416 0 0 1 2.89 4.498a15.09 15.09 0 0 0 10.913 5.573 5.185 5.185 0 0 1 3.434-6.48 5.18 5.18 0 0 1 5.546 1.682 9.076 9.076 0 0 0 3.33-1.317 5.038 5.038 0 0 1-2.4 2.942 9.068 9.068 0 0 0 3.02-.85 5.05 5.05 0 0 1-2.48 2.71z"></path></svg></span>
+<span class="rrssb-text">twitter</span>
+</a>
+</li>
+<li class="rrssb-facebook" data-initwidth="25" data-size="68" style="width: 25%;">
+ 
+<a href="https://www.facebook.com/sharer/sharer.php?u=http://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql" class="popup">
+<span class="rrssb-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29 29"><path d="M26.4 0H2.6C1.714 0 0 1.715 0 2.6v23.8c0 .884 1.715 2.6 2.6 2.6h12.393V17.988h-3.996v-3.98h3.997v-3.062c0-3.746 2.835-5.97 6.177-5.97 1.6 0 2.444.173 2.845.226v3.792H21.18c-1.817 0-2.156.9-2.156 2.168v2.847h5.045l-.66 3.978h-4.386V29H26.4c.884 0 2.6-1.716 2.6-2.6V2.6c0-.885-1.716-2.6-2.6-2.6z"></path></svg></span>
+<span class="rrssb-text">facebook</span>
+</a>
+</li>
+<li class="rrssb-reddit" data-initwidth="25" data-size="44.65625" style="width: 25%;">
+<a href="http://www.reddit.com/submit?url=https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql&amp;title=Configurar%20Django%20con%20Nginx%2C%20Gunicorn%2C%20virtualenv%2C%20supervisor%20y%20PostgreSQL&amp;text=Configurar%20Django%20en%20el%20servidor%20de%20producci%C3%B3n%20puede%20ser%20una%20tarea%20complicada%20y%20m%C3%A1s%20si%20se%20quiere%20utilizar%20algunas%20tecnolog%C3%ADas%20que%20han%20aparecido%20recientemente.%20Por%20esto%20comparto%20esta%20traducci%C3%B3n%20que%20puede%20ser%20%C3%BAtil%20a%20mucha%20gente.">
+<span class="rrssb-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path d="M11.794 15.316c0-1.03-.835-1.895-1.866-1.895-1.03 0-1.893.866-1.893 1.896s.863 1.9 1.9 1.9c1.023-.016 1.865-.916 1.865-1.9zM18.1 13.422c-1.03 0-1.895.864-1.895 1.895 0 1 .9 1.9 1.9 1.865 1.03 0 1.87-.836 1.87-1.865-.006-1.017-.875-1.917-1.875-1.895zM17.527 19.79c-.678.68-1.826 1.007-3.514 1.007h-.03c-1.686 0-2.834-.328-3.51-1.005a.677.677 0 0 0-.958 0c-.264.265-.264.7 0 1 .943.9 2.4 1.4 4.5 1.402.005 0 0 0 0 0 .005 0 0 0 0 0 2.066 0 3.527-.46 4.47-1.402a.678.678 0 0 0 .002-.958c-.267-.334-.688-.334-.988-.043z"></path><path d="M27.707 13.267a3.24 3.24 0 0 0-3.236-3.237c-.792 0-1.517.287-2.08.76-2.04-1.294-4.647-2.068-7.44-2.218l1.484-4.69 4.062.955c.07 1.4 1.3 2.6 2.7 2.555a2.696 2.696 0 0 0 2.695-2.695C25.88 3.2 24.7 2 23.2 2c-1.06 0-1.98.616-2.42 1.508l-4.633-1.09a.683.683 0 0 0-.803.454l-1.793 5.7C10.55 8.6 7.7 9.4 5.6 10.75c-.594-.45-1.3-.75-2.1-.72-1.785 0-3.237 1.45-3.237 3.2 0 1.1.6 2.1 1.4 2.69-.04.27-.06.55-.06.83 0 2.3 1.3 4.4 3.7 5.9 2.298 1.5 5.3 2.3 8.6 2.325 3.227 0 6.27-.825 8.57-2.325 2.387-1.56 3.7-3.66 3.7-5.917 0-.26-.016-.514-.05-.768.965-.465 1.577-1.565 1.577-2.698zm-4.52-9.912c.74 0 1.3.6 1.3 1.3a1.34 1.34 0 0 1-2.683 0c.04-.655.596-1.255 1.396-1.3zM1.646 13.3c0-1.038.845-1.882 1.883-1.882.31 0 .6.1.9.21-1.05.867-1.813 1.86-2.26 2.9-.338-.328-.57-.728-.57-1.26zm20.126 8.27c-2.082 1.357-4.863 2.105-7.83 2.105-2.968 0-5.748-.748-7.83-2.105-1.99-1.3-3.087-3-3.087-4.782 0-1.784 1.097-3.484 3.088-4.784 2.08-1.358 4.86-2.106 7.828-2.106 2.967 0 5.7.7 7.8 2.106 1.99 1.3 3.1 3 3.1 4.784C24.86 18.6 23.8 20.3 21.8 21.57zm4.014-6.97c-.432-1.084-1.19-2.095-2.244-2.977.273-.156.59-.245.928-.245 1.036 0 1.9.8 1.9 1.9a2.073 2.073 0 0 1-.57 1.327z"></path></svg>
+</span>
+<span class="rrssb-text">reddit</span>
+</a>
+</li>
+<li class="rrssb-pocket" data-initwidth="25" data-size="50" style="width: 25%;">
+<a href="https://getpocket.com/save?url=https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql">
+<span class="rrssb-icon">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M28.782.002c2.03.002 3.193 1.12 3.182 3.106-.022 3.57.17 7.16-.158 10.7-1.09 11.773-14.588 18.092-24.6 11.573C2.72 22.458.197 18.313.057 12.937c-.09-3.36-.05-6.72-.026-10.08C.04 1.113 1.212.016 3.02.008 7.347-.006 11.678.004 16.006.002c4.258 0 8.518-.004 12.776 0zM8.65 7.856c-1.262.135-1.99.57-2.357 1.476-.392.965-.115 1.81.606 2.496a746.818 746.818 0 0 0 7.398 6.966c1.086 1.003 2.237.99 3.314-.013a700.448 700.448 0 0 0 7.17-6.747c1.203-1.148 1.32-2.468.365-3.426-1.01-1.014-2.302-.933-3.558.245-1.596 1.497-3.222 2.965-4.75 4.526-.706.715-1.12.627-1.783-.034a123.71 123.71 0 0 0-4.93-4.644c-.47-.42-1.123-.647-1.478-.844z"></path></svg>
+</span>
+<span class="rrssb-text">pocket</span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+ 
+<h5>Los más populares </h5>
+<div class="row">
+<div class="col s12 m6">
+<h5><a href="https://wildunix.es/posts/instalacion-estandar-de-ubuntu-1604-lts/">Una Adecuación de Ubuntu 16.04 LTS tras su Instalación</a></h5>
+</div>
+<div class="col s12 m6">
+<h5><a href="https://wildunix.es/posts/proyecto-basico-con-django/">Proyecto básico con Django (crear un blog)</a></h5>
+</div>
+</div>
+<div class="row">
+<div class="col s12 m6">
+<h5><a href="https://wildunix.es/posts/configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql/">Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL</a></h5>
+</div>
+<div class="col s12 m6">
+<h5><a href="https://wildunix.es/posts/una-implementacion-en-haskell-de-la-maquina-enigma-i-introduccion/">Una Implementación en Haskell de la Máquina Enigma I. Introducción</a></h5>
+</div>
+</div>
+<div class="row">
+</div>
+ 
+<div class="row">
+<div class="col s12">
+<div id="disqus_thread"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 497px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+</div>
+</div>
+<script type="text/javascript" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/gist-embed.min.js"></script>
+<script>
+          /**
+          * RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+          * LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+          */
+
+          var disqus_config = function () {
+          this.page.url = "https://wildunix.es/posts/" + "configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql"; // Replace PAGE_URL with your page's canonical URL variable
+          this.page.identifier = "configurar-django-con-nginx-gunicorn-virtualenv-supervisor-y-postgresql"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+          };
+
+          (function() { // DON'T EDIT BELOW THIS LINE
+          var d = document, s = d.createElement('script');
+
+          s.src = '//wildunix.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+          })();
+          </script>
+<noscript>Please enable JavaScript to view the &lt;a href="https://disqus.com/?ref_noscript" rel="nofollow"&gt;comments powered by Disqus.&lt;/a&gt;</noscript>
+<script id="dsq-count-scr" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/count.js" async=""></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery.1.10.2.min.js"><\/script>')</script>
+<script src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/rrssb.min.js"></script>
+</div>
+</div>
+</div>
+<footer class="page-footer blue">
+<div class="container">
+<div class="row">
+<div class="col s12">
+<br><br>
+<p class="grey-text text-lighten-3">
+Blog cooperativo de Yábir Benchakhtir y M. García dedicado a ayudar a usuarios de Unix y programadores de Python y Haskell
+</p>
+<ul id="social">
+<li><i class="fa fa-twitter"></i> <a class="grey-text text-lighten-3" href="https://twitter.com/wildunix">@wildunix</a></li>
+<li><i class="fa fa-twitter"></i> <a class="grey-text text-lighten-3" href="https://twitter.com/yabirgb">@yabirgb</a></li>
+<li><i class="fa fa-twitter"></i> <a class="grey-text text-lighten-3" href="https://twitter.com/Haskell_ETSIIT">@Haskell_ETSIIT</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="footer-copyright">
+<div class="container">
+<a class="grey-text text-lighten-3" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Licencia de Creative Commons" style="border-width:0" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/88x31.png"></a><br>Este obra está bajo una
+<a class="grey-text text-lighten-3" rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">licencia de Creative Commons Reconocimiento-NoComercial-CompartirIgual
+4.0 Internacional</a>.
+</div>
+</div>
+</footer>
+<script src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/materialize.min.js"></script>
+
+
+<iframe style="display: none;" src="./Configurar Django con Nginx, Gunicorn, virtualenv, supervisor y PostgreSQL_files/saved_resource(1).html"></iframe><div class="hiddendiv common"></div></body></html>

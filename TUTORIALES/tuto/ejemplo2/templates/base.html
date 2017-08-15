@@ -1,0 +1,18 @@
+<html>
+	<head>
+		<title>{% block titulo %}Aplicacion{% endblock %}</title>
+		
+		<link rel="stylesheet" type="text/css" href="/static/css/estilos.css" media="screen" />
+	</head>
+	<body>
+		<div class="cabecera">
+			{% include "includes/header.html" %}
+		</div>
+		<div>
+			{% block contenido %}{% endblock %}
+		</div>
+		<div class="footer">
+			{% include "includes/footer.html" %}
+		</div>
+	</body>
+</html>

@@ -1,0 +1,12 @@
+********HTML************
+onmousedown= function_name(event)
+
+********JS***************
+function elemento(e){
+  if (e.srcElement)
+      tag = e.srcElement.id;
+  else if (e.target)
+      tag = e.target.id;
+
+    $('#add_data').append('<input type="hidden" name="id_afiliado" value="'+tag.toString()+'/>');
+};

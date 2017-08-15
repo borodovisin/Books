@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block titulo %} Ver Catalogos {% endblock %}
+
+{% block contenido %}
+	<table class="tablas">
+		<tr class="titulo"> 
+			<td>Id</td>
+			<td>Nombre</td>
+			<td>Valor</td>
+		</tr>
+		{% for catalogo in catalogos %}
+			<tr>
+				<td>{{catalogo.id}}</td>
+				<td>{{catalogo.nombre}}</td>
+				<td>{{catalogo.valor}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}

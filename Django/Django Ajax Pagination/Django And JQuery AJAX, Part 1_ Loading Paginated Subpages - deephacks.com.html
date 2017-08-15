@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<!-- saved from url=(0093)http://deephacks.com/articles/entry/django-and-jquery-ajax-part-1-loading-paginated-subpages/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+            
+                
+                    
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <meta name="viewport" content="width=device-width, initial-scale=1">
+                    
+                
+                
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+                <title>
+                    
+    Django And JQuery AJAX, Part 1: Loading Paginated Subpages - 
+    deephacks.com 
+
+
+                </title>
+                
+                    
+                    <link rel="icon" href="http://deephacks.com/static/img/favicon.ico">
+                
+                
+                
+    
+    
+                    
+                    <link href="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/bootstrap.min.css" rel="stylesheet">
+                
+    <link rel="stylesheet" href="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/font-awesome.min.css">
+
+    <link rel="stylesheet" href="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/monokai_sublime.css">
+
+                
+                    
+                    <link href="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/navbar-fixed-top.css" rel="stylesheet">
+                    <link href="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/blog.css" rel="stylesheet">
+                
+                
+                
+                
+                    <script src="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/ie-emulation-modes-warning.js"></script>
+                    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+                    <!--[if lt IE 9]>
+                      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+                      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+                    <![endif]-->
+                
+                
+                
+            
+        </head>
+        
+            <body>
+                
+                
+                    <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand">
+          deephacks.com
+        </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+          
+                
+                    <li>
+                        
+                            
+                        
+                        <a target="" href="http://deephacks.com/articles">
+                            Articles
+                        </a>
+                    </li>
+                
+          
+                
+                    <li>
+                        
+                            
+                        
+                        <a target="" href="http://deephacks.com/articles/categories">
+                            Categories
+                        </a>
+                    </li>
+                
+          
+                
+                    <li>
+                        
+                        <a target="_blank" href="http://deephacks.com/articles/entry/django-and-jquery-ajax-part-1-loading-paginated-subpages/feeds/latest/">
+                            Feed
+                        </a>
+                    </li>
+                
+          
+      </ul>
+      <ul class="nav navbar-right">
+        <li>
+            <div>
+                <a class="btn btn-social-icon btn-google-plus btn-lg" href="http://www.facebook.com/sharer/sharer.php?u=deephacks.com/articles/entry/django-and-jquery-ajax-part-1-loading-paginated-subpages/" target="_blank">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a href="http://twitter.com/share?url=&amp;text=" target="_blank" title=" ">
+                </a><a class="btn btn-social-icon btn-twitter btn-lg" href="https://twitter.com/share?url=deephacks.com/articles/entry/django-and-jquery-ajax-part-1-loading-paginated-subpages/" target="_blank">
+                    <i class="fa fa-twitter"></i>
+                </a> 
+                <a class="btn btn-social-icon btn-google-plus btn-lg" href="https://plus.google.com/share?url=deephacks.com/articles/entry/django-and-jquery-ajax-part-1-loading-paginated-subpages/" target="_blank">
+                    <i class="fa fa-google-plus"></i>
+                </a>
+            </div>
+        </li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+
+                
+                
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 blog-main">
+            <h2 class="blog-post-title">Django And JQuery AJAX, Part 1: Loading Paginated Subpages</h2>
+            <p class="blog-post-meta">
+                by deephacks
+                
+            </p>
+          <div class="blog-post">
+                <p>This tutorial teaches a simple way to use JQuery's AJAX functionality to integrate paginated webpages, represented by Django's ListView, into the DOM of another webpage. The implementation makes very few assumptions about the included page, using its html code rather than json objects, which would require further processing. This is meant to make usage of the script very straightforward even with little knowledge of what the included webpage or its data look like. The backend is written in Django and uses some of its useful features to keep the page integration DRY and consistent. However the JQuery part by itself can be used in combination with other frameworks as well, or even with plain PHP pages. The pagination of the original, included page will be converted into an expanding list on the AJAX page, where additional pages are subsequently added to the end of the previously loaded pages. So let's get started. I will call the page, that will be included, the source page and the page that uses JQuery to integrate it, the target page.</p>
+
+<h2 style="font-style:italic">Step 1. The Django View</h2>
+
+<p>First we need to create the source page. Pages are represented in Django by Views. I will use a ListView as an example for this article, because they usually do have pagination. Non-paginated views could be viewed as a subcase of paginated views, that only have one page. So the ListView is the more general and more interesting case for the purposes of this article. The following code snippet shows a very standard ListView in Django.</p>
+
+<pre><code class="language-python hljs"><span class="hljs-keyword">from</span> django.views.generic.list <span class="hljs-keyword">import</span> ListView
+<span class="hljs-keyword">from</span> .models <span class="hljs-keyword">import</span> MyModel
+
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyModelListView</span><span class="hljs-params">(ListView)</span>:</span>
+    model = MyModel
+    template_name = <span class="hljs-string">"myapp/mymodel_list.html"</span>
+    context_object_name = <span class="hljs-string">"mymodel_list"</span>
+    paginate_by = <span class="hljs-number">10</span></code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/BBqXg" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>The model variable gives the class name of a Model defined in models.py. Since the view is derived from ListView, it will internally create a QuerySet for objects of the model class. This queryset can be accessed in the templates under the context_object_name, which is defined as "mymodel_list". The pagination is defined by the paginate_by parameter. The paginate_by value of 10 means that each page contains a maximum of 10 MyModel objects. If the database contains more objects than that, they will be paginated, and each page can be accessed by adding a page parameter to the GET query string. So a query string of ?page=2 added to the URL would show the second page and so on. The URL for the view is defined in urls.py.</p>
+
+<pre><code class="language-python hljs"><span class="hljs-keyword">from</span> django.conf.urls <span class="hljs-keyword">import</span> include, url
+<span class="hljs-keyword">from</span> .views <span class="hljs-keyword">import</span> MyModelListView
+
+urlpatterns = [
+    url(<span class="hljs-string">r'^mymodels/?$'</span>, MyModelListView.as_view(), name=<span class="hljs-string">'mymodels_list'</span>),
+]</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/pL4Bq/articles-django-ajax-pagination-2-urlspy" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>It's important to define a name parameter in the url call. The URL for the page should only be referred to by its name in templates or in python code, as we will see later.</p>
+
+<p>Finally, the last step in setting up our paginated "source page" for our AJAX project, is to fill in the HTML code through the template defined in MyModelListView.template_name. The templates reside in the templates subfolder of the app, so the full path is "templates/myapp/mymodel_list.html". It will contain the blueprint for the full HTML code, with a section to show the objects from the QuerySet.</p>
+
+<pre><code class="language-python hljs">{% <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> mymodel_list %}
+    {<span class="hljs-comment"># print all relevant information per object here #}</span>
+{% empty %}
+    {<span class="hljs-comment"># show an empty page message here #}</span>
+{% endfor %}</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/9q4xL/articles-django-ajax-pagination-3" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>Note that "mymodel_list" was defined in MyModelListView.context_object_name.</p>
+
+<p>That's it. We now have a paginated webpage, ready to be integrated into the target page via JQuery Ajax calls and DOM manipulation. Let's see how to do just that in the next step.</p>
+
+<h2 style="font-style:italic">Step 2. The Ajax Script</h2>
+
+<p>We need three elements on the target page. A div to hold the source page, a hidden element to count the pagination page number, and a button to trigger the Ajax calls and load additional pages.</p>
+
+<pre><code class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'pagediv-id'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">'hidden'</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'pagination-id'</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">'1'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'load-id'</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">'submit'</span>&gt;</span>Show<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span></code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/R8Bby/articles-django-ajax-pagination-4" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>The source pages will be attached to #pagediv-id, the pagination counter #pagination-id is initialized to 1, and #load-id is the button that will trigger the loading of additional pages.</p>
+
+<p>Next we need to bind a loading function to the the load button.</p>
+
+<pre><code class="language-javascript hljs">$(<span class="hljs-string">"#load-id"</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    load_page(
+        <span class="hljs-string">"/myapp/mymodels/"</span>,
+        <span class="hljs-string">"#pagination-id"</span>,
+        <span class="hljs-string">"#load-id"</span>,
+        <span class="hljs-string">"#pagediv-id"</span>,
+      );
+});</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/o9pR8/articles-django-ajax-pagination-5" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>This binds the load_page function to the button's click event, and passes the source page URL and the three element IDs that we defined and placed in the target page earlier. In order to make it work, we have to define the load_page function in a ajax.js file first. This is the code.</p>
+
+<pre><code class="language-javascript hljs"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">load_page</span>(<span class="hljs-params">
+    page_url, paginationfield_id, loadbutton_id, pagediv_id,
+</span>)</span>{
+    page = <span class="hljs-built_in">parseInt</span>($(paginationfield_id).val());
+    
+    $(loadbutton_id).prop(<span class="hljs-string">"disabled"</span>, <span class="hljs-literal">true</span>);
+    $(loadbutton_id).text(<span class="hljs-string">"Loading ..."</span>);
+    
+    $.ajax({
+        <span class="hljs-keyword">async</span>: <span class="hljs-literal">true</span>,
+        type: <span class="hljs-string">"GET"</span>,
+        url: page_url,
+        data: { page: page },
+        error: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+                $(loadbutton_id).replaceWith(<span class="hljs-string">"&lt;p&gt;&lt;/p&gt;"</span>);
+            },
+        success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{ <span class="hljs-comment">// check if there is an additional page</span>
+                                <span class="hljs-comment">// , disable load button if not</span>
+                $.ajax({
+                    <span class="hljs-keyword">async</span>: <span class="hljs-literal">true</span>,
+                    type: <span class="hljs-string">"HEAD"</span>,
+                    url: page_url,
+                    data: { page: page + <span class="hljs-number">1</span> },
+                    error: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)</span>{
+                            $(loadbutton_id).replaceWith(<span class="hljs-string">"&lt;p&gt;No more data&lt;/p&gt;"</span>);
+                        },
+                    success: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">response</span>)</span>{
+                            $(loadbutton_id).text(<span class="hljs-string">"Load more"</span>);
+                            $(paginationfield_id).val(page + <span class="hljs-number">1</span>);
+                            $(loadbutton_id).prop(<span class="hljs-string">"disabled"</span>, <span class="hljs-literal">false</span>);
+                        }
+                });
+                $(pagediv_id).append($(data).find(<span class="hljs-string">"div"</span>));
+            }
+    });
+}</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/dRB88/articles-django-ajax-pagination-6-ajaxjs" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>So what is going on here? First the page number is converted from the string value in the pagination element to an integer, so we can increment it later. Then the load button is disabled and the button text is changed to "Loading .." to inform the user about the progress of the action. This is done to prevent the user from clicking the button several times before the script can finish its job. The script works in asynchronous mode. If the script were synchronous the user would be blocked from interacting with the entire page until the script is finished. However by using asynchronous mode and then just disabling the button, the user can still interact with the rest of the page, while the content from the source page is fetched in the background. The content is fetched by the JQuery $.ajax(..) call. The $.ajax() function is passed a Javascript object, that holds the actual parameters we need to pass as its object fields or attributes. The url of the source page is passed in the url field, and the page number is passed in the data field. The data field contains the key-value pairs of the query string used by the Ajax call.</p>
+
+<h3 style="color:#aaa; font-style:italic">The callbacks</h3>
+
+<p>As I said earlier, the $.ajax() call works asynchronously, so the follow up actions to fetching the content from the source page cannot be placed sequentially after the $.ajax call in the script. Instead they're handled by callbacks. These callbacks are defined by the "success" and the "error" parameters to the $.ajax() call. The error function is very simple and just removes the load button from the page, since it's not working. Instead of removing the button it could also be replaced with an error message for example, by passing an appropriate element string to the replaceWith() method.</p>
+
+<p>The success callback does a little more work than the error handler. First it spawns off another $.ajax() call, which I'll get to right away. Then while this new $.ajax() call is doing its work, the original callback continues by adding (.append()) the data it received, in other words the new source page, to the #pagediv-id element, which is the placeholder for the source page content. Remember that at this point the loadbutton is still disabled and we haven't yet talked about how to reenable it. That's where the nested $.ajax() call inside the success function of the first $.ajax() call comes into play. The point of this second Ajax request is to ask the server if there are more pages or not. If there are more pages, then the load button should be re-enabled. On the other hand if there are no more pages, the load button should be replaced with something else that indicates to the user that there are no more pages to load. So long story short, the second $.ajax call does a HEAD request for the follow up page (page+1). If the request fails, that means there are no more pages to load, and that fact is displayed to the user with a "No more data" message, that replaces the load button. If the HEAD request however indicates that the follow up page exists, a few updates are necessary. The "#pagination-id" value must be updated to the next page number and the load button must be reenabled. This way the next time the user clicks the load button it will load the next page.</p>
+
+<p>One thing to note, that I didn't explicitly explain, is the way the data returned by the GET request are added to the #pagediv-id element. This was the code</p>
+
+<pre><code class="language-javascript hljs">$(pagediv_id).append($(data).find(<span class="hljs-string">"div"</span>));</code></pre>
+
+<p>The response data are not added directly to the target, but only the descndant div elements are added. This isn't the only possible way to filter the result before appending them to the target div, and obviously it depends on what part of the the page that you're loading you actually want to display. In this example I added the descendant divs, but if your needs are different, you would obviously apply a different filter. The reason the data usually cannot be added directly as they are, is that the Ajax request could return a full HTML page, and you cannot have a &lt;html&gt; element inside of the &lt;html&gt; element of the target page. Another way around this problem would be to filter the data on the server side. In that case the server would have to know that the request is an Ajax request, so it can serve the filtered data, ready for insertion in the target page, as opposed to returning the full page. In Django this distinction between direct (full page) requests and Ajax requests can be made by the request.is_ajax method. So if you would prefer to handle the filtering on the server side, you can use this method.</p>
+
+<h2 style="font-style:italic">Step 3. Script Integration Via Template Includes And Template Tags</h2>
+
+<p>At this point you should be able to integrate paginated webpages into any other page you wish. The main function lives inside a ajax.js file and is called from within the target webpage with the appropriate parameters. This last step of calling the script with different parameters on the target webpages however could become problematic in the future. Let's say the load_page function is used on many pages, each of which has its own script section passing parameters to that function. What happens if you want to change the signature of the load_page? If you just change it in the ajax.js file, it might break all the pages that were calling the function in its old format. For example if you replace the parameters with just one object, that contains the parameters like a dictionary, all pages that still call the function by passing the parameters directly, won't work anymore.</p>
+
+<p>A first solution to this problem is to use a template include. Make sure to define all parameters in a Django "with" tag and include the template.</p>
+
+<pre><code class="hljs python">{% url <span class="hljs-string">"mymodels_list"</span> <span class="hljs-keyword">as</span> page_url %}
+{% <span class="hljs-keyword">with</span> page_url=page_url pagination_id=<span class="hljs-string">"#pagination-id"</span> loadbutton_id=<span class="hljs-string">"#load-id"</span> pagediv_id=<span class="hljs-string">"#pagediv-id"</span> %}
+    {% include loadpage.html %}
+{% endwith %}</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/zL4MR/articles-django-ajax-pagination-7" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>And in loadpage.html just call load_page using these variables</p>
+
+<pre><code class="language-javascript hljs">$(<span class="hljs-string">"{{ loadbutton_id }}"</span>).click(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+    load_page(
+        {{ page_url }},
+        {{ pagination_id|<span class="hljs-keyword">default</span>:<span class="hljs-string">"#pagination-id"</span> }},
+        {{ loadbutton_id|<span class="hljs-keyword">default</span>:<span class="hljs-string">"#load-id"</span> }},
+        {{ pagediv_id|<span class="hljs-keyword">default</span>:<span class="hljs-string">"#pagediv-id"</span> }},
+      );
+});</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/rL4Bg/articles-django-ajax-pagination-8" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>Make sure the script is inside a &lt;script&gt; block.</p>
+
+<p>Since we have provided default values for all parameters except the page_url, these other variables can be left undefined when including loadpage.html. "page_url" however must be defined or it won't work. This script must be added to the target page after JQuery and the file containing load_page have been added. Usually these scripts are loaded at the very bottom of the page, so that they don't slow down the loading of the rest of the page. Therefore we need a separate Django&nbsp; template, to place the div elements and the loadbutton higher up on the page. Let's call this separate template "loadpage_elems.html".</p>
+
+<pre><code class="language-html hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'{{ pagediv_id|default:"#pagediv-id" }}'</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">'hidden'</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'{{ pagination_id|default:"#pagination-id" }}'</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">'1'</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-title">button</span> <span class="hljs-attribute">id</span>=<span class="hljs-value">'{{ loadbutton_id|default:"#load-id" }}'</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">'submit'</span>&gt;</span>Show<span class="hljs-tag">&lt;/<span class="hljs-title">button</span>&gt;</span></code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/xL4MB/articles-django-ajax-pagination-9" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>And it would be included on the template of the target page very similar to the way loadpage.html was included. However we're beginning to see a problem with this approach. Right now three variable names - pagediv_id, pagination_id, and loadbutton_id - have to be kept consistent in two independent files, loadpage.html and loadpage_elems.html. The default values are defined twice, which is redundant and difficult to maintain. When including the templates and changing the values, they have to be defined twice, when calling loadpage.html and when calling loadpage_elems.html. Again this is redundant and a possible source of errors and confusion. That problem is only exacerbated, if we want to add more flexibility, like for example the flexibility to place the load button separately from the div that holds the source contents. Now we have at least 3 different files to maintain and keep consistent. And the problem gets worse if we want to add more parameters over time, that affect several files. What we want is a DRY'er approach to the problem.</p>
+
+<h3 style="color:#aaa; font-style:italic">Template Tags To The Rescue</h3>
+
+<p>Django provides an elegant way that we can use to overcome these aforementioned problems with template includes. Template tags. More specifically assignment tags. An assignment tag is called from within a template, taking any number of arguments that are required, and returns an object to the template. In our case, we want to pass the url_page, pagediv_id, pagination_id, and loadbutton_id to the template tag and receive an object, that will let us write the elements and the script to the page markup, as and where we wish. The returned object itself takes care of consistency by encapsulating the data it needs. This object could be a class object or a simple dictionary. For simplicity I will use a dictionary as an example here.</p>
+
+<p>Templatetags are defined in a templatetags subdirectory of the app and made available to the templates by loading them by the name of the python file. So if there is a file called ajax.py in the templatetags folder, the templatetag functions inside can be made available by using {% load ajax %} inside the template. That's all there is to do. So let's have a look at how we can define our assignment tag inside ajax.py.</p>
+
+<pre><code class="language-python hljs"><span class="hljs-keyword">from</span> django <span class="hljs-keyword">import</span> template
+register = template.Library()
+<span class="hljs-decorator">@register.assignment_tag</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_pageloader</span><span class="hljs-params">(page_url, *args, **kwargs)</span>:</span>
+    
+    pagediv_id = kwargs.get(<span class="hljs-string">"pagediv_id"</span>, <span class="hljs-string">"#pagediv-id"</span>)
+    loadbutton_id = kwargs.get(<span class="hljs-string">"loadbutton_id"</span>, <span class="hljs-string">"#load-id"</span>)
+    pagination_id = kwargs.get(<span class="hljs-string">"pagination_id"</span>, <span class="hljs-string">"#pagination-id"</span>)
+    
+    button_script = <span class="hljs-string">"""
+                        $("#{loadbutton_id}").click(function(){
+                            load_page(
+                                '{page_url},
+                                '{pagination_id},
+                                '{loadbutton_id},
+                                '{pagediv_id},
+                              );
+                        });
+                     """</span>.format(
+                                page_url = page_url,
+                                pagediv_id = page_div_id,
+                                pagination_id = pagination_id,
+                                loadbutton_id = loadbutton_id,
+                        )
+    
+    <span class="hljs-keyword">return</span> {
+                <span class="hljs-string">"pagediv"</span>: <span class="hljs-string">"&lt;div id='"</span> + pagediv_id + <span class="hljs-string">"'&gt;&lt;/div&gt;"</span>,
+                <span class="hljs-string">"loadbutton"</span>: <span class="hljs-string">"&lt;button id='"</span> + loadbutton_id
+                                + <span class="hljs-string">"' type='submit'&gt;Show&lt;/button&gt;"</span>,
+                <span class="hljs-string">"pagination"</span>: <span class="hljs-string">"&lt;input type='hidden' id='"</span>
+                                + pagination_id + <span class="hljs-string">"' value='1'&gt;"</span>,
+                <span class="hljs-string">"button_script"</span>: button_script,
+            }
+</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/9q4xa/articles-django-ajax-pagination-10-ajaxpy" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>The first three lines show how to turn a function into an assignment tag. You can check the Django documentation on template tags if you want to know more. The function itself takes a required page_url parameter and an open ended list of keyword arguments. The kwargs.get(name, default) calls read the values that were passed to the function and set a default value if a value doesn't exist in the kwargs dictionary. The dictionary returned by the function contains the elements and scripts required by the template to make the Ajax calls work.</p>
+
+<p>On the template side the template tag would be used as in the following code snippet.</p>
+
+<pre><code class="hljs cs">{% load ajax %}
+{% url <span class="hljs-string">"mymodels_list"</span> <span class="hljs-keyword">as</span> page_url %}
+{% get_pageloader page_url <span class="hljs-keyword">as</span> pageloader %}
+                    
+{{ pageloader.pagediv|safe }}
+{{ pageloader.loadbutton|safe }}
+{{ pageloader.pagination|safe }}</code></pre>
+
+<p>(<a href="https://bitbucket.org/snippets/deephacks/zL4R9/articles-django-ajax-pagination-11" target="_blank"><em>Snippet</em></a>)</p>
+
+<p>The pageloader dictionary is loaded into a variable called pageloader. And then the page elements are read from it and placed on the page. Then further down at the bottom of the html page the script would be included like this.</p>
+
+<pre><code class="hljs">{{ pageloader.button_script|safe }}</code></pre>
+
+<p>And that's it. Using the template tags approach the only files involved in any changes or extensions should be the ajax.js file containing the load_page script and the ajax.py file containing the get_pageloader template tag. As long as the existing parameter names and their default values in the template tag and any previous output behavior aren't changed, all templates using the script should continue to work as before.</p>
+
+<p>I uploaded the code for this article to a git repository on bitbucket, which you can check <a href="https://bitbucket.org/deephacks/articles-django-ajax-part-1-pagination/src" target="_blank">here</a>.</p>
+
+          </div><!-- blog-post -->
+          <div>
+            <hr> <hr>
+          </div>
+          <div>
+                
+                
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <h1>Comments</h1>
+                    <div id="pagediv-id"></div><div><input type="hidden" id="pagination-id" value="1"></div>
+                    <button id="load-id" type="submit" class="btn btn-primary btn-block" autocomplete="off">Show comments</button>
+                    
+                    
+                    <br><hr>
+                    
+                    
+                    
+                    
+                    
+                    <h2>Post A Comment</h2>
+                    <div id="post-div-id"><form id="post-comment-form-id" action="http://deephacks.com/ch/create/django-and-jquery-ajax-part-1-loading-paginated-subpages" method="POST" class="post-comment-form">
+          
+          <input type="hidden" name="csrfmiddlewaretoken" value="lC3Oi14DaHtE20nhcvpmZOPlqiMJC9US">
+          
+          
+                <div class="form-group">
+                    <label for="id_cname">Your Name:</label>
+                    
+                    <input class="form-control" id="id_cname" maxlength="100" name="cname" type="text">
+                    
+                </div>
+          
+                <div class="form-group">
+                    <label for="id_email">Your Email:</label>
+                    
+                    <input class="form-control" id="id_email" maxlength="254" name="commenter_email" type="text">
+                    
+                </div>
+          
+                <div class="form-group">
+                    <label for="id_comment">Your Comment:</label>
+                    
+                    <textarea class="form-control" cols="40" id="id_comment" name="text" rows="3"></textarea>
+                    
+                </div>
+          
+            <button type="submit" class="btn btn-primary btn-block">
+                Post Comment
+            </button>
+    </form></div>
+                    
+                
+          </div>
+        </div><!-- blog-main -->
+                <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h4>About</h4>
+            <p>
+Check out the categories
+section to see what topics might interest you. Or just browse the 
+articles for an interesting title. Don't be shy to leave some feedback 
+too.
+</p>
+          </div>
+        </div><!-- /.blog-sidebar -->
+
+      </div><!-- row -->
+    </div><!-- container -->
+
+                
+    <footer class="blog-footer">
+      <p>© deephacks.com</p>
+      <p>
+        <a href="http://deephacks.com/articles/entry/django-and-jquery-ajax-part-1-loading-paginated-subpages/#">Back to top</a>
+      </p>
+    </footer>
+
+                
+    
+                    <script src="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/jquery.min.js"></script>
+                    <script src="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/bootstrap.min.js"></script>
+                    
+                    <script src="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/ie10-viewport-bug-workaround.js"></script>
+                
+    <script src="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/ajax.js"></script>
+<script>
+$("#load-id").click(function(){
+load_page(
+"/ch/section/django-and-jquery-ajax-part-1-loading-paginated-subpages", 
+"pagination-id", 
+"load-id", 
+"pagediv-id", 
+"Show more comments", 
+"<div><h3>No more comments available</h3></div>"
+  );
+});
+
+</script>
+<script>
+$(document).ready(function(){load_form(    'post-div-id',     '/ch/create/django-and-jquery-ajax-part-1-loading-paginated-subpages',     'post-comment-form-id',    'post-comment-form');});
+</script>
+    <script src="./Django And JQuery AJAX, Part 1_ Loading Paginated Subpages - deephacks.com_files/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+            
+        
+    
+
+</body></html>

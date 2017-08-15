@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/ -->
+<html lang="es-ES" prefix="og: http://ogp.me/ns#" class=" js flexbox webgl no-touch geolocation hashchange history websockets rgba hsla multiplebgs backgroundsize borderimage textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage applicationcache svg svgclippaths mediaqueries no-regions supports" style=""><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		
+		<!-- Google Chrome Frame for IE -->
+		<!--[if IE]><meta http-equiv="X-UA-Compatible" content="IE=edge" /><![endif]-->
+		<!-- mobile meta -->
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+		<link rel="pingback" href="http://javierin.com/xmlrpc.php">
+
+		
+		<!-- head extras -->
+		<title>Como saber que proceso utiliza un puerto en Linux</title>
+
+<!-- This site is optimized with the Yoast SEO plugin v3.6 - https://yoast.com/wordpress/plugins/seo/ -->
+<meta name="description" content="Si necesitas como saber que proceso utiliza un puerto en linux, aquí encontrarás no una si no dos formas de averiguarlo.">
+<meta name="robots" content="noodp">
+<link rel="canonical" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/">
+<meta property="og:locale" content="es_ES">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Como saber que proceso utiliza un puerto en Linux">
+<meta property="og:description" content="Si necesitas como saber que proceso utiliza un puerto en linux, aquí encontrarás no una si no dos formas de averiguarlo.">
+<meta property="og:url" content="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/">
+<meta property="og:site_name" content="Javierin.com">
+<meta property="article:tag" content="puertos abiertos linux">
+<meta property="article:tag" content="saber que proceso escucha en un puerto">
+<meta property="article:section" content="Linux">
+<meta property="article:published_time" content="2010-12-09T18:18:17+00:00">
+<meta property="article:modified_time" content="2016-03-01T19:17:39+00:00">
+<meta property="og:updated_time" content="2016-03-01T19:17:39+00:00">
+<meta property="og:image" content="http://javierin.com/wp-content/uploads/sites/2/2014/11/Linux-logo.png">
+<meta property="og:image:width" content="640">
+<meta property="og:image:height" content="480">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:description" content="Si necesitas como saber que proceso utiliza un puerto en linux, aquí encontrarás no una si no dos formas de averiguarlo.">
+<meta name="twitter:title" content="Como saber que proceso utiliza un puerto en Linux">
+<meta name="twitter:image" content="http://javierin.com/wp-content/uploads/sites/2/2014/11/Linux-logo.png">
+<!-- / Yoast SEO plugin. -->
+
+<link rel="dns-prefetch" href="http://s0.wp.com/">
+<link rel="dns-prefetch" href="http://fonts.googleapis.com/">
+<link rel="dns-prefetch" href="http://s.w.org/">
+<link rel="alternate" type="application/rss+xml" title="Javierin.com » Feed" href="http://javierin.com/feed/">
+<link rel="alternate" type="application/rss+xml" title="Javierin.com » RSS de los comentarios" href="http://javierin.com/comments/feed/">
+<link rel="alternate" type="application/rss+xml" title="Javierin.com » Saber que proceso utiliza un puerto en Linux RSS de los comentarios" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/feed/">
+		<script src="./Como saber que proceso utiliza un puerto en Linux_files/ca-pub-2518785397162866.js"></script><script async="" src="./Como saber que proceso utiliza un puerto en Linux_files/analytics.js"></script><script type="text/javascript" async="" defer="" src="./Como saber que proceso utiliza un puerto en Linux_files/piwik.js"></script><script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/javierin.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=417bb95ba4817bc2b231f263fac6d9df"}};
+			!function(a,b,c){function d(a){var c,d,e,f,g,h=b.createElement("canvas"),i=h.getContext&&h.getContext("2d"),j=String.fromCharCode;if(!i||!i.fillText)return!1;switch(i.textBaseline="top",i.font="600 32px Arial",a){case"flag":return i.fillText(j(55356,56806,55356,56826),0,0),!(h.toDataURL().length<3e3)&&(i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,65039,8205,55356,57096),0,0),c=h.toDataURL(),i.clearRect(0,0,h.width,h.height),i.fillText(j(55356,57331,55356,57096),0,0),d=h.toDataURL(),c!==d);case"diversity":return i.fillText(j(55356,57221),0,0),e=i.getImageData(16,16,1,1).data,f=e[0]+","+e[1]+","+e[2]+","+e[3],i.fillText(j(55356,57221,55356,57343),0,0),e=i.getImageData(16,16,1,1).data,g=e[0]+","+e[1]+","+e[2]+","+e[3],f!==g;case"simple":return i.fillText(j(55357,56835),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode8":return i.fillText(j(55356,57135),0,0),0!==i.getImageData(16,16,1,1).data[0];case"unicode9":return i.fillText(j(55358,56631),0,0),0!==i.getImageData(16,16,1,1).data[0]}return!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i;for(i=Array("simple","flag","unicode8","diversity","unicode9"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./Como saber que proceso utiliza un puerto en Linux_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel="stylesheet" id="yarppWidgetCss-css" href="./Como saber que proceso utiliza un puerto en Linux_files/widget.css" type="text/css" media="all">
+<link rel="stylesheet" id="login-with-ajax-css" href="./Como saber que proceso utiliza un puerto en Linux_files/widget(1).css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-css" href="./Como saber que proceso utiliza un puerto en Linux_files/crayon.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-theme-classic-css" href="./Como saber que proceso utiliza un puerto en Linux_files/classic.css" type="text/css" media="all">
+<link rel="stylesheet" id="crayon-font-monaco-css" href="./Como saber que proceso utiliza un puerto en Linux_files/monaco.css" type="text/css" media="all">
+<link rel="stylesheet" id="asa2-css" href="./Como saber que proceso utiliza un puerto en Linux_files/asa2.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="cookielawinfo-style-css" href="./Como saber que proceso utiliza un puerto en Linux_files/cli-style.css" type="text/css" media="all">
+<link rel="stylesheet" id="arevico_scsfbcss-css" href="./Como saber que proceso utiliza un puerto en Linux_files/featherlight.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="dlm-frontend-css" href="./Como saber que proceso utiliza un puerto en Linux_files/frontend.css" type="text/css" media="all">
+<link rel="stylesheet" id="fancybox-css" href="./Como saber que proceso utiliza un puerto en Linux_files/jquery.fancybox-1.3.7.min.css" type="text/css" media="screen">
+<link rel="stylesheet" id="cb-main-stylesheet-css" href="./Como saber que proceso utiliza un puerto en Linux_files/style.css" type="text/css" media="all">
+<link rel="stylesheet" id="cb-font-stylesheet-css" href="./Como saber que proceso utiliza un puerto en Linux_files/css" type="text/css" media="all">
+<!--[if lt IE 10]>
+<link rel='stylesheet' id='cb-ie-only-css'  href='http://javierin.com/wp-content/themes/15zine/library/css/ie.css?ver=3.0.2' type='text/css' media='all' />
+<![endif]-->
+<link rel="stylesheet" id="fontawesome-css" href="./Como saber que proceso utiliza un puerto en Linux_files/font-awesome.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="social-logos-css" href="./Como saber que proceso utiliza un puerto en Linux_files/social-logos.min.css" type="text/css" media="all">
+<link rel="stylesheet" id="jetpack_css-css" href="./Como saber que proceso utiliza un puerto en Linux_files/jetpack.css" type="text/css" media="all">
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/jquery.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/jquery-migrate.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var LWA = {"ajaxurl":"http:\/\/javierin.com\/wp-admin\/admin-ajax.php"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/login-with-ajax.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"http:\/\/javierin.com\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"Presiona %s para copiar y %s para pegar","minimize":"Click To Expand Code"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/crayon.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/cookielawinfo.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/featherlight.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var lb_l_ret = {"width":"400","height":"255","delay":"7000","coc":"1","fb_id":"javierin.blog","cooc":"0","fblocale":"es_ES","loggedin":"1","connect":"1","appid":"493405677536057","mab":"","gaevent":"0","hideonlike":"1","eam":"1","overlaycolor":"#666666","extracss":"","cmessage":"Siguenos en Facebook!","display_on_post":"1","display_on_homepage":"1","show_once":"7","submenu":"1","min":"0","performance":"0","overlayop":"30","facepile":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/launch-premium.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/modernizr.custom.min.js"></script>
+<link rel="https://api.w.org/" href="http://javierin.com/wp-json/">
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://javierin.com/xmlrpc.php?rsd">
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://javierin.com/wp-includes/wlwmanifest.xml"> 
+
+<link rel="shortlink" href="http://javierin.com/?p=657">
+<link rel="alternate" type="application/json+oembed" href="http://javierin.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fjavierin.com%2Fsaber-que-programa-utiliza-un-puerto-en-linux%2F">
+<link rel="alternate" type="text/xml+oembed" href="http://javierin.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fjavierin.com%2Fsaber-que-programa-utiliza-un-puerto-en-linux%2F&amp;format=xml">
+<script type="text/javascript">
+(function(url){
+	if(/(?:Chrome\/26\.0\.1410\.63 Safari\/537\.31|WordfenceTestMonBot)/.test(navigator.userAgent)){ return; }
+	var addEvent = function(evt, handler) {
+		if (window.addEventListener) {
+			document.addEventListener(evt, handler, false);
+		} else if (window.attachEvent) {
+			document.attachEvent('on' + evt, handler);
+		}
+	};
+	var removeEvent = function(evt, handler) {
+		if (window.removeEventListener) {
+			document.removeEventListener(evt, handler, false);
+		} else if (window.detachEvent) {
+			document.detachEvent('on' + evt, handler);
+		}
+	};
+	var evts = 'contextmenu dblclick drag dragend dragenter dragleave dragover dragstart drop keydown keypress keyup mousedown mousemove mouseout mouseover mouseup mousewheel scroll'.split(' ');
+	var logHuman = function() {
+		var wfscr = document.createElement('script');
+		wfscr.type = 'text/javascript';
+		wfscr.async = true;
+		wfscr.src = url + '&r=' + Math.random();
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(wfscr);
+		for (var i = 0; i < evts.length; i++) {
+			removeEvent(evts[i], logHuman);
+		}
+	};
+	for (var i = 0; i < evts.length; i++) {
+		addEvent(evts[i], logHuman);
+	}
+})('//javierin.com/?wordfence_logHuman=1&hid=4FF7488E5908D78D03CD91D710380EE7');
+</script><script src="./Como saber que proceso utiliza un puerto en Linux_files/saved_resource" type="text/javascript"></script><style type="text/css">img#wpstats{display:none}</style><script type="text/javascript">
+  var _paq = _paq || [];
+  _paq.push(["setDomains", ["*.javierin.com"]]);
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//stats.javierin.com/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', 1]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript>&lt;p&gt;&lt;img src="//stats.javierin.com/piwik.php?idsite=1" style="border:0;" alt="" /&gt;&lt;/p&gt;</noscript>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-951564-7', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<style type="text/css"> .cb-stuck #cb-nav-bar .cb-main-nav #cb-nav-logo, #cb-nav-bar .cb-main-nav #cb-nav-logo img { width: 110px; }#cb-nav-bar .cb-mega-menu-columns .cb-sub-menu > li > a { color: #f2c231; } .cb-entry-content a {color:#116ebf; }.cb-review-box .cb-bar .cb-overlay span { background: #f9db32; }.cb-review-box i { color: #f9db32; }.cb-meta-style-1 .cb-article-meta { background: rgba(0, 0, 0, 1); }@media only screen and (min-width: 768px) {
+                .cb-module-block .cb-meta-style-1:hover .cb-article-meta { background: rgba(0, 0, 0, 1); }
+                .cb-module-block .cb-meta-style-2:hover img, .cb-module-block .cb-meta-style-4:hover img, .cb-grid-x .cb-grid-feature:hover img, .cb-grid-x .cb-grid-feature:hover .cb-fi-cover, .cb-slider li:hover img { opacity: 0; }
+            }</style><!-- end custom css --><style type="text/css">body, #respond, .cb-font-body { font-family: 'Open Sans', sans-serif; } h1, h2, h3, h4, h5, h6, .cb-font-header, #bbp-user-navigation, .cb-byline{ font-family:'Montserrat', sans-serif; }</style>
+<!-- Easy FancyBox 1.5.7 using FancyBox 1.3.7 - RavanH (http://status301.net/wordpress-plugins/easy-fancybox/) -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var fb_timeout = null;
+var fb_opts = { 'overlayShow' : true, 'hideOnOverlayClick' : true, 'showCloseButton' : true, 'centerOnScroll' : true, 'enableEscapeButton' : true, 'autoScale' : true };
+var easy_fancybox_handler = function(){
+	/* IMG */
+	var fb_IMG_select = 'a[href*=".jpg"]:not(.nofancybox,.pin-it-button), area[href*=".jpg"]:not(.nofancybox), a[href*=".jpeg"]:not(.nofancybox,.pin-it-button), area[href*=".jpeg"]:not(.nofancybox), a[href*=".png"]:not(.nofancybox,.pin-it-button), area[href*=".png"]:not(.nofancybox), a[href*=".JPG"]:not(.nofancybox,.pin-it-button), area[href*=".JPG"]:not(.nofancybox)';
+	jQuery(fb_IMG_select).addClass('fancybox image');
+	var fb_IMG_sections = jQuery('div.gallery');
+	fb_IMG_sections.each(function() { jQuery(this).find(fb_IMG_select).attr('rel', 'gallery-' + fb_IMG_sections.index(this)); });
+	jQuery('a.fancybox, area.fancybox, li.fancybox a:not(li.nofancybox a)').each(function() { jQuery(this).fancybox( jQuery.extend({}, fb_opts, { 'type' : 'image', 'transitionIn' : 'elastic', 'easingIn' : 'easeOutBack', 'transitionOut' : 'elastic', 'easingOut' : 'easeInBack', 'opacity' : false, 'hideOnContentClick' : true, 'titleShow' : true, 'titlePosition' : 'over', 'titleFromAlt' : true, 'showNavArrows' : true, 'enableKeyboardNav' : true, 'cyclic' : false }) );} );
+	/* Inline */
+	jQuery('a.fancybox-inline, area.fancybox-inline, li.fancybox-inline a').each(function() { jQuery(this).fancybox( jQuery.extend({}, fb_opts, { 'type' : 'inline', 'autoDimensions' : true, 'scrolling' : 'no', 'easingIn' : 'easeOutBack', 'easingOut' : 'easeInBack', 'opacity' : false, 'hideOnContentClick' : false }) );} );
+	/* Auto-click */ 
+	jQuery('#fancybox-auto').trigger('click');
+}
+/* ]]> */
+</script>
+<meta property="fb:app_id" content="493405677536057"><script src="./Como saber que proceso utiliza un puerto en Linux_files/all.js"></script>		<!-- end head extras -->
+
+	<style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style><style type="text/css">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}.fb_link img{border:none}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_reset .fb_dialog_legacy{overflow:visible}.fb_dialog_advanced{padding:10px;-moz-border-radius:8px;-webkit-border-radius:8px;border-radius:8px}.fb_dialog_content{background:#fff;color:#333}.fb_dialog_close_icon{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yL/r/s816eWC-2sl.gif);cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{top:5px;left:5px;right:auto}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yL/r/s816eWC-2sl.gif)}.fb_dialog_close_icon:active{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent;_background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yL/r/s816eWC-2sl.gif)}.fb_dialog_loader{background-color:#f6f7f9;border:1px solid #606060;font-size:24px;padding:20px}.fb_dialog_top_left,.fb_dialog_top_right,.fb_dialog_bottom_left,.fb_dialog_bottom_right{height:10px;width:10px;overflow:hidden;position:absolute}.fb_dialog_top_left{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 0;left:-10px;top:-10px}.fb_dialog_top_right{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -10px;right:-10px;top:-10px}.fb_dialog_bottom_left{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -20px;bottom:-10px;left:-10px}.fb_dialog_bottom_right{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/ye/r/8YeTNIlTZjm.png) no-repeat 0 -30px;right:-10px;bottom:-10px}.fb_dialog_vert_left,.fb_dialog_vert_right,.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{position:absolute;background:#525252;filter:alpha(opacity=70);opacity:.7}.fb_dialog_vert_left,.fb_dialog_vert_right{width:10px;height:100%}.fb_dialog_vert_left{margin-left:-10px}.fb_dialog_vert_right{right:0;margin-right:-10px}.fb_dialog_horiz_top,.fb_dialog_horiz_bottom{width:100%;height:10px}.fb_dialog_horiz_top{margin-top:-10px}.fb_dialog_horiz_bottom{bottom:0;margin-bottom:-10px}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{-webkit-transform:none;height:100%;margin:0;overflow:visible;position:absolute;top:-10000px;left:0;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{width:auto;height:auto;min-height:initial;min-width:initial;background:none}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{color:#fff;display:block;padding-top:20px;clear:both;font-size:18px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .45);position:absolute;bottom:0;left:0;right:0;top:0;width:100%;min-height:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_content .dialog_header{-webkit-box-shadow:white 0 1px 1px -1px inset;background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#738ABA), to(#2C4987));border-bottom:1px solid;border-color:#1d4088;color:#fff;font:14px Helvetica, sans-serif;font-weight:bold;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{-webkit-font-smoothing:subpixel-antialiased;height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#4966A6), color-stop(.5, #355492), to(#2A4887));border:1px solid #29487d;-webkit-background-clip:padding-box;-webkit-border-radius:3px;-webkit-box-shadow:rgba(0, 0, 0, .117188) 0 1px 1px inset, rgba(255, 255, 255, .167969) 0 1px 0;display:inline-block;margin-top:3px;max-width:85px;line-height:18px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{border:none;background:none;color:#fff;font:12px Helvetica, sans-serif;font-weight:bold;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #555;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f6f7f9;border:1px solid #555;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_button{text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-repeat:no-repeat;background-position:50% 50%;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_hide_iframes iframe{position:relative;left:-10000px}.fb_iframe_widget_loader{position:relative;display:inline-block}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}.fb_iframe_widget_loader iframe{min-height:32px;z-index:2;zoom:1}.fb_iframe_widget_loader .FB_Loader{background:url(https://fbstatic-a.akamaihd.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat;height:32px;width:32px;margin-left:-16px;position:absolute;left:50%;z-index:4}</style><script type="text/javascript" async="" src="./Como saber que proceso utiliza un puerto en Linux_files/saved_resource(1)"></script></head>
+
+	<body class="single single-post postid-657 single-format-standard  cb-sticky-mm cb-nav-logo-on cb-logo-nav-sticky cb-sticky-sb-on  cb-tm-dark cb-body-light cb-menu-light cb-mm-dark cb-footer-dark   cb-m-logo-off cb-m-sticky cb-sw-tm-box cb-sw-header-box cb-sw-menu-box cb-sw-footer-box cb-menu-al-left  cb-fis-b-standard  cb-fis-tl-st-below">
+
+		
+		<div id="cb-outer-container">
+
+			
+				<div id="cb-top-menu" class="clearfix cb-font-header  wrap">
+					<div class="wrap clearfix cb-site-padding cb-top-menu-wrap">
+
+													<div class="cb-left-side cb-mob">
+
+								<a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" id="cb-mob-open" class="cb-link"><i class="fa fa-bars"></i></a>
+															</div>
+						                        <ul class="cb-top-nav cb-left-side"><li id="menu-item-4899" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4899"><a href="http://javierin.com/category/sabias-que/">¿Sabias que…?</a></li>
+<li id="menu-item-4900" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-4900"><a href="http://javierin.com/category/analisis/">Analisis</a>
+<ul class="sub-menu">
+	<li id="menu-item-4901" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4901"><a href="http://javierin.com/category/analisis/almacenamiento-y-ssd/">Almacenamiento y SSD</a></li>
+	<li id="menu-item-4902" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4902"><a href="http://javierin.com/category/analisis/altavoces-bluetooth/">Altavoces Bluetooth</a></li>
+	<li id="menu-item-4903" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4903"><a href="http://javierin.com/category/analisis/auriculares/">Auriculares</a></li>
+	<li id="menu-item-4904" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4904"><a href="http://javierin.com/category/analisis/baterias-externas/">Baterias Externas</a></li>
+	<li id="menu-item-4905" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4905"><a href="http://javierin.com/category/analisis/cables-usb/">Cables USB</a></li>
+	<li id="menu-item-4906" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4906"><a href="http://javierin.com/category/analisis/cargadores-rapidos/">Cargadores</a></li>
+	<li id="menu-item-4907" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4907"><a href="http://javierin.com/category/analisis/fotografia-digital/">Fotografia</a></li>
+	<li id="menu-item-4908" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4908"><a href="http://javierin.com/category/analisis/hogar-y-domotica/">Hogar y Domotica</a></li>
+	<li id="menu-item-4909" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4909"><a href="http://javierin.com/category/analisis/juguetes-y-gadgets/">Juguetes y Gadgets</a></li>
+	<li id="menu-item-4910" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4910"><a href="http://javierin.com/category/analisis/perifericos/">Perifericos</a></li>
+	<li id="menu-item-4911" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4911"><a href="http://javierin.com/category/analisis/telefonos-moviles/">Telefonos</a></li>
+	<li id="menu-item-4912" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4912"><a href="http://javierin.com/category/analisis/wi-fi-y-redes/">Wi-Fi / Redes</a></li>
+</ul>
+</li>
+<li id="menu-item-4913" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-4913"><a href="http://javierin.com/category/lugares/">Lugares</a>
+<ul class="sub-menu">
+	<li id="menu-item-4914" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4914"><a href="http://javierin.com/category/lugares/asturias/">Asturias</a></li>
+	<li id="menu-item-4915" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4915"><a href="http://javierin.com/category/lugares/madrid/">Madrid</a></li>
+	<li id="menu-item-4916" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4916"><a href="http://javierin.com/category/lugares/sitios-para-comer/">Sitios para Comer</a></li>
+</ul>
+</li>
+<li id="menu-item-4918" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children cb-has-children menu-item-4918"><a href="http://javierin.com/category/tecno-recetas/">Tecno Recetas</a>
+<ul class="sub-menu">
+	<li id="menu-item-4920" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4920"><a href="http://javierin.com/category/tecno-recetas/linux/aws/">AWS</a></li>
+	<li id="menu-item-4919" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4919"><a href="http://javierin.com/category/tecno-recetas/linux/">Linux</a></li>
+	<li id="menu-item-4921" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4921"><a href="http://javierin.com/category/tecno-recetas/linux/debian/">Debian / Ubuntu</a></li>
+	<li id="menu-item-4922" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4922"><a href="http://javierin.com/category/tecno-recetas/linux/mysql/">MySQL</a></li>
+	<li id="menu-item-4923" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4923"><a href="http://javierin.com/category/tecno-recetas/linux/nagios/">Nagios</a></li>
+	<li id="menu-item-4924" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4924"><a href="http://javierin.com/category/tecno-recetas/linux/nginx/">Nginx</a></li>
+	<li id="menu-item-4925" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4925"><a href="http://javierin.com/category/tecno-recetas/linux/varnish/">Varnish</a></li>
+	<li id="menu-item-4926" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4926"><a href="http://javierin.com/category/tecno-recetas/linux/virtualizacion/">Virtualizacion</a></li>
+	<li id="menu-item-4927" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4927"><a href="http://javierin.com/category/tecno-recetas/ps3/">PS3</a></li>
+	<li id="menu-item-4928" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4928"><a href="http://javierin.com/category/tecno-recetas/ps3/utilidades/">Utilidades</a></li>
+	<li id="menu-item-4929" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4929"><a href="http://javierin.com/category/tecno-recetas/smartphones/">SmartPhones</a></li>
+	<li id="menu-item-4930" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4930"><a href="http://javierin.com/category/tecno-recetas/vmware/">VMware</a></li>
+	<li id="menu-item-4931" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4931"><a href="http://javierin.com/category/tecno-recetas/windows/">Windows</a></li>
+	<li id="menu-item-4932" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4932"><a href="http://javierin.com/category/tecno-recetas/wordpress-2/">WordPress</a></li>
+</ul>
+</li>
+<li id="menu-item-5029" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-5029"><a href="http://javierin.com/category/sorteos/">Sobre Javierin.com</a>
+<ul class="sub-menu">
+	<li id="menu-item-5030" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5030"><a href="http://javierin.com/bases-concursos-redes-sociales/">Bases de concursos en redes sociales</a></li>
+	<li id="menu-item-6066" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-6066"><a href="http://javierin.com/relaciones-con-fabricantes/">Relaciones con Fabricantes</a></li>
+	<li id="menu-item-6410" class="menu-item menu-item-type-post_type menu-item-object-post menu-item-6410"><a href="http://javierin.com/equipo-para-las-reviews/">Equipo para las reviews</a></li>
+	<li id="menu-item-4941" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4941"><a href="http://javierin.com/contacto/">Contacto</a></li>
+</ul>
+</li>
+</ul>                                                <ul class="cb-top-nav cb-right-side"><li class="cb-menu-icons-extra cb-social-icons-extra"><a href="http://www.facebook.com/javierin.blog" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a></li><li class="cb-icon-search cb-menu-icons-extra"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" title="Buscar" id="cb-s-trigger-gen"><i class="fa fa-search"></i> <span class="cb-search-title">Buscar</span></a></li><li class="cb-icon-login cb-menu-icons-extra"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" class="cb-lwa-trigger" title="Conectar / Regístrate" id="cb-lwa-trigger-gen"><i class="fa fa-user"></i> <span class="cb-login-join-title">Conectar / Regístrate</span></a></li></ul>					</div>
+				</div>
+
+				<div id="cb-mob-menu" class="cb-mob-menu">
+					<div class="cb-mob-close-wrap">
+						
+						<a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" id="cb-mob-close" class="cb-link"><i class="fa cb-times"></i></a>
+						<div class="cb-mob-social">				            <a href="http://www.twitter.com/" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+				        				            <a href="http://www.facebook.com/javierin.blog" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+				        </div>				    </div>
+
+					<div class="cb-mob-menu-wrap">
+						<ul id="cb-mob-ul" class="cb-mobile-nav cb-top-nav cb-mob-ul-show"><li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4899"><a href="http://javierin.com/category/sabias-que/">¿Sabias que…?</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-4900"><span class="cb-icon-plus"></span><a href="http://javierin.com/category/analisis/">Analisis</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4901"><a href="http://javierin.com/category/analisis/almacenamiento-y-ssd/">Almacenamiento y SSD</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4902"><a href="http://javierin.com/category/analisis/altavoces-bluetooth/">Altavoces Bluetooth</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4903"><a href="http://javierin.com/category/analisis/auriculares/">Auriculares</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4904"><a href="http://javierin.com/category/analisis/baterias-externas/">Baterias Externas</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4905"><a href="http://javierin.com/category/analisis/cables-usb/">Cables USB</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4906"><a href="http://javierin.com/category/analisis/cargadores-rapidos/">Cargadores</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4907"><a href="http://javierin.com/category/analisis/fotografia-digital/">Fotografia</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4908"><a href="http://javierin.com/category/analisis/hogar-y-domotica/">Hogar y Domotica</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4909"><a href="http://javierin.com/category/analisis/juguetes-y-gadgets/">Juguetes y Gadgets</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4910"><a href="http://javierin.com/category/analisis/perifericos/">Perifericos</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4911"><a href="http://javierin.com/category/analisis/telefonos-moviles/">Telefonos</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4912"><a href="http://javierin.com/category/analisis/wi-fi-y-redes/">Wi-Fi / Redes</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-4913"><span class="cb-icon-plus"></span><a href="http://javierin.com/category/lugares/">Lugares</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4914"><a href="http://javierin.com/category/lugares/asturias/">Asturias</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4915"><a href="http://javierin.com/category/lugares/madrid/">Madrid</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4916"><a href="http://javierin.com/category/lugares/sitios-para-comer/">Sitios para Comer</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children cb-has-children menu-item-4918"><span class="cb-icon-plus"></span><a href="http://javierin.com/category/tecno-recetas/">Tecno Recetas</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4920"><a href="http://javierin.com/category/tecno-recetas/linux/aws/">AWS</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4919"><a href="http://javierin.com/category/tecno-recetas/linux/">Linux</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4921"><a href="http://javierin.com/category/tecno-recetas/linux/debian/">Debian / Ubuntu</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4922"><a href="http://javierin.com/category/tecno-recetas/linux/mysql/">MySQL</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4923"><a href="http://javierin.com/category/tecno-recetas/linux/nagios/">Nagios</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4924"><a href="http://javierin.com/category/tecno-recetas/linux/nginx/">Nginx</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4925"><a href="http://javierin.com/category/tecno-recetas/linux/varnish/">Varnish</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4926"><a href="http://javierin.com/category/tecno-recetas/linux/virtualizacion/">Virtualizacion</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4927"><a href="http://javierin.com/category/tecno-recetas/ps3/">PS3</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4928"><a href="http://javierin.com/category/tecno-recetas/ps3/utilidades/">Utilidades</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4929"><a href="http://javierin.com/category/tecno-recetas/smartphones/">SmartPhones</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4930"><a href="http://javierin.com/category/tecno-recetas/vmware/">VMware</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4931"><a href="http://javierin.com/category/tecno-recetas/windows/">Windows</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4932"><a href="http://javierin.com/category/tecno-recetas/wordpress-2/">WordPress</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-5029"><span class="cb-icon-plus"></span><a href="http://javierin.com/category/sorteos/">Sobre Javierin.com</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5030"><a href="http://javierin.com/bases-concursos-redes-sociales/">Bases de concursos en redes sociales</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-6066"><a href="http://javierin.com/relaciones-con-fabricantes/">Relaciones con Fabricantes</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-6410"><a href="http://javierin.com/equipo-para-las-reviews/">Equipo para las reviews</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4941"><a href="http://javierin.com/contacto/">Contacto</a></li>
+</ul>
+</li>
+</ul>											</div>
+
+				</div>
+			
+			<div id="cb-container" class="clearfix">
+									<header id="cb-header" class="cb-header  cb-with-block wrap">
+
+					    <div id="cb-logo-box" class="cb-logo-left wrap">
+	                    	                <div id="logo">
+                                        <a href="http://javierin.com/">
+                        <img src="./Como saber que proceso utiliza un puerto en Linux_files/logo-javierin.com-2016-normal-220x80-1.png" alt=" logo" data-at2x="http://javierin.com/wp-content/uploads/sites/2/2016/02/logo-javierin.com-2016-retina-440x160-1.png">
+                    </a>
+                                    </div>
+            	                        <div class="cb-large cb-block"><script async="" src="./Como saber que proceso utiliza un puerto en Linux_files/adsbygoogle.js"></script>
+<!-- javierin.com adaptable -->
+<ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-2518785397162866" data-ad-slot="5688584933" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:728px;background-color:transparent"><iframe width="728" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" src="./Como saber que proceso utiliza un puerto en Linux_files/saved_resource.html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>	                    </div>
+
+					</header>
+				
+				<div id="cb-lwa" class="cb-lwa-modal cb-modal"><div class="cb-close-m cb-ta-right"><i class="fa cb-times"></i></div>
+<div class="cb-lwa-modal-inner cb-modal-inner cb-light-loader cb-pre-load cb-font-header clearfix">
+    <div class="lwa lwa-default clearfix">
+                
+        
+
+        <form class="lwa-form cb-form cb-form-active clearfix" action="http://javierin.com/wp-login.php" method="post">
+            
+            <div class="cb-form-body">
+                <input class="cb-form-input cb-form-input-username" type="text" name="log" placeholder="Usuario">
+                <input class="cb-form-input" type="password" name="pwd" placeholder="Contraseña">
+                                <span class="lwa-status cb-ta-center"></span>
+                <div class="cb-submit cb-ta-center">
+                  <input type="submit" name="wp-submit" class="lwa_wp-submit cb-submit-form" value="Entrar" tabindex="100">
+                  <input type="hidden" name="lwa_profile_link" value="">
+                  <input type="hidden" name="login-with-ajax" value="login">
+                </div>
+
+                <div class="cb-remember-me cb-extra cb-ta-center"><label>Recordar mis datos</label><input name="rememberme" type="checkbox" class="lwa-rememberme" value="forever"></div>
+                
+                <div class="cb-lost-password cb-extra cb-ta-center">
+                                          <a class="lwa-links-remember cb-title-trigger cb-trigger-pass" href="http://javierin.com/wp-login.php?action=lostpassword" title="¿Olvidaste la contraseña?">¿Olvidaste la contraseña?</a>
+                                     </div>
+           </div>
+        </form>
+        
+                <form class="lwa-remember cb-form clearfix" action="http://javierin.com/wp-login.php?action=lostpassword" method="post">
+
+            <div class="cb-form-body">
+
+                <input type="text" name="user_login" class="lwa-user-remember cb-form-input" placeholder="Indique su nombre de usuario o email">
+                                <span class="lwa-status cb-ta-center"></span>
+
+                 <div class="cb-submit cb-ta-center">
+                        <input type="submit" value="Obtener nueva contraseña" class="lwa-button-remember cb-submit-form">
+                        <input type="hidden" name="login-with-ajax" value="remember">
+                 </div>
+            </div>
+
+        </form>
+            </div>
+</div></div><div id="cb-menu-search" class="cb-s-modal cb-modal"><div class="cb-close-m cb-ta-right"><i class="fa cb-times"></i></div><div class="cb-s-modal-inner cb-pre-load cb-light-loader cb-modal-inner cb-font-header cb-mega-three cb-mega-posts clearfix"><form method="get" class="cb-search" action="http://javierin.com/">
+
+    <input type="text" class="cb-search-field cb-font-header" placeholder="Buscar..." value="" name="s" title="" autocomplete="off">
+    <button class="cb-search-submit" type="submit" value=""><i class="fa fa-search"></i></button>
+    
+</form><div id="cb-s-results"></div></div></div>				
+				
+<div id="cb-content" class="wrap clearfix">
+	
+	<div class="cb-entire-post cb-first-alp clearfix">
+
+					
+		<div class="cb-post-wrap cb-wrap-pad wrap clearfix cb-sidebar-right">
+
+			
+					
+    <meta itemprop="datePublished" content="2010-12-09T18:18:17+00:00">
+    <meta itemprop="dateModified" content="2016-03-01T19:17:39+00:00">
+    <meta itemscope="" itemprop="mainEntityOfPage" itemtype="https://schema.org/WebPage" itemid="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/">
+    <span class="cb-hide" itemscope="" itemprop="publisher" itemtype="https://schema.org/Organization">
+        <meta itemprop="name" content="Javierin.com">
+        <meta itemprop="url" content="http://javierin.com/wp-content/uploads/sites/2/2016/02/logo-javierin.com-2016-normal-220x80-1.png">
+        <span class="cb-hide" itemscope="" itemprop="logo" itemtype="https://schema.org/ImageObject">
+            <meta itemprop="url" content="http://javierin.com/wp-content/uploads/sites/2/2016/02/logo-javierin.com-2016-normal-220x80-1.png">
+        </span>
+    </span>
+
+    <meta itemprop="headline " content="Saber que proceso utiliza un puerto en Linux">
+
+      <span class="cb-hide" itemscope="" itemtype="http://schema.org/ImageObject" itemprop="image">
+        <meta itemprop="url" content="http://javierin.com/wp-content/uploads/sites/2/2014/11/Linux-logo.png">
+        <meta itemprop="width" content="640">
+        <meta itemprop="height" content="480">
+    </span>
+
+
+					<div class="cb-main clearfix">
+
+						<div class="cb-breadcrumbs"><a href="http://javierin.com/">Home</a><i class="fa fa-angle-right"></i><div itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb"><a href="http://javierin.com/category/tecno-recetas/" title="Ver todos los artículos de Tecno Recetas" itemprop="url"><span itemprop="title">Tecno Recetas</span></a><i class="fa fa-angle-right"></i><a href="http://javierin.com/category/tecno-recetas/linux/" title="Ver todos los artículos de Linux" itemprop="url"><span itemprop="title">Linux</span></a></div></div>
+						<article id="post-657" class="clearfix post-657 post type-post status-publish format-standard has-post-thumbnail hentry category-linux category-tecno-recetas tag-puertos-abiertos-linux tag-saber-que-proceso-escucha-en-un-puerto">
+
+							<div id="cb-featured-image" class="cb-fis cb-fis-block-standard"><div class="cb-mask"><img width="640" height="480" src="./Como saber que proceso utiliza un puerto en Linux_files/Linux-logo.png" class="attachment-cb-759-500 size-cb-759-500 wp-post-image" alt="Linux-logo" srcset="http://javierin.com/wp-content/uploads/sites/2/2014/11/Linux-logo.png 640w, http://javierin.com/wp-content/uploads/sites/2/2014/11/Linux-logo-300x225.png 300w" sizes="(max-width: 640px) 100vw, 640px"></div><div class="cb-entry-header cb-meta clearfix"><h1 class="entry-title cb-entry-title cb-title">Saber que proceso utiliza un puerto en Linux</h1><div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2010-12-09">9 diciembre, 2010</time></span></div><div class="cb-post-meta"><span class="cb-category cb-element"><a href="http://javierin.com/category/tecno-recetas/linux/" title="Ver todos los artículos de Linux">Linux</a></span><span class="cb-category cb-element"><a href="http://javierin.com/category/tecno-recetas/" title="Ver todos los artículos de Tecno Recetas">Tecno Recetas</a></span><span class="cb-comments cb-element"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#comments">3 comentarios</a></span><span class="cb-views cb-element">4689 visitas</span><span class="cb-lks cb-element"><span id="cb-likes-657" class="cb-like-count cb-button cb-like-button cb-font-title  cb-lkd-0" data-cb-pid="657"><span class="cb-like-icon"><i class="fa fa-heart-o cb-icon-empty"></i><i class="fa fa-heart cb-icon-full"></i></span> <span class="cb-likes-int">0</span></span></span></div></div></div>
+							<section class="cb-entry-content clearfix" itemprop="articleBody">
+
+								<span class="cb-itemprop" itemprop="reviewBody"><p>Muchas veces nos encontramos con que en nuestra máquina tenemos escuchando un puerto y no sabemos que proceso o programa lo ha abierto. Aunque existen varias maneras sencillas saber que proceso utiliza un puerto, aquí voy a proponer 2 distintas:</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57fea05b1e90a690735194" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important; height: 18px !important; line-height: 18px !important; margin-top: -18px; display: none; z-index: 4;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="Mostrar/ocultar números de línea"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Cambiar a texto plano"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Abrir el código en una nueva ventana"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">netstat -punlt |grep ':X'</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57fea05b1e90a690735194-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57fea05b1e90a690735194-1"><span class="crayon-v">netstat</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-v">punlt</span><span class="crayon-h"> </span><span class="crayon-o">|</span><span class="crayon-i">grep</span><span class="crayon-h"> </span><span class="crayon-s">':X'</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0007 seconds] -->
+<p>donde XX es el número de puerto que buscamos. Probemos con el 22, para el servidor de SSH:</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57fea05b1e911008884961" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important; height: 18px !important; line-height: 18px !important; margin-top: -18px; display: none; z-index: 4;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="Mostrar/ocultar números de línea"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Cambiar a texto plano"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Abrir el código en una nueva ventana"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">root@hostname:~# netstat -puntl |grep ':22'
+tcp        0      0 0.0.0.0:22           0.0.0.0:*               LISTEN      1265/sshd</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57fea05b1e911008884961-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57fea05b1e911008884961-2">2</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57fea05b1e911008884961-1"><span class="crayon-v">root</span><span class="crayon-sy">@</span><span class="crayon-v">hostname</span><span class="crayon-o">:</span><span class="crayon-o">~</span><span class="crayon-p"># netstat -puntl |grep ':22'</span></div><div class="crayon-line crayon-striped-line" id="crayon-57fea05b1e911008884961-2"><span class="crayon-i">tcp</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">0</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">0</span><span class="crayon-h"> </span><span class="crayon-cn">0.0.0.0</span><span class="crayon-o">:</span><span class="crayon-cn">22</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-cn">0.0.0.0</span><span class="crayon-o">:</span><span class="crayon-o">*</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-i">LISTEN</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">1265</span><span class="crayon-o">/</span><span class="crayon-v">sshd</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0002 seconds] -->
+<p>Podemos ver que el proceso sshd, con PID 1265 es el que tiene abierto el puerto tcp/22</p>
+<p>Si bien esta forma es perfectamente válida, podemos optar por hacerlo de esta otra:</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57fea05b1e914016306348" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important; height: 18px !important; line-height: 18px !important; margin-top: -18px; display: none; z-index: 4;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="Mostrar/ocultar números de línea"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Cambiar a texto plano"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code" style="display: none;"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Abrir el código en una nueva ventana"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">lsof -i:22</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57fea05b1e914016306348-1">1</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57fea05b1e914016306348-1"><span class="crayon-v">lsof</span><span class="crayon-h"> </span><span class="crayon-o">-</span><span class="crayon-v">i</span><span class="crayon-o">:</span><span class="crayon-cn">22</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0001 seconds] -->
+<p>Obteniendo:</p><!-- Crayon Syntax Highlighter v_2.7.2_beta -->
+
+		<div id="crayon-57fea05b1e916023413148" class="crayon-syntax crayon-theme-classic crayon-font-monaco crayon-os-pc print-yes notranslate" data-settings=" minimize scroll-mouseover" style="margin-top: 12px; margin-bottom: 12px; font-size: 12px !important; line-height: 15px !important; height: auto;">
+		
+			<div class="crayon-toolbar" data-settings=" mouseover overlay hide delay" style="font-size: 12px !important; height: 18px !important; line-height: 18px !important; margin-top: -18px; display: none; position: absolute; z-index: 2;"><span class="crayon-title"></span>
+			<div class="crayon-tools" style="font-size: 12px !important;height: 18px !important; line-height: 18px !important;"><div class="crayon-button crayon-nums-button crayon-pressed" title="Mostrar/ocultar números de línea"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-plain-button" title="Cambiar a texto plano"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-wrap-button" title="Toggle Line Wrap"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-expand-button" title="Expand Code"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-copy-button" title="Copy"><div class="crayon-button-icon"></div></div><div class="crayon-button crayon-popup-button" title="Abrir el código en una nueva ventana"><div class="crayon-button-icon"></div></div></div></div>
+			<div class="crayon-info" style="min-height: 16.8px !important; line-height: 16.8px !important;"></div>
+			<div class="crayon-plain-wrap"><textarea wrap="soft" class="crayon-plain print-no" data-settings="dblclick" readonly="" style="tab-size: 4; font-size: 12px !important; line-height: 15px !important; z-index: 0; opacity: 0; overflow: hidden;">COMMAND   PID    USER   FD   TYPE DEVICE SIZE/OFF NODE NAME
+sshd     1265    usuario    3u  IPv4   9592      0t0  TCP *:22 (LISTEN)
+sshd     5980    usuario    3u  IPv4  26729      0t0  TCP ip_del_servidor:22-&amp;gt;ip_del_cliente:54764 (ESTABLISHED)
+sshd     5981    usuario    3u  IPv4  26735      0t0  TCP ip_del_servidor:22-&amp;gt;ip_del_cliente:54763 (ESTABLISHED)
+sshd     5982    usuario    3u  IPv4  26761      0t0  TCP ip_del_servidor:22-&amp;gt;ip_del_cliente:54765 (ESTABLISHED)</textarea></div>
+			<div class="crayon-main" style="position: relative; z-index: 1; overflow: hidden;">
+				<table class="crayon-table">
+					<tbody><tr class="crayon-row">
+				<td class="crayon-nums " data-settings="show">
+					<div class="crayon-nums-content" style="font-size: 12px !important; line-height: 15px !important;"><div class="crayon-num" data-line="crayon-57fea05b1e916023413148-1">1</div><div class="crayon-num crayon-striped-num" data-line="crayon-57fea05b1e916023413148-2">2</div><div class="crayon-num" data-line="crayon-57fea05b1e916023413148-3">3</div><div class="crayon-num crayon-striped-num" data-line="crayon-57fea05b1e916023413148-4">4</div><div class="crayon-num" data-line="crayon-57fea05b1e916023413148-5">5</div></div>
+				</td>
+						<td class="crayon-code"><div class="crayon-pre" style="font-size: 12px !important; line-height: 15px !important; -moz-tab-size:4; -o-tab-size:4; -webkit-tab-size:4; tab-size:4;"><div class="crayon-line" id="crayon-57fea05b1e916023413148-1"><span class="crayon-e">COMMAND&nbsp;&nbsp; </span><span class="crayon-e">PID&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-e">USER&nbsp;&nbsp; </span><span class="crayon-e">FD&nbsp;&nbsp; </span><span class="crayon-e">TYPE </span><span class="crayon-e">DEVICE </span><span class="crayon-v">SIZE</span><span class="crayon-o">/</span><span class="crayon-e">OFF </span><span class="crayon-e">NODE </span><span class="crayon-e">NAME</span></div><div class="crayon-line crayon-striped-line" id="crayon-57fea05b1e916023413148-2"><span class="crayon-i">sshd</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-cn">1265</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">usuario</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">3u</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-i">IPv4</span><span class="crayon-h">&nbsp;&nbsp; </span><span class="crayon-cn">9592</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">0t0</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e ">TCP *</span><span class="crayon-o">:</span><span class="crayon-cn">22</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">LISTEN</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57fea05b1e916023413148-3"><span class="crayon-i">sshd</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-cn">5980</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">usuario</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">3u</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-i">IPv4</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-cn">26729</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">0t0</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">TCP </span><span class="crayon-v">ip_del_servidor</span><span class="crayon-o">:</span><span class="crayon-cn">22</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-v">gt</span><span class="crayon-sy">;</span><span class="crayon-v">ip_del_cliente</span><span class="crayon-o">:</span><span class="crayon-cn">54764</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">ESTABLISHED</span><span class="crayon-sy">)</span></div><div class="crayon-line crayon-striped-line" id="crayon-57fea05b1e916023413148-4"><span class="crayon-i">sshd</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-cn">5981</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">usuario</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">3u</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-i">IPv4</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-cn">26735</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">0t0</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">TCP </span><span class="crayon-v">ip_del_servidor</span><span class="crayon-o">:</span><span class="crayon-cn">22</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-v">gt</span><span class="crayon-sy">;</span><span class="crayon-v">ip_del_cliente</span><span class="crayon-o">:</span><span class="crayon-cn">54763</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">ESTABLISHED</span><span class="crayon-sy">)</span></div><div class="crayon-line" id="crayon-57fea05b1e916023413148-5"><span class="crayon-i">sshd</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp; </span><span class="crayon-cn">5982</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-i">usuario</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">3u</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-i">IPv4</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-cn">26761</span><span class="crayon-h">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="crayon-cn">0t0</span><span class="crayon-h">&nbsp;&nbsp;</span><span class="crayon-e">TCP </span><span class="crayon-v">ip_del_servidor</span><span class="crayon-o">:</span><span class="crayon-cn">22</span><span class="crayon-o">-</span><span class="crayon-o">&amp;</span><span class="crayon-v">gt</span><span class="crayon-sy">;</span><span class="crayon-v">ip_del_cliente</span><span class="crayon-o">:</span><span class="crayon-cn">54765</span><span class="crayon-h"> </span><span class="crayon-sy">(</span><span class="crayon-v">ESTABLISHED</span><span class="crayon-sy">)</span></div></div></td>
+					</tr>
+				</tbody></table>
+			</div>
+		</div>
+<!-- [Format Time: 0.0008 seconds] -->
+<p>lsof nos permite acotar en función del protocolo y especificarle TCP:X o UDP:X como puerto a buscar.</p>
+<p>Ahora ya has aprendido como saber que proceso utiliza un puerto en linux</p>
+</span><div class="sharedaddy sd-sharing-enabled"><div class="robots-nocontent sd-block sd-social sd-social-icon sd-sharing"><h3 class="sd-title">Compártelo:</h3><div class="sd-content"><ul><li class="share-jetpack-whatsapp"><a rel="nofollow" data-shared="" class="share-jetpack-whatsapp sd-button share-icon no-text" href="whatsapp://send?text=Saber%20que%20proceso%20utiliza%20un%20puerto%20en%20Linux http%3A%2F%2Fjavierin.com%2Fsaber-que-programa-utiliza-un-puerto-en-linux%2F" target="_blank" title="Haz clic para compartir en WhatsApp"><span></span><span class="sharing-screen-reader-text">Haz clic para compartir en WhatsApp (Se abre en una ventana nueva)</span></a></li><li class="share-telegram"><a rel="nofollow" data-shared="" class="share-telegram sd-button share-icon no-text" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?share=telegram&amp;nb=1" target="_blank" title="Haz clic para compartir en Telegram"><span></span><span class="sharing-screen-reader-text">Haz clic para compartir en Telegram (Se abre en una ventana nueva)</span></a></li><li class="share-skype"><a rel="nofollow" data-shared="sharing-skype-657" class="share-skype sd-button share-icon no-text" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?share=skype&amp;nb=1" target="_blank" title="Compartir en Skype"><span></span><span class="sharing-screen-reader-text">Compartir en Skype (Se abre en una ventana nueva)</span></a></li><li class="share-twitter"><a rel="nofollow" data-shared="sharing-twitter-657" class="share-twitter sd-button share-icon no-text" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?share=twitter&amp;nb=1" target="_blank" title="Haz clic para compartir en Twitter"><span></span><span class="sharing-screen-reader-text">Haz clic para compartir en Twitter (Se abre en una ventana nueva)</span></a></li><li class="share-facebook"><a rel="nofollow" data-shared="sharing-facebook-657" class="share-facebook sd-button share-icon no-text" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?share=facebook&amp;nb=1" target="_blank" title="Haz clic para compartir en Facebook"><span></span><span class="sharing-screen-reader-text">Haz clic para compartir en Facebook (Se abre en una ventana nueva)</span></a></li><li class="share-end"></li></ul></div></div></div><div class="yarpp-related">
+<h3>Related posts:</h3><ol>
+<li><a href="http://javierin.com/alertas-con-supervisord/" rel="bookmark" title="Alertas con Supervisord">Alertas con Supervisord </a></li>
+<li><a href="http://javierin.com/forzar-lftp-para-que-no-intente-conectar-por-tls/" rel="bookmark" title="Forzar LFTP para que no intente conectar por TLS">Forzar LFTP para que no intente conectar por TLS </a></li>
+<li><a href="http://javierin.com/pasar-mayusculas-a-minusculas-en-linux/" rel="bookmark" title="Pasar Mayusculas a Minusculas en Linux">Pasar Mayusculas a Minusculas en Linux </a></li>
+</ol>
+</div>
+																
+							</section> <!-- end article section -->
+							
+							<footer class="cb-article-footer">
+								<p class="cb-tags cb-post-footer-block"> <a href="http://javierin.com/tag/puertos-abiertos-linux/" rel="tag">puertos abiertos linux</a><a href="http://javierin.com/tag/saber-que-proceso-escucha-en-un-puerto/" rel="tag">saber que proceso escucha en un puerto</a></p><div class="cb-social-sharing cb-color-buttons cb-post-footer-block cb-on-color clearfix"><div class="cb-color-sharing-buttons"><a href="https://www.facebook.com/sharer/sharer.php?u=http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/" target="_blank" class="cb-social-fb cb-tip-bot tipper-attached" data-cb-tip="Compartir"><i class="fa fa-facebook" aria-hidden="true"></i></a><a href="https://twitter.com/share?url=http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/" target="_blank" class="cb-social-tw cb-tip-bot tipper-attached" data-cb-tip="Twitear"><i class="fa fa-twitter" aria-hidden="true"></i></a><a href="https://plus.google.com/share?url=http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/" target="_blank" class="cb-social-go cb-tip-bot tipper-attached" data-cb-tip="Compartir"><i class="fa fa-google-plus" aria-hidden="true"></i></a></div></div><div class="cb-post-large cb-post-footer-block clearfix"><script async="" src="./Como saber que proceso utiliza un puerto en Linux_files/adsbygoogle.js"></script>
+<!-- javierin.com adaptable -->
+<ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-2518785397162866" data-ad-slot="5688584933" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:750px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:750px;background-color:transparent"><iframe width="750" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;" src="./Como saber que proceso utiliza un puerto en Linux_files/saved_resource(2).html"></iframe></ins></ins></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div><div id="cb-next-previous-posts" class="cb-next-previous cb-post-block-bg cb-post-footer-block cb-font-header clearfix"><div class="cb-previous-post cb-meta cb-next-previous-block"><div class="cb-arrow"><i class="fa fa-angle-left"></i></div><span class="cb-read-previous-title cb-read-title"><a href="http://javierin.com/memoria-ram-usada-por-un-proceso-en-linux/">Artículo Anterior</a></span><a href="http://javierin.com/memoria-ram-usada-por-un-proceso-en-linux/" class="cb-previous-title cb-title">Como saber que proceso se esta comiendo la memoria de nuestro linux</a></div><div class="cb-next-post cb-meta cb-next-previous-block"><div class="cb-arrow"><i class="fa fa-angle-right"></i></div><span class="cb-read-next-title cb-read-title"><a href="http://javierin.com/problemas-con-ndoutils-1-4b9-1-insertando-en-mysql/">Artículo siguiente</a></span><a href="http://javierin.com/problemas-con-ndoutils-1-4b9-1-insertando-en-mysql/" class="cb-next-title cb-title">Problemas con ndoutils-1.4b9-1 insertando en MySQL</a></div></div><div id="cb-author-box" class="cb-post-footer-block cb-post-block-bg clearfix"><div class="cb-mask"><a href="http://javierin.com/author/administrador/"><img alt="" src="./Como saber que proceso utiliza un puerto en Linux_files/60b10793aa9abd2e457e2414216c386b" srcset="http://0.gravatar.com/avatar/60b10793aa9abd2e457e2414216c386b?s=200&amp;d=retro&amp;r=g 2x" class="avatar avatar-100 photo" height="100" width="100"></a></div><div class="cb-meta"><div class="cb-title cb-font-header vcard" itemprop="author"><a href="http://javierin.com/author/administrador/"><span class="fn">administrador</span></a></div></div></div><div id="cb-related-posts-block" class="cb-post-footer-block cb-arrows-tr cb-module-block clearfix"><h3 class="cb-title cb-title-header">Artículos Relacionados</h3><div id="cb-related-posts" class="cb-slider-2 cb-slider cb-meta-below"><div class="flex-viewport" style="overflow: hidden; position: relative;"><ul class="slides clearfix" style="width: 1200%; transition-duration: 0s; transform: translate3d(0px, 0px, 0px);">                <li class="cb-style-1 clearfix cb-no-1 post-2920 post type-post status-publish format-standard has-post-thumbnail hentry category-tecno-recetas" style="width: 373.5px; margin-right: 3px; float: left; display: block;">
+                    <div class="cb-mask"><a href="http://javierin.com/como-borrar-cookies-en-firefox/"><img width="240" height="240" src="./Como saber que proceso utiliza un puerto en Linux_files/firefox-256.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="firefox-256" srcset="http://javierin.com/wp-content/uploads/sites/2/2014/08/firefox-256.jpg 256w, http://javierin.com/wp-content/uploads/sites/2/2014/08/firefox-256-150x150.jpg 150w" sizes="(max-width: 240px) 100vw, 240px" draggable="false"></a></div>
+                    <div class="cb-meta">
+                        <h4 class="cb-post-title"><a href="http://javierin.com/como-borrar-cookies-en-firefox/">Como borrar cookies en Firefox</a></h4>
+                        <div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2014-08-24">24 agosto, 2014</time></span></div>                    </div>
+                </li>
+                <li class="cb-style-1 clearfix cb-no-2 post-3580 post type-post status-publish format-standard has-post-thumbnail hentry category-cargadores-rapidos category-smartphones tag-cargador-rapido-movil tag-cargador-rapido-usb tag-cargador-turbo-usb tag-cargar-rapido-el-movil" style="width: 373.5px; margin-right: 3px; float: left; display: block;">
+                    <div class="cb-mask"><a href="http://javierin.com/cargador-rapido-de-movil-aukey/"><img width="360" height="202" src="./Como saber que proceso utiliza un puerto en Linux_files/20160207_211012.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="aukey cargador rapido movil usb" srcset="http://javierin.com/wp-content/uploads/sites/2/2015/07/20160207_211012.jpg 2276w, http://javierin.com/wp-content/uploads/sites/2/2015/07/20160207_211012-300x169.jpg 300w, http://javierin.com/wp-content/uploads/sites/2/2015/07/20160207_211012-1024x576.jpg 1024w, http://javierin.com/wp-content/uploads/sites/2/2015/07/20160207_211012-695x391.jpg 695w, http://javierin.com/wp-content/uploads/sites/2/2015/07/20160207_211012-930x523.jpg 930w, http://javierin.com/wp-content/uploads/sites/2/2015/07/20160207_211012-520x290.jpg 520w" sizes="(max-width: 360px) 100vw, 360px" draggable="false"></a></div>
+                    <div class="cb-meta">
+                        <h4 class="cb-post-title"><a href="http://javierin.com/cargador-rapido-de-movil-aukey/">Cargador rapido de movil – Aukey</a></h4>
+                        <div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2015-07-06">6 julio, 2015</time></span></div>                    </div>
+                </li>
+                <li class="cb-style-1 clearfix cb-no-1 post-2254 post type-post status-publish format-standard has-post-thumbnail hentry category-debian category-linux tag-debian-lsi-sas2004 tag-debian-lsi-sas2008 tag-debian-mptctl tag-debian-sas2ircu" style="width: 373.5px; margin-right: 3px; float: left; display: block;">
+                    <div class="cb-mask"><a href="http://javierin.com/monitorizar-los-discos-con-una-controladora-lsi-sas2004-lsi-sas2008/"><img width="360" height="240" src="./Como saber que proceso utiliza un puerto en Linux_files/debian-logo-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="debian-logo" draggable="false"></a></div>
+                    <div class="cb-meta">
+                        <h4 class="cb-post-title"><a href="http://javierin.com/monitorizar-los-discos-con-una-controladora-lsi-sas2004-lsi-sas2008/">Monitorizar LSI SAS2004 / LSI SAS2008</a></h4>
+                        <div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2014-02-20">20 febrero, 2014</time></span></div>                    </div>
+                </li>
+                <li class="cb-style-1 clearfix cb-no-2 post-233 post type-post status-publish format-standard has-post-thumbnail hentry category-linux category-nagios tag-errores-nagios tag-nagios-cmd" style="width: 373.5px; margin-right: 3px; float: left; display: block;">
+                    <div class="cb-mask"><a href="http://javierin.com/error-en-nagios-could-not-stat-command-file-varlibnagios3rwnagios-cmd/"><img width="360" height="240" src="./Como saber que proceso utiliza un puerto en Linux_files/nagios-4-logo-360x240.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="nagios-4-logo" draggable="false"></a></div>
+                    <div class="cb-meta">
+                        <h4 class="cb-post-title"><a href="http://javierin.com/error-en-nagios-could-not-stat-command-file-varlibnagios3rwnagios-cmd/">Error en Nagios: Could not stat() command file ‘/var/lib/nagios3/rw/nagios.cmd’!</a></h4>
+                        <div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2010-09-28">28 septiembre, 2010</time></span></div>                    </div>
+                </li>
+                <li class="cb-style-1 clearfix cb-no-1 post-28 post type-post status-publish format-standard has-post-thumbnail hentry category-linux tag-lc_all tag-lc_ctype tag-lc_messages tag-locales" style="width: 373.5px; margin-right: 3px; float: left; display: block;">
+                    <div class="cb-mask"><a href="http://javierin.com/problema-lc_ctype-lc_messages-lc_all-ubuntu/"><img width="360" height="240" src="./Como saber que proceso utiliza un puerto en Linux_files/ubuntu-logo-e-360x240.png" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="ubuntu-logo-e" draggable="false"></a></div>
+                    <div class="cb-meta">
+                        <h4 class="cb-post-title"><a href="http://javierin.com/problema-lc_ctype-lc_messages-lc_all-ubuntu/">Arreglar problemas de locales en ubuntu de LC_CTYPE LC_MESSAGES LC_ALL</a></h4>
+                        <div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2010-04-27">27 abril, 2010</time></span></div>                    </div>
+                </li>
+                <li class="cb-style-1 clearfix cb-no-2 post-4319 post type-post status-publish format-standard has-post-thumbnail hentry category-linux tag-ssh-timeout" style="width: 373.5px; margin-right: 3px; float: left; display: block;">
+                    <div class="cb-mask"><a href="http://javierin.com/cambiar-timeout-cliente-ssh/"><img width="360" height="198" src="./Como saber que proceso utiliza un puerto en Linux_files/ssh-key-360x198.jpg" class="attachment-cb-360-240 size-cb-360-240 wp-post-image" alt="ssh-key" draggable="false"></a></div>
+                    <div class="cb-meta">
+                        <h4 class="cb-post-title"><a href="http://javierin.com/cambiar-timeout-cliente-ssh/">Cambiar el timeout en el cliente SSH</a></h4>
+                        <div class="cb-byline"><span class="cb-author"> <a href="http://javierin.com/author/administrador/">administrador</a></span><span class="cb-separator"><i class="fa fa-times"></i></span><span class="cb-date"><time datetime="2016-01-21">21 enero, 2016</time></span></div>                    </div>
+                </li>
+</ul></div><ul class="flex-direction-nav"><li class="flex-nav-prev"><a class="flex-prev" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#"><i class="fa fa-angle-left"></i></a></li><li class="flex-nav-next"><a class="flex-next" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#"><i class="fa fa-angle-right"></i></a></li></ul></div></div>
+<div id="comments" class="cb-post-footer-block clearfix">
+    
+    <h3 class="cb-title cb-title-header">3 Respuestas</h3>
+
+    <nav id="comment-nav">
+        <ul class="clearfix">
+            <li></li>
+            <li></li>
+        </ul>
+    </nav>
+
+    <ol class="commentlist">
+        
+        <li class="comment even thread-even depth-1">
+
+            <article id="comment-43" class="clearfix">
+
+                <div class="cb-comment-body clearfix">
+
+                    <header class="comment-author vcard">
+                        <div class="cb-gravatar-image">
+                            <img alt="" src="./Como saber que proceso utiliza un puerto en Linux_files/6c0b0752f266fa11195577cd79db4404" srcset="http://0.gravatar.com/avatar/6c0b0752f266fa11195577cd79db4404?s=150&amp;d=retro&amp;r=g 2x" class="avatar avatar-75 photo" height="75" width="75">                        </div>
+                        <time datetime="27 marzo, 2014"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#comment-43">27 marzo, 2014 </a></time>
+                        <cite class="fn">Oscar Zambrano</cite>                        <a rel="nofollow" class="comment-reply-link" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?replytocom=43#respond" onclick="return addComment.moveForm( &quot;comment-43&quot;, &quot;43&quot;, &quot;respond&quot;, &quot;657&quot; )" aria-label="Responder a Oscar Zambrano">Responder</a>                    </header>
+                                                            <section class="comment_content clearfix">
+                        <p>Gracias..por estos comandos son de mucha utilidad…Te felicito</p>
+                    </section>
+                </div>
+
+            </article>
+</li><!-- #comment-## -->
+
+        <li class="comment odd alt thread-odd thread-alt depth-1">
+
+            <article id="comment-44" class="clearfix">
+
+                <div class="cb-comment-body clearfix">
+
+                    <header class="comment-author vcard">
+                        <div class="cb-gravatar-image">
+                            <img alt="" src="./Como saber que proceso utiliza un puerto en Linux_files/e06f2b692280c25710f44610530ddbf6" srcset="http://2.gravatar.com/avatar/e06f2b692280c25710f44610530ddbf6?s=150&amp;d=retro&amp;r=g 2x" class="avatar avatar-75 photo" height="75" width="75">                        </div>
+                        <time datetime="26 mayo, 2014"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#comment-44">26 mayo, 2014 </a></time>
+                        <cite class="fn"><a href="http://22xd.blogspot.com/" rel="external nofollow" class="url">truko22</a></cite>                        <a rel="nofollow" class="comment-reply-link" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?replytocom=44#respond" onclick="return addComment.moveForm( &quot;comment-44&quot;, &quot;44&quot;, &quot;respond&quot;, &quot;657&quot; )" aria-label="Responder a truko22">Responder</a>                    </header>
+                                                            <section class="comment_content clearfix">
+                        <p>Muchas gracias por la información <img draggable="false" class="emoji" alt="😀" src="./Como saber que proceso utiliza un puerto en Linux_files/1f600.svg"></p>
+                    </section>
+                </div>
+
+            </article>
+</li><!-- #comment-## -->
+
+        <li class="comment even thread-even depth-1">
+
+            <article id="comment-45" class="clearfix">
+
+                <div class="cb-comment-body clearfix">
+
+                    <header class="comment-author vcard">
+                        <div class="cb-gravatar-image">
+                            <img alt="" src="./Como saber que proceso utiliza un puerto en Linux_files/79eedfea5fdcf283f9341003dc707e8b" srcset="http://1.gravatar.com/avatar/79eedfea5fdcf283f9341003dc707e8b?s=150&amp;d=retro&amp;r=g 2x" class="avatar avatar-75 photo" height="75" width="75">                        </div>
+                        <time datetime="15 agosto, 2014"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#comment-45">15 agosto, 2014 </a></time>
+                        <cite class="fn">Cesar</cite>                        <a rel="nofollow" class="comment-reply-link" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/?replytocom=45#respond" onclick="return addComment.moveForm( &quot;comment-45&quot;, &quot;45&quot;, &quot;respond&quot;, &quot;657&quot; )" aria-label="Responder a Cesar">Responder</a>                    </header>
+                                                            <section class="comment_content clearfix">
+                        <p>Muchas gracias por la infoooo… me salvastee!!</p>
+                    </section>
+                </div>
+
+            </article>
+</li><!-- #comment-## -->
+    </ol>
+
+    <nav id="comment-nav">
+        <ul class="clearfix">
+            <li></li>
+            <li></li>
+        </ul>
+    </nav>
+
+
+
+				<div id="respond" class="comment-respond">
+			<h3 id="reply-title" class="comment-reply-title">Hacer Comentario <small><a rel="nofollow" id="cancel-comment-reply-link" href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#respond" style="display:none;">Cancelar respuesta</a></small></h3>				<form action="http://javierin.com/wp-comments-post.php" method="post" id="commentform" class="comment-form">
+					<p class="comment-notes">Su dirección de correo electrónico no será publicada.</p><p class="comment-form-comment"><label for="comment">Comentario</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p><p class="comment-form-author"><label for="author">Nombre</label> <input id="author" name="author" type="text" value="" size="30"></p>
+<p class="comment-form-email"><label for="email">Email</label> <input id="email" name="email" type="text" value="" size="30"></p>
+<p class="comment-form-url"><label for="url">Sitio Web</label><input id="url" name="url" type="text" value="" size="30"></p>
+<p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="Escribir comentario"> <input type="hidden" name="comment_post_ID" value="657" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+</p><p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="db00adf69e"></p><p style="display: none;"></p>				<input type="hidden" id="ak_js" name="ak_js" value="1476378530424"></form>
+					</div><!-- #respond -->
+		  
+</div>
+							</footer> <!-- end article footer -->
+
+						</article> <!-- end article -->						
+
+					</div> <!-- end .cb-main -->
+
+			
+			
+			<div class="cb-sticky-sidebar" style="height: 4863px;">
+<aside class="cb-sidebar clearfix"><div id="text-2" class="cb-sidebar-widget widget_text"><h3 class="cb-sidebar-widget-title cb-widget-title">SORTEO ACTIVO</h3>			<div class="textwidget">En unos dias tendremos un nuevo sorteo activo en Facebook!</div>
+		</div><div id="top-reviews-2" class="cb-sidebar-widget cb-reviews-widget"><h3 class="cb-sidebar-widget-title cb-widget-title">Ultimas Reviews</h3><div class="cb-module-block">                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/review-del-moto-z/">Review del Moto Z</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-20">20 septiembre, 2016</time></span><span class="cb-score">84<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 84%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/review-alcatel-flash-plus-2/">Review Alcatel Flash Plus 2</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-15">15 septiembre, 2016</time></span><span class="cb-score">73<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 73%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/gorillapod-slr-zoom-ballhead/">GorillaPod SLR Zoom con Ballhead</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-14">14 septiembre, 2016</time></span><span class="cb-score">88<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 88%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/review-sony-rx10-iii/">Review Sony RX10-III</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-13">13 septiembre, 2016</time></span><span class="cb-score">83<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 83%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/yi-home-camera-2/">Yi Home Camera 2</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-06">6 septiembre, 2016</time></span><span class="cb-score">78<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 78%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/excelvan-k107/">Excelvan K107</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-06">6 septiembre, 2016</time></span><span class="cb-score">55<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 55%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/iconntechs-it-4k-ultra-hd/">Iconntechs IT 4K Ultra HD</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-01">1 septiembre, 2016</time></span><span class="cb-score">71<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 71%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/lexar-professional-1000x/">Lexar Professional 1000x 128GB</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-08-31">31 agosto, 2016</time></span><span class="cb-score">88<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 88%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/lexar-sdxc-633x-64gb/">Lexar SDXC 633x 64GB</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-08-31">31 agosto, 2016</time></span><span class="cb-score">85<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 85%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/umi-super/">UMI Super</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-08-24">24 agosto, 2016</time></span><span class="cb-score">74<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 74%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+</div></div><div id="cb-social-media-widget-2" class="cb-sidebar-widget cb-widget-social-media clearfix"><div class="cb-social-media-icons cb-colors"><a href="https://facebook.com/javierin.blog" target="_blank" class="cb-facebook cb-icon-1"></a><a href="https://twitter.com/javierin_com" target="_blank" class="cb-twitter cb-icon-2"></a><a href="https://www.youtube.com/+Javierin" target="_blank" class="cb-youtube cb-icon-3"></a></div></div></aside>
+</div>
+		</div>
+
+	</div>	
+
+</div> <!-- end #cb-content -->
+
+				</div> <!-- end #cb-container -->
+    			
+    			<footer id="cb-footer" class="wrap">
+
+                            				<div id="cb-widgets" class="cb-footer-x cb-footer-a wrap clearfix cb-site-padding">
+
+                                                            <div class="cb-one cb-column clearfix">
+                                    <div id="cb-social-media-widget-3" class="cb-footer-widget clearfix cb-widget-social-media clearfix"><div class="cb-social-media-icons cb-colors"><a href="https://facebook.com/javierin.blog" target="_blank" class="cb-facebook cb-icon-1"></a><a href="https://twitter.com/javierin_com" target="_blank" class="cb-twitter cb-icon-2"></a><a href="https://www.youtube.com/user/javierin1234" target="_blank" class="cb-youtube cb-icon-3"></a></div></div>                                </div>
+                                                                                                                    <div class="cb-three cb-column clearfix">
+                                    <div id="top-reviews-3" class="cb-footer-widget clearfix cb-reviews-widget"><h3 class="cb-footer-widget-title cb-widget-title">Ultimas Reviews</h3><div class="cb-module-block">                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/review-del-moto-z/">Review del Moto Z</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-20">20 septiembre, 2016</time></span><span class="cb-score">84<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 84%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/review-alcatel-flash-plus-2/">Review Alcatel Flash Plus 2</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-15">15 septiembre, 2016</time></span><span class="cb-score">73<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 73%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/gorillapod-slr-zoom-ballhead/">GorillaPod SLR Zoom con Ballhead</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-14">14 septiembre, 2016</time></span><span class="cb-score">88<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 88%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/review-sony-rx10-iii/">Review Sony RX10-III</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-13">13 septiembre, 2016</time></span><span class="cb-score">83<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 83%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+                    <article class="cb-article cb-article-small  cb-separated clearfix">
+
+                        <div class="cb-meta">
+                            <h4 class="cb-post-title"><a href="http://javierin.com/yi-home-camera-2/">Yi Home Camera 2</a></h4>
+                            <div class="cb-byline cb-byline-short cb-byline-review cb-byline-date"><span class="cb-date"><time class="updated" datetime="2016-09-06">6 septiembre, 2016</time></span><span class="cb-score">78<span class="cb-percent-sign">%</span></span><div class="cb-score-bar"><span class="cb-score-overlay" style="width: 78%; background: #222;"></span></div></div>                        
+                        </div>
+                                            </article>
+</div></div>                                </div>
+                                                        
+                        </div>
+
+                    
+                     
+                    
+                        <div class="cb-footer-lower cb-font-header clearfix">
+
+                            <div class="wrap clearfix">
+
+                            	
+                                <div class="cb-footer-links clearfix"><ul id="menu-menu-todo-2" class="nav cb-footer-nav clearfix"><li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4899"><a href="http://javierin.com/category/sabias-que/">¿Sabias que…?</a></li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-4900"><a href="http://javierin.com/category/analisis/">Analisis</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4901"><a href="http://javierin.com/category/analisis/almacenamiento-y-ssd/">Almacenamiento y SSD</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4902"><a href="http://javierin.com/category/analisis/altavoces-bluetooth/">Altavoces Bluetooth</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4903"><a href="http://javierin.com/category/analisis/auriculares/">Auriculares</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4904"><a href="http://javierin.com/category/analisis/baterias-externas/">Baterias Externas</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4905"><a href="http://javierin.com/category/analisis/cables-usb/">Cables USB</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4906"><a href="http://javierin.com/category/analisis/cargadores-rapidos/">Cargadores</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4907"><a href="http://javierin.com/category/analisis/fotografia-digital/">Fotografia</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4908"><a href="http://javierin.com/category/analisis/hogar-y-domotica/">Hogar y Domotica</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4909"><a href="http://javierin.com/category/analisis/juguetes-y-gadgets/">Juguetes y Gadgets</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4910"><a href="http://javierin.com/category/analisis/perifericos/">Perifericos</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4911"><a href="http://javierin.com/category/analisis/telefonos-moviles/">Telefonos</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4912"><a href="http://javierin.com/category/analisis/wi-fi-y-redes/">Wi-Fi / Redes</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-4913"><a href="http://javierin.com/category/lugares/">Lugares</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4914"><a href="http://javierin.com/category/lugares/asturias/">Asturias</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4915"><a href="http://javierin.com/category/lugares/madrid/">Madrid</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4916"><a href="http://javierin.com/category/lugares/sitios-para-comer/">Sitios para Comer</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children cb-has-children menu-item-4918"><a href="http://javierin.com/category/tecno-recetas/">Tecno Recetas</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4920"><a href="http://javierin.com/category/tecno-recetas/linux/aws/">AWS</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-4919"><a href="http://javierin.com/category/tecno-recetas/linux/">Linux</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4921"><a href="http://javierin.com/category/tecno-recetas/linux/debian/">Debian / Ubuntu</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4922"><a href="http://javierin.com/category/tecno-recetas/linux/mysql/">MySQL</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4923"><a href="http://javierin.com/category/tecno-recetas/linux/nagios/">Nagios</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4924"><a href="http://javierin.com/category/tecno-recetas/linux/nginx/">Nginx</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4925"><a href="http://javierin.com/category/tecno-recetas/linux/varnish/">Varnish</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4926"><a href="http://javierin.com/category/tecno-recetas/linux/virtualizacion/">Virtualizacion</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4927"><a href="http://javierin.com/category/tecno-recetas/ps3/">PS3</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4928"><a href="http://javierin.com/category/tecno-recetas/ps3/utilidades/">Utilidades</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4929"><a href="http://javierin.com/category/tecno-recetas/smartphones/">SmartPhones</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4930"><a href="http://javierin.com/category/tecno-recetas/vmware/">VMware</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4931"><a href="http://javierin.com/category/tecno-recetas/windows/">Windows</a></li>
+	<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4932"><a href="http://javierin.com/category/tecno-recetas/wordpress-2/">WordPress</a></li>
+</ul>
+</li>
+<li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children cb-has-children menu-item-5029"><a href="http://javierin.com/category/sorteos/">Sobre Javierin.com</a>
+<ul class="sub-menu">
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-5030"><a href="http://javierin.com/bases-concursos-redes-sociales/">Bases de concursos en redes sociales</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-6066"><a href="http://javierin.com/relaciones-con-fabricantes/">Relaciones con Fabricantes</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-post menu-item-6410"><a href="http://javierin.com/equipo-para-las-reviews/">Equipo para las reviews</a></li>
+	<li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4941"><a href="http://javierin.com/contacto/">Contacto</a></li>
+</ul>
+</li>
+</ul></div>
+                                <div class="cb-copyright"><a href="http://chat-de-terra.es/">Chat Terra</a> | <a href="http://mobichat.es/">Chat Movil</a> | <a href="https://xatea.es/">Chat Terra</a> | <a href="https://xatea.es/chat-de-madrid/">Chat Madrid</a> | <a href="https://xatea.es/chat-de-barcelona/">Chat Barcelona</a> | <a href="https://xatea.es/chat-mas-de-30/">Chat Mas de 30</a> | <a href="https://virt.es/">Blog de Virtualizacion</a> | <a href="http://phun.es/">Minijuegos para el navegador</a> | <a href="http://javierin.com/2015/03/20/opinion-de-lowi/" target="_blank">Opinion Lowi</a> <br><br><br><br>(c) Javierin.com. Puedes usar la informacion que encuentres en este blog libremente, citando siempre la fuente enlazando al articulo completo original.</div>
+
+                                		                            <div class="cb-to-top"><a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" id="cb-to-top"><i class="fa fa-angle-up cb-circle"></i></a></div>
+		                        
+           					</div>
+
+        				</div>
+    				
+    			</footer> <!-- end footer -->
+
+		</div> <!-- end #cb-outer-container -->
+
+		<span id="cb-overlay"></span>
+        <input type="hidden" id="_zinenonce" name="_zinenonce" value="c72af52b83"><input type="hidden" name="_wp_http_referer" value="/saber-que-programa-utiliza-un-puerto-en-linux/">		<div id="cookie-law-info-bar" style="display: block; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-family: inherit; bottom: 0px; border-top: 4px solid rgb(68, 68, 68); position: fixed;"><span>Javierin.com utiliza cookies propias y de terceros para mejorar la experiencia de uso de la web así como aprender que contenido es el que más gusta a los lectores. La ley de Mayo 2011 obliga a informar a todos los visitantes de un sitio web en la Unión Europea de la presencia de dichas cookies.
+<a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" id="cookie_action_close_header" class="medium cli-plugin-button cli-plugin-main-button" style="color: rgb(255, 255, 255); background-color: rgb(0, 0, 0);">Acepto</a> <a href="http://javierin.com/informacion-sobre-cookies/" id="CONSTANT_OPEN_URL" target="_blank" class="cli-plugin-main-link" style="color: rgb(68, 68, 68);">Mas info</a></span></div><div id="cookie-law-info-again" style="background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); position: fixed; font-family: inherit; border-top: 1px solid rgb(68, 68, 68); border-right: 1px solid rgb(68, 68, 68); border-bottom: none; border-left: 1px solid rgb(68, 68, 68); border-image: initial; bottom: 0px; right: 100px; display: none;"><span id="cookie_hdr_showagain">Privacy &amp; Cookies Policy</span></div>		
+		<script type="text/javascript">
+			//<![CDATA[
+			jQuery(document).ready(function() {
+				cli_show_cookiebar({
+					settings: '{"animate_speed_hide":"500","animate_speed_show":"500","background":"#fff","border":"#444","border_on":true,"button_1_button_colour":"#000","button_1_button_hover":"#000000","button_1_link_colour":"#fff","button_1_as_button":true,"button_2_button_colour":"#333","button_2_button_hover":"#292929","button_2_link_colour":"#444","button_2_as_button":false,"font_family":"inherit","header_fix":false,"notify_animate_hide":true,"notify_animate_show":false,"notify_div_id":"#cookie-law-info-bar","notify_position_horizontal":"right","notify_position_vertical":"bottom","scroll_close":false,"scroll_close_reload":false,"showagain_tab":true,"showagain_background":"#fff","showagain_border":"#000","showagain_div_id":"#cookie-law-info-again","showagain_x_position":"100px","text":"#000","show_once_yn":false,"show_once":"10000"}'
+				});
+			});
+			//]]>
+		</script>
+		
+		<div style="display:none">
+  <div id="arvlbdata" style="overflow:visible;width:400px;">
+      <div allowtransparency="true" style="overflow:hidden;width:400px;height:255px;" class="fb-page fb_iframe_widget" data-href="https://www.facebook.com/javierin.blog" data-width="400" data-height="255" data-small-header="false" data-adapt-container-width="false" data-hide-cover="true" data-show-facepile="false" data-show-posts="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="adapt_container_width=false&amp;app_id=493405677536057&amp;container_width=0&amp;height=255&amp;hide_cover=true&amp;href=https%3A%2F%2Fwww.facebook.com%2Fjavierin.blog&amp;locale=es_ES&amp;sdk=joey&amp;show_facepile=false&amp;show_posts=false&amp;small_header=false&amp;width=400"><span style="vertical-align: bottom; width: 400px; height: 130px;"><iframe name="f36828685b69a4" width="400px" height="255px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:page Facebook Social Plugin" src="./Como saber que proceso utiliza un puerto en Linux_files/page.html" class="" style="border: none; visibility: visible; width: 400px; height: 130px;"></iframe></span></div>
+
+<div style="padding-bottom:3px;padding-right:3px;text-align:right;display:block;">
+  <a href="http://javierin.com/saber-que-programa-utiliza-un-puerto-en-linux/#" onclick="arvlbFPPL.fbloginner();" style="text-decoration:none;">Siguenos en Facebook! </a>
+</div>
+
+
+</div>
+
+</div>
+      
+	<script type="text/javascript">
+		window.WPCOM_sharing_counts = {"http:\/\/javierin.com\/saber-que-programa-utiliza-un-puerto-en-linux\/":657};
+	</script>
+		<script type="text/javascript">
+		var windowOpen;
+		jQuery(document.body).on('click', 'a.share-telegram', function() {
+			if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+				windowOpen.close();
+			}
+			windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomtelegram', 'menubar=1,resizable=1,width=450,height=450' );
+			return false;
+		});
+		</script>
+				<script type="text/javascript">
+		var windowOpen;
+		jQuery(document.body).on('click', 'a.share-skype', function() {
+			if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+				windowOpen.close();
+			}
+			windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomskype', 'menubar=1,resizable=1,width=305,height=665' );
+			return false;
+		});
+		</script>
+				<script type="text/javascript">
+		var windowOpen;
+		jQuery(document.body).on('click', 'a.share-twitter', function() {
+			if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+				windowOpen.close();
+			}
+			windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomtwitter', 'menubar=1,resizable=1,width=600,height=350' );
+			return false;
+		});
+		</script>
+				<script type="text/javascript">
+		var windowOpen;
+		jQuery(document.body).on('click', 'a.share-facebook', function() {
+			if ( 'undefined' !== typeof windowOpen ){ // If there's another sharing window open, close it.
+				windowOpen.close();
+			}
+			windowOpen = window.open( jQuery(this).attr( 'href' ), 'wpcomfacebook', 'menubar=1,resizable=1,width=600,height=400' );
+			return false;
+		});
+		</script>
+		<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/form.js"></script>
+<link rel="stylesheet" id="yarppRelatedCss-css" href="./Como saber que proceso utiliza un puerto en Linux_files/related.css" type="text/css" media="all">
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/devicepx-jetpack.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/cookie.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/comment-reply.min.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var cbExt = {"cbLb":"on"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/cb-ext.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var cbScripts = {"cbUrl":"http:\/\/javierin.com\/wp-admin\/admin-ajax.php","cbPostID":"657","cbFsClass":"cb-embed-fs","cbSlider":["600",true,"7000","on"],"cbALlNonce":"ead889d83b","cbPlURL":"http:\/\/javierin.com\/wp-content\/plugins","cbShortName":null};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/cb-scripts.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/wp-embed.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/jquery.fancybox-1.3.7.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/jquery.easing.pack.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/jquery.metadata.pack.js"></script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var sharing_js_options = {"lang":"en","counts":"1"};
+/* ]]> */
+</script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/sharing.js"></script>
+<script type="text/javascript" src="./Como saber que proceso utiliza un puerto en Linux_files/e-201641.js" async="" defer=""></script>
+<script type="text/javascript">
+	_stq = window._stq || [];
+	_stq.push([ 'view', {v:'ext',j:'1:4.3.1',blog:'16210719',post:'657',tz:'0',srv:'javierin.com'} ]);
+	_stq.push([ 'clickTrackerInit', '16210719', '657' ]);
+</script>
+
+<script type="text/javascript">
+jQuery(document).on('ready post-load', easy_fancybox_handler );
+</script>
+
+	
+
+ <!-- The End. what a ride! -->
+<!-- Performance optimized by W3 Total Cache. Learn more: https://www.w3-edge.com/products/
+
+Object Caching 6584/6830 objects using disk
+Page Caching using disk: enhanced
+Database Caching 67/126 queries in 0.032 seconds using disk
+
+ Served from: javierin.com @ 2016-10-12 20:43:07 by W3 Total Cache --><div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div></div></div><div style="position: absolute; top: -10000px; height: 0px; width: 0px;"><div><iframe name="fb_xdm_frame_http" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" id="fb_xdm_frame_http" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Como saber que proceso utiliza un puerto en Linux_files/P5DLcu0KGJB.html" style="border: none;"></iframe><iframe name="fb_xdm_frame_https" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" id="fb_xdm_frame_https" aria-hidden="true" title="Facebook Cross Domain Communication Frame" tabindex="-1" src="./Como saber que proceso utiliza un puerto en Linux_files/P5DLcu0KGJB(1).html" style="border: none;"></iframe></div></div></div><div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div><img src="./Como saber que proceso utiliza un puerto en Linux_files/g.gif" alt=":)" width="6" height="5" id="wpstats"></body></html>

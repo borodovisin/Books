@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<!-- saved from url=(0066)http://librosweb.es/libro/ajax/capitulo_10/la_libreria_jquery.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml" xml:lang="es" lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <title>10.3. La librería jQuery (Introducción a AJAX)</title>
+                                    <link rel="stylesheet" href="./10.3. La librería jQuery (Introducción a AJAX)_files/app.css">
+                        <link href="./10.3. La librería jQuery (Introducción a AJAX)_files/css" rel="stylesheet" type="text/css">
+        <script src="./10.3. La librería jQuery (Introducción a AJAX)_files/ca-pub-1491000300253750.js"></script><script async="" src="./10.3. La librería jQuery (Introducción a AJAX)_files/analytics.js"></script><script type="text/javascript">
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-82842-2', 'librosweb.es');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+        </script>
+                        <link rel="apple-touch-icon" type="image/png" href="http://librosweb.es/apple-touch-icon.png">
+        <link rel="apple-touch-icon-precomposed" type="image/png" href="http://librosweb.es/apple-touch-icon.png">
+        <meta name="apple-mobile-web-app-title" content="LibrosWeb">
+        <link rel="shortcut icon" type="image/png" href="http://librosweb.es/favicon.png">
+        <meta name="site-version" content="a7f65a4">
+                <link rel="publisher" href="http://plus.google.com/112008023125011571577">
+                                                    <link rel="prev" href="http://librosweb.es/libro/ajax/capitulo_10/la_libreria_scriptaculous.html">
+                    <link rel="next" href="http://librosweb.es/libro/ajax/capitulo_10/otros_frameworks_importantes.html">
+                <link rel="start" href="http://librosweb.es/libro/ajax/">
+                <meta name="twitter:site" content="@librosweb">
+                <link rel="search" type="application/opensearchdescription+xml" href="http://librosweb.es/opensearch/documentation.xml" title="LibrosWeb">
+                <meta property="fb:page_id" content="437758756273955">
+                <meta property="fb:app_id" content="437758756273955">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="10.3. La librería jQuery (Introducción a AJAX)">
+        <meta property="og:image" content="http://www.gravatar.com/avatar/9f219b4dfaa677bfd0f47753c02d5126.png?s=200">
+                <meta name="msapplication-TileColor" content="#CC1414">
+        <meta name="application-name" content="LibrosWeb">
+        <meta name="msapplication-tooltip" content="Libros y tutoriales sobre HTML, CSS, JavaScript, PHP y otras tecnologías web.">
+    </head>
+
+    <body id="p-1-2" class="books book_page ajax">
+        <div id="header">
+                    <div class="container">
+                <div class="navbar navbar-static-top">
+                    <div id="header-brand" class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu">
+                            <span class="sr-only">Desplegar menú</span>
+                            <i class="fa fa-menu"></i>
+                        </button>
+                        <a class="navbar-brand" href="http://librosweb.es/" title="LibrosWeb.es">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 132 32" preserveAspectRatio="xMinYMin meet">
+<g fill="#CC1414" transform="translate(-21.738 -21.148)">
+<path d="m24.062 23.486v28h9.64v-5h-4.04v-23h-5.6"></path>
+<path d="m40.796 23.486h-5.6v28h5.6v-28"></path>
+<path d="m53.932 37.006c1.48-0.56 2.32-1.76 2.32-4.16v-4.16c0-3.48-1.72-5.2-5.2-5.2h-8.24v28h8.32c3.48 0 5.2-1.72 5.2-5.2v-5.68c0-2.04-0.72-3.12-2.4-3.6m-3.24-7.72v4.64c0 0.68-0.32 1-1 1h-1.32v-6.64h1.32c0.68 0 1 0.32 1 1m-2.32 10.32h1.4c0.68 0 1 0.32 1 1v5.08c0 0.68-0.32 1-1 1h-1.4v-7.08"></path>
+<path d="m69.284 38.246c1.52-0.56 2.4-1.76 2.4-4.16v-5.4c0-3.48-1.72-5.2-5.2-5.2h-8.36v28h5.6v-10.6h1.4c0.68 0 1 0.32 1 1v9.6h5.6v-9.64c0-2.04-0.72-3.12-2.44-3.6m-3.2-8.88v5.76c0 0.68-0.32 1-1 1h-1.36v-7.76h1.36c0.68 0 1 0.32 1 1"></path>
+<path d="m87.513 46.526v-18.08c0-3.48-1.72-5.2-5.2-5.2h-3.6c-3.48 0-5.2 1.72-5.2 5.2v18.08c0 3.48 1.72 5.2 5.2 5.2h3.6c3.48 0 5.2-1.72 5.2-5.2m-5.6-17.48v16.88c0 0.68-0.32 1-1 1h-0.8c-0.68 0-1-0.32-1-1v-16.88c0-0.68 0.32-1 1-1h0.8c0.68 0 1 0.32 1 1"></path>
+<path d="m100.57 36.966-4.8-3.56c-0.68-0.48-0.96-0.92-0.96-1.8v-2.64c0-0.68 0.32-1 1-1h0.44c0.68 0 1 0.32 1 1v4.6h5.48v-5.12c0-3.48-1.72-5.2-5.2-5.2h-3.04c-3.48 0-5.2 1.72-5.2 5.2v4.44c0 2 0.52 3.16 2.24 4.4l4.8 3.56c0.68 0.48 0.96 0.92 0.96 1.8v3.36c0 0.68-0.32 1-1 1h-0.52c-0.68 0-1-0.32-1-1v-5.44h-5.48v5.96c0 3.48 1.72 5.2 5.2 5.2h3.12c3.48 0 5.2-1.72 5.2-5.2v-5.16c0-2.08-0.52001-3.16-2.24-4.4"></path>
+<path d="m106.98 51.486h6.16l1.44-12.72 1.44 12.72h6.16l3.4-28h-4.96l-1.44 14.88-1.6-14.88h-5.28l-1.6 14.92-1.44-14.92h-5.68l3.4 28"></path>
+<path d="m126.87 23.486v28h10.48v-5h-4.88v-6.72h4.6v-5h-4.6v-6.28h4.8v-5h-10.4"></path>
+<path d="m150.26 37.006c1.48-0.56 2.32-1.76 2.32-4.16v-4.16c0-3.48-1.72-5.2-5.2-5.2h-8.24v28h8.32c3.48 0 5.2-1.72 5.2-5.2v-5.68c0-2.04-0.72001-3.12-2.4-3.6m-3.24-7.72v4.64c0 0.68-0.32001 1-1 1h-1.32v-6.64h1.32c0.67999 0 1 0.32 1 1m-2.32 10.32h1.4c0.67999 0 1 0.32 1 1v5.08c0 0.68-0.32001 1-1 1h-1.4v-7.08"></path>
+</g>
+</svg>
+                            <span>LibrosWeb</span>
+                        </a>
+
+                        <div id="header-menu" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                
+                                                                <li class="">
+                                    <a href="http://librosweb.es/">Inicio</a>
+                                </li>
+                                                                <li class="active">
+                                    <a href="http://librosweb.es/libros/">Libros</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/tutoriales/">Tutoriales</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/eventos/">Eventos</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/foro/">Foro</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/buscar">Buscar</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+        <div id="wrapper" class="container">
+                <div id="book-toc-anchor" class="well visible-xs">
+        <a href="http://librosweb.es/libro/ajax/capitulo_10/la_libreria_jquery.html#indice">Ver índice de contenidos del libro</a>
+    </div>
+
+    <ol class="hidden-xs breadcrumb">
+        <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://librosweb.es/libros/" itemprop="url"><span itemprop="title">Libros</span></a>
+        </li>
+
+        <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://librosweb.es/libro/ajax/" itemprop="url"><span itemprop="title">Introducción a AJAX</span></a>
+        </li>
+
+            <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://librosweb.es/libro/ajax/capitulo_10.html" itemprop="url"><span itemprop="title">Capítulo 10. Frameworks y librerías</span></a>
+        </li>
+    
+        <li class="breadcrumb__item">
+            <span>10.3. La librería jQuery</span>
+        </li>
+    </ol>
+
+            <div id="content">
+                                    <div class="row">
+                        <div id="main" class="col-md-9">
+                            
+    
+    <h1 id="la_libreria_jquery" class="title">
+        <span>10.3.</span> La librería jQuery
+    </h1>
+
+    
+
+<p><a href="http://jquery.com/">jQuery</a> es la librería JavaScript que ha irrumpido con más fuerza como alternativa a Prototype. Su autor original es <strong>John Resig</strong>, aunque como sucede con todas las librerías exitosas, actualmente recibe contribuciones de decenas de programadores. jQuery también ha sido programada de forma muy eficiente y su versión comprimida apenas ocupa 20 KB.</p>
+
+<p>jQuery comparte con Prototype muchas ideas e incluso dispone de funciones con el mismo nombre. Sin embargo, su diseño interno tiene algunas diferencias drásticas respecto a Prototype, sobre todo el <em>"encadenamiento"</em> de llamadas a métodos.</p>
+
+<p>La documentación de jQuery es muy completa en inglés e incluye muchos ejemplos. Además, también existen algunos recursos útiles en español para aprender su funcionamiento básico: http://docs.jquery.com/</p>
+
+<h3 id="funciones_y_metodos_basicos_2">10.3.1. Funciones y métodos básicos</h3>
+
+<p>La función básica de jQuery y una de las más útiles tiene el mismo nombre que en Prototype, ya que se trata de la <em>"función dolar"</em>: <code>$()</code>. A diferencia de la función de Prototype, la de jQuery es mucho más que un simple atajo mejorado de la función <code>document.getElementById()</code>.</p>
+
+<p>La cadena de texto que se pasa como parámetro puede hacer uso de Xpath o de CSS para seleccionar los elementos. Además, separando expresiones con un carácter <code>","</code> se puede seleccionar un número ilimitado de elementos.</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Selecciona todos los enlaces de la página</span>
+$<span class="br0">(</span><span class="st0">'a'</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona el elemento cuyo id sea "primero"</span>
+$<span class="br0">(</span><span class="st0">'#primero'</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona todos los h1 con class "titular"</span>
+$<span class="br0">(</span><span class="st0">'h1.titular'</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona todo lo anterior</span>
+$<span class="br0">(</span><span class="st0">'a, #primero, h1.titular'</span><span class="br0">)</span></pre>
+</div>
+
+<p>Las posibilidades de la función <code>$()</code> van mucho más allá de estos ejemplos sencillos, ya que soporta casi todos los selectores definidos por CSS 3 (algo que dispondrán los navegadores dentro de varios años) y también permite utilizar XPath:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Selecciona todos los párrafos de la página que tengan al menos un enlace</span>
+$<span class="br0">(</span><span class="st0">'p[a]'</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona todos los radiobutton de los formularios de la página</span>
+$<span class="br0">(</span><span class="st0">'input:radio'</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona todos los enlaces que contengan la palabra "Imprimir"</span>
+ $<span class="br0">(</span><span class="st0">'a:contains("Imprimir")'</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Selecciona los div que no están ocultos</span>
+$<span class="br0">(</span><span class="st0">'div:visible'</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona todos los elementos pares de una lista</span>
+$<span class="br0">(</span><span class="st0">"ul#menuPrincipal li:even"</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona todos los elementos impares de una lista</span>
+$<span class="br0">(</span><span class="st0">"ul#menuPrincipal li:odd"</span><span class="br0">)</span>
+&nbsp;
+<span class="co1">// Selecciona los 5 primeros párrafos de la página</span>
+$<span class="br0">(</span><span class="st0">"p:lt(5)"</span><span class="br0">)</span></pre>
+</div>
+
+<p>Como se puede comprobar, las posibilidades de la función <code>$()</code> son prácticamente ilimitadas, por lo que <a href="http://docs.jquery.com/Selectors">la documentación de jQuery sobre los selectores</a> disponibles es la mejor forma de descubrir todas sus posibilidades.</p>
+
+<h3 id="funciones_para_eventos_2">10.3.2. Funciones para eventos</h3>
+
+<p>Una de las utilidades más interesantes de jQuery está relacionada con el evento <code>onload</code> de la página. Las aplicaciones web más complejas suelen utilizar un código similar al siguiente para iniciar la aplicación:</p>
+
+<div class="code javascript">
+<pre class="javascript">window.<span class="me1">onload</span> <span class="sy0">=</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  ...
+<span class="br0">}</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Hasta que no se carga la página, el navegador no construye el árbol DOM, lo que significa que no se pueden utilizar funciones que seleccionen elementos de la página, ni se pueden añadir o eliminar elementos. El problema de <code>window.onload</code> es que el navegador espera a que la página se cargue completamente, incluyendo todas las imágenes y archivos externos que se hayan enlazado.</p>
+
+<p>jQuery propone el siguiente código para ejecutar las instrucciones una vez que se ha cargado la página:</p>
+
+<div class="code javascript">
+<pre class="javascript">$<span class="br0">(</span>document<span class="br0">)</span>.<span class="me1">ready</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  ...
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>La gran ventaja del método propuesto por jQuery es que la aplicación no espera a que se carguen todos los elementos de la página, sino que sólo espera a que se haya descargado el contenido HTML de la página, con lo que el árbol DOM ya está disponible para ser manipulado. De esta forma, las aplicaciones JavaScript desarrolladas con jQuery pueden iniciarse más rápidamente que las aplicaciones JavaScript tradicionales.</p>
+
+<p>En realidad, <code>ready()</code> no es más que una de las muchas funciones que componen el módulo de los eventos. Todos los eventos comunes de JavaScript (<code>click</code>, <code>mousemove</code>, <code>keypress</code>, etc.) disponen de una función con el mismo nombre que el evento. Si se utiliza la función sin argumentos, se ejecuta el evento:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Ejecuta el evento 'onclick' en todos los párrafos de la página</span>
+$<span class="br0">(</span><span class="st0">'p'</span><span class="br0">)</span>.<span class="me1">click</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Ejecuta el evento 'mouseover' sobre un 'div' con id 'menu'</span>
+$<span class="br0">(</span><span class="st0">'div#menu'</span><span class="br0">)</span>.<span class="me1">mouseover</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>No obstante, el uso más habitual de las funciones de cada evento es el de establecer la función manejadora que se va a ejecutar cuando se produzca el evento:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Establece la función manejadora del evento 'onclick' </span>
+<span class="co1">// a todos los párrafos de la página</span>
+$<span class="br0">(</span><span class="st0">'p'</span><span class="br0">)</span>.<span class="me1">click</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  alert<span class="br0">(</span>$<span class="br0">(</span><span class="kw1">this</span><span class="br0">)</span>.<span class="me1">text</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Establece la función manejadora del evento 'onblur' </span>
+<span class="co1">// a los elementos de un formulario</span>
+$<span class="br0">(</span><span class="st0">'#elFormulario :input'</span><span class="br0">)</span>.<span class="me1">blur</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  valida<span class="br0">(</span>$<span class="br0">(</span><span class="kw1">this</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Entre las utilidades definidas por jQuery para los eventos se encuentra la función <code>toggle()</code>, que permite ejecutar dos funciones de forma alterna cada vez que se pincha sobre un elemento:</p>
+
+<div class="code javascript">
+<pre class="javascript">$<span class="br0">(</span><span class="st0">"p"</span><span class="br0">)</span>.<span class="me1">toggle</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span><span class="br0">{</span>
+  alert<span class="br0">(</span><span class="st0">"Me acabas de activar"</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="sy0">,</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span><span class="br0">{</span>
+  alert<span class="br0">(</span><span class="st0">"Me acabas de desactivar"</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>En el ejemplo anterior, la primera vez que se pincha sobre el elemento (y todas las veces impares), se ejecuta la primera función y la segunda vez que se pincha el elemento (y todas las veces pares) se ejecuta la segunda función.</p>
+
+<h3 id="funciones_para_efectos_visuales">10.3.3. Funciones para efectos visuales</h3>
+
+<p>Las aplicaciones web más avanzadas incluyen efectos visuales complejos para construir interacciones similares a las de las aplicaciones de escritorio. jQuery incluye en la propia librería varios de los efectos más comunes:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Oculta todos los enlaces de la página</span>
+$<span class="br0">(</span><span class="st0">'a'</span><span class="br0">)</span>.<span class="me1">hide</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Muestra todos los 'div' que estaban ocultos</span>
+$<span class="br0">(</span><span class="st0">'div:hidden'</span><span class="br0">)</span>.<span class="me1">show</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Muestra los 'div' que estaba ocultos y oculta </span>
+<span class="co1">// los 'div' que eran visibles</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">toggle</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Todas las funciones relacionadas con los efectos visuales permiten indicar dos parámetros opcionales: el primero es la duración del efecto y el segundo parámetro es la función que se ejecuta al finalizar el efecto visual.</p>
+
+<p>Otros efectos visuales incluidos son los relacionados con el fundido o <em>"fading"</em> (<code>fadeIn()</code> muestra los elementos con un fundido suave, <code>fadeOut()</code> oculta los elementos con un fundido suave y <code>fadeTo()</code> establece la opacidad del elemento en el nivel indicado) y el despliegue de elementos (<code>slideDown()</code> hace aparecer un elemento desplegándolo en sentido descendente, <code>slideUp()</code> hace desaparecer un elemento desplegándolo en sentido ascendente, <code>slideToggle()</code> hace desaparecer el elemento si era visible y lo hace aparecer si no era visible).</p>
+
+<h3 id="funciones_para_ajax_2">10.3.4. Funciones para AJAX</h3>
+
+<p>Como sucede con Prototype, las funciones y utilidades relacionadas con AJAX son parte fundamental de jQuery. El método principal para realizar peticiones AJAX es <code>$.ajax()</code> (importante no olvidar el punto entre <code>$</code> y <code>ajax</code>). A partir de esta función básica, se han definido otras funciones relacionadas, de más alto nivel y especializadas en tareas concretas: <code>$.get()</code>, <code>$.post()</code>, <code>$.load()</code>, etc.</p>
+
+<p>La sintaxis de <code>$.ajax()</code> es muy sencilla:</p>
+
+<div class="code javascript">
+<pre class="javascript">$.<span class="me1">ajax</span><span class="br0">(</span>opciones<span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Al contrario de lo que sucede con Prototype, la URL que se solicita también se incluye dentro del array asociativo de opciones. A continuación se muestra el mismo ejemplo básico que se utilizó en Prototype realizado con <code>$.ajax()</code>:</p>
+
+<div class="code javascript">
+<pre class="javascript">$.<span class="me1">ajax</span><span class="br0">(</span><span class="br0">{</span>
+  url<span class="sy0">:</span> <span class="st0">'/ruta/hasta/pagina.php'</span><span class="sy0">,</span>
+  type<span class="sy0">:</span> <span class="st0">'POST'</span><span class="sy0">,</span>
+  async<span class="sy0">:</span> <span class="kw2">true</span><span class="sy0">,</span>
+  data<span class="sy0">:</span> <span class="st0">'parametro1=valor1&amp;parametro2=valor2'</span><span class="sy0">,</span>
+  success<span class="sy0">:</span> procesaRespuesta<span class="sy0">,</span>
+  error<span class="sy0">:</span> muestraError
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>La siguiente tabla muestra todas las opciones que se pueden definir para el método <code>$.ajax()</code>:</p>
+
+<div class="table" id="table_10_6">
+
+    <table>
+<thead>
+<tr>
+  <th>Opción</th>
+  <th>Descripción</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><code>async</code></td>
+  <td>Indica si la petición es asíncrona. Su valor por defecto es <code>true</code>, el habitual para las peticiones AJAX</td>
+</tr>
+<tr>
+  <td><code>beforeSend</code></td>
+  <td>Permite indicar una función que modifique el objeto <code>XMLHttpRequest</code> antes de realizar la petición. El propio objeto <code>XMLHttpRequest</code> se pasa como único argumento de la función</td>
+</tr>
+<tr>
+  <td><code>complete</code></td>
+  <td>Permite establecer la función que se ejecuta cuando una petición se ha completado (y después de ejecutar, si se han establecido, las funciones de <code>success</code> o <code>error</code>). La función recibe el objeto <code>XMLHttpRequest</code> como primer parámetro y el resultado de la petición como segundo argumento</td>
+</tr>
+<tr>
+  <td><code>contentType</code></td>
+  <td>Indica el valor de la cabecera <code>Content-Type</code> utilizada para realizar la petición. Su valor por defecto es <code>application/x-www-form-urlencoded</code></td>
+</tr>
+<tr>
+  <td><code>data</code></td>
+  <td>Información que se incluye en la petición. Se utiliza para enviar parámetros al servidor. Si es una cadena de texto, se envía tal cual, por lo que su formato debería ser <code>parametro1=valor1&amp;parametro2=valor2</code>. También se puede indicar un array asociativo de pares clave/valor que se convierten automáticamente en una cadena tipo <em>query string</em></td>
+</tr>
+<tr>
+  <td><code>dataType</code></td>
+  <td>El tipo de dato que se espera como respuesta. Si no se indica ningún valor, jQuery lo deduce a partir de las cabeceras de la respuesta. Los posibles valores son: <code>xml</code> (se devuelve un documento XML correspondiente al valor <code>responseXML</code>), <code>html</code> (devuelve directamente la respuesta del servidor mediante el valor <code>responseText</code>), <code>script</code> (se evalúa la respuesta como si fuera JavaScript y se devuelve el resultado) y <code>json</code> (se evalúa la respuesta como si fuera JSON y se devuelve el objeto JavaScript generado)</td>
+</tr>
+<tr>
+  <td><code>error</code></td>
+  <td>Indica la función que se ejecuta cuando se produce un error durante la petición. Esta función recibe el objeto <code>XMLHttpRequest</code> como primer parámetro, una cadena de texto indicando el error como segundo parámetro y un objeto con la excepción producida como tercer parámetro</td>
+</tr>
+<tr>
+  <td><code>ifModified</code></td>
+  <td>Permite considerar como correcta la petición solamente si la respuesta recibida es diferente de la anterior respuesta. Por defecto su valor es <code>false</code></td>
+</tr>
+<tr>
+  <td><code>processData</code></td>
+  <td>Indica si se transforman los datos de la opción <code>data</code> para convertirlos en una cadena de texto. Si se indica un valor de <code>false</code>, no se realiza esta transformación automática</td>
+</tr>
+<tr>
+  <td><code>success</code></td>
+  <td>Permite establecer la función que se ejecuta cuando una petición se ha completado de forma correcta. La función recibe como primer parámetro los datos recibidos del servidor, previamente formateados según se especifique en la opción <code>dataType</code></td>
+</tr>
+<tr>
+  <td><code>timeout</code></td>
+  <td>Indica el tiempo máximo, en milisegundos, que la petición espera la respuesta del servidor antes de anular la petición</td>
+</tr>
+<tr>
+  <td><code>type</code></td>
+  <td>El tipo de petición que se realiza. Su valor por defecto es <code>GET</code>, aunque también se puede utilizar el método <code>POST</code></td>
+</tr>
+<tr>
+  <td><code>url</code></td>
+  <td>La URL del servidor a la que se realiza la petición</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+<p>Además de la función <code>$.ajax()</code> genérica, existen varias funciones relacionadas que son versiones simplificadas y especializadas de esa función. Así, las funciones <code>$.get()</code> y <code>$.post()</code> se utilizan para realizar de forma sencilla peticiones <code>GET</code> y <code>POST</code>:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Petición GET simple</span>
+$.<span class="kw1">get</span><span class="br0">(</span><span class="st0">'/ruta/hasta/pagina.php'</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Petición GET con envío de parámetros y función que</span>
+<span class="co1">// procesa la respuesta</span>
+$.<span class="kw1">get</span><span class="br0">(</span><span class="st0">'/ruta/hasta/pagina.php'</span><span class="sy0">,</span>
+  <span class="br0">{</span> articulo<span class="sy0">:</span> <span class="st0">'34'</span> <span class="br0">}</span><span class="sy0">,</span>
+  <span class="kw1">function</span><span class="br0">(</span>datos<span class="br0">)</span> <span class="br0">{</span>
+    alert<span class="br0">(</span><span class="st0">'Respuesta = '</span><span class="sy0">+</span>datos<span class="br0">)</span><span class="sy0">;</span>
+  <span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Las peticiones <code>POST</code> se realizan exactamente de la misma forma, por lo que sólo hay que cambiar <code>$.get()</code> por <code>$.post()</code>. La sintaxis de estas funciones son:</p>
+
+<div class="code javascript">
+<pre class="javascript">$.<span class="kw1">get</span><span class="br0">(</span>url<span class="sy0">,</span> datos<span class="sy0">,</span> funcionManejadora<span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>El primer parámerto (<code>url</code>) es el único obligatorio e indica la URL solicitada por la petición. Los otros dos parámetros son opcionales, siendo el segundo (<code>datos</code>) los parámetros que se envían junto con la petición y el tercero (<code>funcionManejadora</code>) el nombre o el código JavaScript de la función que se encarga de procesar la respuesta del servidor.</p>
+
+<p>La función <code>$.get()</code> dispone a su vez de una versión especializada denominada <code>$.getIfModified()</code>, que también obtiene una respuesta del servidor mediante una petición <code>GET</code>, pero la respuesta sólo está disponible si es diferente de la última respuesta recibida.</p>
+
+<p>jQuery también dispone de la función <code>$.load()</code>, que es idéntica a la función <code>Ajax.Updater()</code> de Prototype. La función <code>$.load()</code> inserta el contenido de la respuesta del servidor en el elemento de la página que se indica. La forma de indicar ese elemento es lo que diferencia a jQuery de Prototype:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="sy0">&lt;</span>div id<span class="sy0">=</span><span class="st0">"info"</span><span class="sy0">&gt;&lt;/</span>div<span class="sy0">&gt;</span>
+&nbsp;
+<span class="co1">// Con Prototype</span>
+<span class="kw1">new</span> Ajax.<span class="me1">Updater</span><span class="br0">(</span><span class="st0">'info'</span><span class="sy0">,</span> <span class="st0">'/ruta/hasta/pagina.php'</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Con jQuery</span>
+$<span class="br0">(</span><span class="st0">'#info'</span><span class="br0">)</span>.<span class="me1">load</span><span class="br0">(</span><span class="st0">'/ruta/hasta/pagina.php'</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Al igual que sucedía con la función <code>$.get()</code>, la función <code>$.load()</code> también dispone de una versión específica denominada <code>$.loadIfModified()</code> que carga la respuesta del servidor en el elemento sólo si esa respuesta es diferente a la última recibida.</p>
+
+<p>Por último, jQuery también dispone de las funciones <code>$.getJSON()</code> y <code>$.getScript()</code> que cargan y evalúan/ejecutan respectivamente una respuesta de tipo JSON y una respuesta con código JavaScript.</p>
+
+<h3 id="funciones_para_css">10.3.5. Funciones para CSS</h3>
+
+<p>jQuery dispone de varias funciones para la manipulación de las propiedades CSS de los elementos. Todas las funciones se emplean junto con una selección de elementos realizada con la función <code>$()</code>.</p>
+
+<p>Si la función obtiene el valor de las propiedades CSS, sólo se obtiene el valor de la propiedad CSS del primer elemento de la selección realizada. Sin embargo, si la función establece el valor de las propiedades CSS, se establecen para todos los elementos seleccionados.</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Obtiene el valor de una propiedad CSS</span>
+<span class="co1">// En este caso, solo para el primer 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">css</span><span class="br0">(</span><span class="st0">'background'</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Establece el valor de una propiedad CSS</span>
+<span class="co1">// En este caso, para todos los 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">css</span><span class="br0">(</span><span class="st0">'color'</span><span class="sy0">,</span> <span class="st0">'#000000'</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Establece varias propiedades CSS</span>
+<span class="co1">// En este caso, para todos los 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">css</span><span class="br0">(</span><span class="br0">{</span> padding<span class="sy0">:</span> <span class="st0">'3px'</span><span class="sy0">,</span> color<span class="sy0">:</span> <span class="st0">'#CC0000'</span> <span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Además de las funciones anteriores, CSS dispone de funciones específicas para obtener/establecer la altura y anchura de los elementos de la página:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Obtiene la altura en píxel del primer 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">height</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Establece la altura en píxel de todos los 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">height</span><span class="br0">(</span><span class="st0">'150px'</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Obtiene la anchura en píxel del primer 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">width</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Establece la anchura en píxel de todos los 'div' de la página</span>
+$<span class="br0">(</span><span class="st0">'div'</span><span class="br0">)</span>.<span class="me1">width</span><span class="br0">(</span><span class="st0">'300px'</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<h3 id="funciones_para_nodos_dom">10.3.6. Funciones para nodos DOM</h3>
+
+<p>La función <code>$()</code> permite seleccionar elementos (nodos DOM) de la página de forma muy sencilla. jQuery permite, además, seleccionar nodos relacionados con la selección realizada. Para seleccionar nodos relacionados, se utilizan funciones de filtrado y funciones de búsqueda.</p>
+
+<p>Los filtros son funciones que modifican una selección realizada con la función <code>$()</code> y permiten limitar el número de nodos devueltos.</p>
+
+<p>La función <code>contains()</code> limita los elementos seleccionados a aquellos que contengan en su interior el texto indicado como parámetro:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Sólo obtiene los párrafos que contengan la palabra 'importante'</span>
+$<span class="br0">(</span><span class="st0">'p'</span><span class="br0">)</span>.<span class="me1">contains</span><span class="br0">(</span><span class="st0">'importante'</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>La función <code>not()</code> elimina de la selección de elementos aquellos que cumplan con el selector indicado:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Selecciona todos los enlaces de la página, salvo el que</span>
+<span class="co1">// tiene una 'class' igual a 'especial'</span>
+$<span class="br0">(</span><span class="st0">'a'</span><span class="br0">)</span>.<span class="me1">not</span><span class="br0">(</span><span class="st0">'.especial'</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="co1">// La siguiente instrucción es equivalente a la anterior</span>
+$<span class="br0">(</span><span class="st0">'a'</span><span class="br0">)</span>.<span class="me1">not</span><span class="br0">(</span>$<span class="br0">(</span><span class="st0">'.especial'</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>La función <code>filter()</code> es la inversa de <code>not()</code>, ya que elimina de la selección de elementos aquellos que no cumplan con la expresión indicada. Además de una expresión, también se puede indicar una función para filtrar la selección:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Selecciona todas las listas de elementos de la página y quedate</span>
+<span class="co1">// sólo con las que tengan una 'class' igual a 'menu'</span>
+$<span class="br0">(</span><span class="st0">'ul'</span><span class="br0">)</span>.<span class="me1">filter</span><span class="br0">(</span><span class="st0">'.menu'</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>Una función especial relacionada con los filtros y buscadores es <code>end()</code>, que permite volver a la selección original de elementos después de realizar un filtrado de elementos. La documentación de jQuery incluye el siguiente ejemplo:</p>
+
+<div class="code javascript">
+<pre class="javascript">$<span class="br0">(</span><span class="st0">'a'</span><span class="br0">)</span>
+  .<span class="me1">filter</span><span class="br0">(</span><span class="st0">'.pinchame'</span><span class="br0">)</span>
+  .<span class="me1">click</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span><span class="br0">{</span>
+    alert<span class="br0">(</span><span class="st0">'Estás abandonando este sitio web'</span><span class="br0">)</span><span class="sy0">;</span>
+  <span class="br0">}</span><span class="br0">)</span>
+  .<span class="me1">end</span><span class="br0">(</span><span class="br0">)</span>
+  .<span class="me1">filter</span><span class="br0">(</span><span class="st0">'ocultame'</span><span class="br0">)</span>
+    .<span class="me1">click</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span><span class="br0">{</span>
+      $<span class="br0">(</span><span class="kw1">this</span><span class="br0">)</span>.<span class="me1">hide</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+      <span class="kw1">return</span> <span class="kw2">false</span><span class="sy0">;</span>
+    <span class="br0">}</span><span class="br0">)</span>
+  .<span class="me1">end</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>El código anterior obtiene todos los enlaces de la página <code>$('a')</code> y aplica diferentes funciones manejadoras del evento <code>click</code> en función del tipo de enlace. Aunque se podrían incluir dos instrucciones diferentes para realizar cada filtrado, la función <code>end()</code> permite encadenar varias selecciones.</p>
+
+<p>El primer filtrado (<code>$('a').filter('.pinchame'))</code>) selecciona todos los elementos de la página cuyo atributo <code>class</code> sea igual a <code>pinchame</code>. Después, se asigna la función manejadora para el evento de pinchar con el ratón mediante la función <code>click()</code>.</p>
+
+<p>A continuación, el código anterior realiza otro filtrado a partir de la selección original de enlaces. Para volver a la selección original, se utiliza la función <code>end()</code> antes de realizar un nuevo filtrado. De esta forma, la instrucción <code>.end().filter('ocultame')</code> es equivalente a realizar el filtrado directamente sobre la selección original <code>$('a').filter('.ocultame'))</code>.</p>
+
+<p>El segundo grupo de funciones para la manipulación de nodos DOM está formado por los buscadores, funciones que buscan/seleccionan nodos relacionados con la selección realizada. De esta forma, jQuery define la función <code>children()</code> para obtener todos los <em>nodos hijo</em> o descendientes del nodo actual, <code>parent()</code> para obtener el <em>nodo padre</em> o nodo ascendente del nodo actual (<code>parents()</code> obtiene todos los ascendentes del nodo hasta la raíz del árbol) y <code>siblings()</code> que obtiene todos los <em>nodos hermano</em> del nodo actual, es decir, todos los nodos que tienen el mismo <em>nodo padre</em> que el nodo actual.</p>
+
+<p>La navegación entre <em>nodos hermano</em> se puede realizar con las funciones <code>next()</code> y <code>pev()</code> que avanzan o retroceden a través de la lista de <em>nodos hermano</em> del nodo actual.</p>
+
+<p>Por último, jQuery también dispone de <a href="http://docs.jquery.com/Manipulation">funciones para manipular fácilmente el contenido de los nodos DOM</a>. Las funciones <code>append()</code> y <code>prepend()</code> añaden el contenido indicado como parámetro al principio o al final respectivamente del contenido original del nodo.</p>
+
+<p>Las funciones <code>after()</code> y <code>before()</code> añaden el contenido indicado como parámetro antes de cada uno de los elementos seleccionados. La función <code>wrap()</code> permite <em>"envolver"</em> un elemento con el contenido indicado (se añade parte del contenido por delante y el resto por detrás).</p>
+
+<p>La función <code>empty()</code> vacía de contenido a un elemento, <code>remove()</code> elimina los elementos seleccionados del árbol DOM y <code>clone()</code> copia de forma exacta los nodos seleccionados.</p>
+
+<h3 id="otras_funciones_utiles_2">10.3.7. Otras funciones útiles</h3>
+
+<p>jQuery detecta automáticamente el tipo de navegador en el que se está ejecutando y permite acceder a esta información a través del objeto <code>$.browser</code>:</p>
+
+<div class="code javascript">
+<pre class="javascript">$.<span class="me1">browser</span>.<span class="me1">msie</span><span class="sy0">;</span>    <span class="co1">// 'true' para navegadores de la familia Internet Explorer</span>
+$.<span class="me1">browser</span>.<span class="me1">mozilla</span><span class="sy0">;</span> <span class="co1">// 'true' para navegadores de la familia Firefox</span>
+$.<span class="me1">browser</span>.<span class="me1">opera</span><span class="sy0">;</span>   <span class="co1">// 'true' para navegadores de la familia Opera</span>
+$.<span class="me1">browser</span>.<span class="me1">safari</span><span class="sy0">;</span>  <span class="co1">// 'true' para navegadores de la familia Safari</span></pre>
+</div>
+
+<p>Recorrer arrays y objetos también es muy sencillo con jQuery, gracias a la función <code>$.each()</code>. El primer parámetro de la función es el objeto que se quiere recorrer y el segundo parámetro es el código de la función que lo recorre (a su vez, a esta función se le pasa como primer parámetro el índice del elemento y como segundo parámetro el valor del elemento):</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="co1">// Recorrer arrays</span>
+<span class="kw1">var</span> vocales <span class="sy0">=</span> <span class="br0">[</span><span class="st0">'a'</span><span class="sy0">,</span> <span class="st0">'e'</span><span class="sy0">,</span> <span class="st0">'i'</span><span class="sy0">,</span> <span class="st0">'o'</span><span class="sy0">,</span> <span class="st0">'u'</span><span class="br0">]</span><span class="sy0">;</span>
+&nbsp;
+$.<span class="me1">each</span><span class="br0">(</span> vocales<span class="sy0">,</span> <span class="kw1">function</span><span class="br0">(</span>i<span class="sy0">,</span> n<span class="br0">)</span><span class="br0">{</span>
+  alert<span class="br0">(</span><span class="st0">'Vocal número '</span> <span class="sy0">+</span> i <span class="sy0">+</span> <span class="st0">" = "</span> <span class="sy0">+</span> n<span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+<span class="co1">// Recorrer objetos</span>
+<span class="kw1">var</span> producto <span class="sy0">=</span> <span class="br0">{</span> id<span class="sy0">:</span> <span class="st0">'12DW2'</span><span class="sy0">,</span> precio<span class="sy0">:</span> <span class="nu0">12.34</span><span class="sy0">,</span> cantidad<span class="sy0">:</span> <span class="nu0">5</span> <span class="br0">}</span><span class="sy0">;</span>
+&nbsp;
+$.<span class="me1">each</span><span class="br0">(</span> producto<span class="sy0">,</span> <span class="kw1">function</span><span class="br0">(</span>i<span class="sy0">,</span> n<span class="br0">)</span><span class="br0">{</span>
+  alert<span class="br0">(</span>i <span class="sy0">+</span> <span class="st0">' : '</span> <span class="sy0">+</span> n<span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<h3 id="rehaciendo_ejemplos_con_jquery">10.3.8. Rehaciendo ejemplos con jQuery</h3>
+
+<p>Como sucedía con Prototype, cuando se rehace una aplicación JavaScript con jQuery, el resultado es un código muy conciso pero que mantiene su facilidad de lectura y comprensión.</p>
+
+<p>Por ejemplo, el ejercicio que mostraba y ocultaba diferentes secciones de contenidos se realizó con JavaScript de la siguiente manera:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="kw1">function</span> muestraOculta<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="co1">// Obtener el ID del elemento</span>
+  <span class="kw1">var</span> id <span class="sy0">=</span> <span class="kw1">this</span>.<span class="me1">id</span><span class="sy0">;</span>
+  id <span class="sy0">=</span> id.<span class="me1">split</span><span class="br0">(</span><span class="st0">'_'</span><span class="br0">)</span><span class="sy0">;</span>
+  id <span class="sy0">=</span> id<span class="br0">[</span><span class="nu0">1</span><span class="br0">]</span><span class="sy0">;</span>
+&nbsp;
+  <span class="kw1">var</span> elemento <span class="sy0">=</span> document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">'contenidos_'</span><span class="sy0">+</span>id<span class="br0">)</span><span class="sy0">;</span>
+  <span class="kw1">var</span> enlace <span class="sy0">=</span> document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">'enlace_'</span><span class="sy0">+</span>id<span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+  <span class="kw1">if</span><span class="br0">(</span>elemento.<span class="me1">style</span>.<span class="me1">display</span> <span class="sy0">==</span> <span class="st0">""</span> <span class="sy0">||</span> elemento.<span class="me1">style</span>.<span class="me1">display</span> <span class="sy0">==</span> <span class="st0">"block"</span><span class="br0">)</span> <span class="br0">{</span>
+    elemento.<span class="me1">style</span>.<span class="me1">display</span> <span class="sy0">=</span> <span class="st0">"none"</span><span class="sy0">;</span>
+    enlace.<span class="me1">innerHTML</span> <span class="sy0">=</span> <span class="st0">'Mostrar contenidos'</span><span class="sy0">;</span>
+  <span class="br0">}</span>
+  <span class="kw1">else</span> <span class="br0">{</span>
+    elemento.<span class="me1">style</span>.<span class="me1">display</span> <span class="sy0">=</span> <span class="st0">"block"</span><span class="sy0">;</span>
+    enlace.<span class="me1">innerHTML</span> <span class="sy0">=</span> <span class="st0">'Ocultar contenidos'</span><span class="sy0">;</span>
+  <span class="br0">}</span>
+<span class="br0">}</span>
+&nbsp;
+window.<span class="me1">onload</span> <span class="sy0">=</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">'enlace_1'</span><span class="br0">)</span>.<span class="me1">onclick</span> <span class="sy0">=</span> muestraOculta<span class="sy0">;</span>
+  document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">'enlace_2'</span><span class="br0">)</span>.<span class="me1">onclick</span> <span class="sy0">=</span> muestraOculta<span class="sy0">;</span>
+  document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">'enlace_3'</span><span class="br0">)</span>.<span class="me1">onclick</span> <span class="sy0">=</span> muestraOculta<span class="sy0">;</span>
+<span class="br0">}</span></pre>
+</div>
+
+<p>Con Prototype, su código se redujo a las siguientes instrucciones:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="kw1">function</span> muestraOculta<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="kw1">var</span> id <span class="sy0">=</span> <span class="br0">(</span><span class="kw1">this</span>.<span class="me1">id</span><span class="br0">)</span>.<span class="me1">split</span><span class="br0">(</span><span class="st0">'_'</span><span class="br0">)</span><span class="br0">[</span><span class="nu0">1</span><span class="br0">]</span><span class="sy0">;</span>
+&nbsp;
+  $<span class="br0">(</span><span class="st0">'contenidos_'</span><span class="sy0">+</span>id<span class="br0">)</span>.<span class="me1">toggle</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+  $<span class="br0">(</span><span class="st0">'enlace_'</span><span class="sy0">+</span>id<span class="br0">)</span>.<span class="me1">innerHTML</span> <span class="sy0">=</span> <span class="br0">(</span><span class="sy0">!</span>$<span class="br0">(</span><span class="st0">'contenidos_'</span><span class="sy0">+</span>id<span class="br0">)</span>.<span class="me1">visible</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span> <span class="sy0">?</span> <span class="st0">'Ocultar contenidos'</span> <span class="sy0">:</span> <span class="st0">'Mostrar contenidos'</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+window.<span class="me1">onload</span> <span class="sy0">=</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  $R<span class="br0">(</span><span class="nu0">1</span><span class="sy0">,</span> <span class="nu0">3</span><span class="br0">)</span>.<span class="me1">each</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span>n<span class="br0">)</span> <span class="br0">{</span>
+    Event.<span class="me1">observe</span><span class="br0">(</span><span class="st0">'enlace_'</span><span class="sy0">+</span>n<span class="sy0">,</span> <span class="st0">'click'</span><span class="sy0">,</span> muestraOculta<span class="br0">)</span><span class="sy0">;</span>
+  <span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span></pre>
+</div>
+
+<p>Con jQuery, el mismo código se puede escribir de la siguiente forma:</p>
+
+<div class="code javascript">
+<pre class="javascript">$<span class="br0">(</span>document<span class="br0">)</span>.<span class="me1">ready</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span><span class="br0">{</span>
+  $.<span class="me1">each</span><span class="br0">(</span><span class="br0">[</span><span class="nu0">1</span><span class="sy0">,</span> <span class="nu0">2</span><span class="sy0">,</span> <span class="nu0">3</span><span class="br0">]</span><span class="sy0">,</span> <span class="kw1">function</span><span class="br0">(</span>i<span class="sy0">,</span> n<span class="br0">)</span><span class="br0">{</span>
+    $<span class="br0">(</span><span class="st0">'#enlace_'</span><span class="sy0">+</span>n<span class="br0">)</span>.<span class="me1">toggle</span><span class="br0">(</span>
+      <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span> $<span class="br0">(</span><span class="st0">'#contenidos_'</span><span class="sy0">+</span>n<span class="br0">)</span>.<span class="me1">toggle</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span> $<span class="br0">(</span><span class="kw1">this</span><span class="br0">)</span>.<span class="me1">html</span><span class="br0">(</span><span class="st0">'Mostrar contenidos'</span><span class="br0">)</span><span class="sy0">;</span> <span class="br0">}</span><span class="sy0">,</span>
+      <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span> $<span class="br0">(</span><span class="st0">'#contenidos_'</span><span class="sy0">+</span>n<span class="br0">)</span>.<span class="me1">toggle</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span> $<span class="br0">(</span><span class="kw1">this</span><span class="br0">)</span>.<span class="me1">html</span><span class="br0">(</span><span class="st0">'Ocultar contenidos'</span><span class="br0">)</span><span class="sy0">;</span> <span class="br0">}</span>
+    <span class="br0">)</span><span class="sy0">;</span>
+  <span class="br0">}</span><span class="br0">)</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+<p>El código anterior utiliza la función <code>toggle()</code> como evento que permite alternar la ejecución de dos funciones y como función que oculta un elemento visible y muestra un elemento oculto.</p>
+
+<p>Otro de los ejercicios anteriores realizaba peticiones AJAX al servidor para comprobar si un determinado nombre de usuario estaba libre. El código original de JavaScript era:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="kw1">var</span> READY_STATE_COMPLETE<span class="sy0">=</span><span class="nu0">4</span><span class="sy0">;</span>
+<span class="kw1">var</span> peticion_http <span class="sy0">=</span> <span class="kw2">null</span><span class="sy0">;</span>
+&nbsp;
+<span class="kw1">function</span> inicializa_xhr<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="kw1">if</span><span class="br0">(</span>window.<span class="me1">XMLHttpRequest</span><span class="br0">)</span> <span class="br0">{</span>
+    <span class="kw1">return</span> <span class="kw1">new</span> XMLHttpRequest<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span> 
+  <span class="br0">}</span>
+  <span class="kw1">else</span> <span class="kw1">if</span><span class="br0">(</span>window.<span class="me1">ActiveXObject</span><span class="br0">)</span> <span class="br0">{</span>
+    <span class="kw1">return</span> <span class="kw1">new</span> ActiveXObject<span class="br0">(</span><span class="st0">"Microsoft.XMLHTTP"</span><span class="br0">)</span><span class="sy0">;</span> 
+  <span class="br0">}</span> 
+<span class="br0">}</span>
+&nbsp;
+<span class="kw1">function</span> comprobar<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="kw1">var</span> login <span class="sy0">=</span> document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">"login"</span><span class="br0">)</span>.<span class="me1">value</span><span class="sy0">;</span>
+  peticion_http <span class="sy0">=</span> inicializa_xhr<span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+  <span class="kw1">if</span><span class="br0">(</span>peticion_http<span class="br0">)</span> <span class="br0">{</span>
+    peticion_http.<span class="me1">onreadystatechange</span> <span class="sy0">=</span> procesaRespuesta<span class="sy0">;</span>
+    peticion_http.<span class="me1">open</span><span class="br0">(</span><span class="st0">"POST"</span><span class="sy0">,</span> <span class="st0">"http://localhost/compruebaDisponibilidad.php"</span><span class="sy0">,</span> <span class="kw2">true</span><span class="br0">)</span><span class="sy0">;</span>
+&nbsp;
+    peticion_http.<span class="me1">setRequestHeader</span><span class="br0">(</span><span class="st0">"Content-Type"</span><span class="sy0">,</span> <span class="st0">"application/x-www-form-urlencoded"</span><span class="br0">)</span><span class="sy0">;</span>
+    peticion_http.<span class="me1">send</span><span class="br0">(</span><span class="st0">"login="</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">"&amp;nocache="</span><span class="sy0">+</span><span class="kw4">Math</span>.<span class="me1">random</span><span class="br0">(</span><span class="br0">)</span><span class="br0">)</span><span class="sy0">;</span>
+  <span class="br0">}</span>
+<span class="br0">}</span>
+&nbsp;
+<span class="kw1">function</span> procesaRespuesta<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="kw1">if</span><span class="br0">(</span>peticion_http.<span class="me1">readyState</span> <span class="sy0">==</span> READY_STATE_COMPLETE<span class="br0">)</span> <span class="br0">{</span>
+    <span class="kw1">if</span><span class="br0">(</span>peticion_http.<span class="me1">status</span> <span class="sy0">==</span> <span class="nu0">200</span><span class="br0">)</span> <span class="br0">{</span>
+      <span class="kw1">var</span> login <span class="sy0">=</span> document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">"login"</span><span class="br0">)</span>.<span class="me1">value</span><span class="sy0">;</span>
+      <span class="kw1">if</span><span class="br0">(</span>peticion_http.<span class="me1">responseText</span> <span class="sy0">==</span> <span class="st0">"si"</span><span class="br0">)</span> <span class="br0">{</span>
+        document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">"disponibilidad"</span><span class="br0">)</span>.<span class="me1">innerHTML</span> <span class="sy0">=</span> <span class="st0">"El nombre elegido ["</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">"] está disponible"</span><span class="sy0">;</span>
+      <span class="br0">}</span>
+      <span class="kw1">else</span> <span class="br0">{</span>
+        document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">"disponibilidad"</span><span class="br0">)</span>.<span class="me1">innerHTML</span> <span class="sy0">=</span> <span class="st0">"NO está disponible el nombre elegido ["</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">"]"</span><span class="sy0">;</span>
+      <span class="br0">}</span>
+    <span class="br0">}</span>
+  <span class="br0">}</span>
+<span class="br0">}</span>
+&nbsp;
+window.<span class="me1">onload</span> <span class="sy0">=</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  document.<span class="me1">getElementById</span><span class="br0">(</span><span class="st0">"comprobar"</span><span class="br0">)</span>.<span class="me1">onclick</span> <span class="sy0">=</span> comprobar<span class="sy0">;</span>
+<span class="br0">}</span></pre>
+</div>
+
+<p>Con Prototype se puede conseguir el mismo comportamiento con tres veces menos de líneas de código:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="kw1">function</span> comprobar<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="kw1">var</span> login <span class="sy0">=</span> $F<span class="br0">(</span><span class="st0">'login'</span><span class="br0">)</span><span class="sy0">;</span>
+  <span class="kw1">var</span> url <span class="sy0">=</span> <span class="st0">'http://localhost/compruebaDisponibilidad.php?nocache='</span> <span class="sy0">+</span> <span class="kw4">Math</span>.<span class="me1">random</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">;</span>
+  <span class="kw1">var</span> peticion <span class="sy0">=</span> <span class="kw1">new</span> Ajax.<span class="me1">Request</span><span class="br0">(</span>url<span class="sy0">,</span> <span class="br0">{</span>
+    method<span class="sy0">:</span><span class="st0">'post'</span><span class="sy0">,</span>
+    postBody<span class="sy0">:</span><span class="st0">'login='</span><span class="sy0">+</span>login<span class="sy0">,</span>
+    onSuccess<span class="sy0">:</span> <span class="kw1">function</span><span class="br0">(</span>respuesta<span class="br0">)</span> <span class="br0">{</span>
+      $<span class="br0">(</span><span class="st0">'disponibilidad'</span><span class="br0">)</span>.<span class="me1">innerHTML</span> <span class="sy0">=</span> <span class="br0">(</span>respuesta.<span class="me1">responseText</span> <span class="sy0">==</span> <span class="st0">'si'</span><span class="br0">)</span> <span class="sy0">?</span> 
+        <span class="st0">'El nombre elegido ['</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">'] está disponible'</span> <span class="sy0">:</span> <span class="st0">'NO está disponible el nombre elegido ['</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">']'</span><span class="sy0">;</span>
+    <span class="br0">}</span><span class="sy0">,</span> 
+    onFailure<span class="sy0">:</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span> alert<span class="br0">(</span><span class="st0">'Se ha producido un error'</span><span class="br0">)</span><span class="sy0">;</span> <span class="br0">}</span>
+  <span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+window.<span class="me1">onload</span> <span class="sy0">=</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  Event.<span class="me1">observe</span><span class="br0">(</span><span class="st0">'comprobar'</span><span class="sy0">,</span> <span class="st0">'click'</span><span class="sy0">,</span> comprobar<span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span></pre>
+</div>
+
+<p>jQuery también permite simplificar notablemente el código de la aplicación original:</p>
+
+<div class="code javascript">
+<pre class="javascript"><span class="kw1">function</span> comprobar<span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span>
+  <span class="kw1">var</span> login <span class="sy0">=</span> $<span class="br0">(</span><span class="st0">'#login'</span><span class="br0">)</span>.<span class="me1">value</span><span class="sy0">;</span>
+  <span class="kw1">var</span> peticion <span class="sy0">=</span> $.<span class="me1">ajax</span><span class="br0">(</span><span class="br0">{</span>
+    url<span class="sy0">:</span>  <span class="st0">'http://localhost/compruebaDisponibilidad.php?nocache='</span> <span class="sy0">+</span> <span class="kw4">Math</span>.<span class="me1">random</span><span class="br0">(</span><span class="br0">)</span><span class="sy0">,</span>
+    type<span class="sy0">:</span> <span class="st0">'POST'</span><span class="sy0">,</span>
+    data<span class="sy0">:</span> <span class="br0">{</span> login<span class="sy0">:</span> login <span class="br0">}</span><span class="sy0">,</span>
+    success<span class="sy0">:</span> <span class="kw1">function</span><span class="br0">(</span>respuesta<span class="br0">)</span> <span class="br0">{</span>
+      $<span class="br0">(</span><span class="st0">'#disponibilidad'</span><span class="br0">)</span>.<span class="me1">html</span><span class="br0">(</span><span class="br0">(</span>respuesta.<span class="me1">responseText</span> <span class="sy0">==</span> <span class="st0">'si'</span><span class="br0">)</span> <span class="sy0">?</span>
+        <span class="st0">'El nombre elegido ['</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">'] está disponible'</span> <span class="sy0">:</span>
+        <span class="st0">'NO está disponible el nombre elegido ['</span><span class="sy0">+</span>login<span class="sy0">+</span><span class="st0">']'</span><span class="br0">)</span><span class="sy0">;</span>
+    <span class="br0">}</span><span class="sy0">,</span> 
+    error<span class="sy0">:</span> <span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span> <span class="br0">{</span> alert<span class="br0">(</span><span class="st0">'Se ha producido un error'</span><span class="br0">)</span><span class="sy0">;</span> <span class="br0">}</span>
+  <span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span>
+&nbsp;
+$<span class="br0">(</span>document<span class="br0">)</span>.<span class="me1">ready</span><span class="br0">(</span><span class="kw1">function</span><span class="br0">(</span><span class="br0">)</span><span class="br0">{</span>
+  $<span class="br0">(</span><span class="st0">'#comprobar'</span><span class="br0">)</span>.<span class="me1">click</span><span class="br0">(</span>comprobar<span class="br0">)</span><span class="sy0">;</span>
+<span class="br0">}</span><span class="br0">)</span><span class="sy0">;</span></pre>
+</div>
+
+
+
+                <div class="module module--ad module--ad--responsive module--ad--bottom">
+        <script async="" src="./10.3. La librería jQuery (Introducción a AJAX)_files/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-1491000300253750" data-ad-slot="3770792827" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:870px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:870px;background-color:transparent"><iframe width="870" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;" src="./10.3. La librería jQuery (Introducción a AJAX)_files/saved_resource.html"></iframe></ins></ins></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    
+    <ul class="row pager pager--large">
+        <li class="col-xs-6 previous ">
+                            <a href="http://librosweb.es/libro/ajax/capitulo_10/la_libreria_scriptaculous.html">
+                    <strong><i class="hidden-xs">←</i> Anterior</strong>
+                    <small>10.2. La librería scriptaculous</small>
+                </a>
+                    </li>
+
+        <li class="col-xs-6 next ">
+                            <a href="http://librosweb.es/libro/ajax/capitulo_10/otros_frameworks_importantes.html">
+                    <strong>Siguiente <i class="hidden-xs">→</i></strong>
+                    <small>10.4. Otros frameworks importantes</small>
+                </a>
+                    </li>
+    </ul>
+
+                            </div>
+
+                        <div id="sidebar" class="col-md-3">
+                            
+                <div class="module module--ad module--ad--responsive module--ad--sidebar">
+        <script async="" src="./10.3. La librería jQuery (Introducción a AJAX)_files/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-1491000300253750" data-ad-slot="3770792827" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><iframe width="270" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;" src="./10.3. La librería jQuery (Introducción a AJAX)_files/saved_resource(1).html"></iframe></ins></ins></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    
+    <div class="module">
+        <a id="indice"></a>
+
+        <h3>Indice de contenidos</h3>
+        <ul class="book__toc book__toc--compact">
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_1.html"><strong>1.</strong> Introducción a AJAX</a>
+            </li>
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_2.html"><strong>2.</strong> JavaScript básico</a>
+            </li>
+                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_3.html"><strong>3.</strong> JavaScript avanzado</a>
+            </li>
+                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_4.html"><strong>4.</strong> DOM (Document Object Model)</a>
+            </li>
+                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_5.html"><strong>5.</strong> BOM (Browser Object Model)</a>
+            </li>
+                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_6.html"><strong>6.</strong> Eventos</a>
+            </li>
+                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_7.html"><strong>7.</strong> Primeros pasos con AJAX</a>
+            </li>
+                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_8.html"><strong>8.</strong> Técnicas básicas con AJAX</a>
+            </li>
+                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_9.html"><strong>9.</strong> Técnicas avanzadas con AJAX</a>
+            </li>
+                                                                            <li class="level-1 ">
+                <a href="http://librosweb.es/libro/ajax/capitulo_10.html">
+                    <span>Capítulo 10.</span> Frameworks y librerías
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/ajax/capitulo_10/el_framework_prototype.html">
+                    <span>10.1.</span> El framework Prototype
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/ajax/capitulo_10/la_libreria_scriptaculous.html">
+                    <span>10.2.</span> La librería scriptaculous
+                </a>
+            </li>
+                                            <li class="level-2 active">
+                <a href="http://librosweb.es/libro/ajax/capitulo_10/la_libreria_jquery.html">
+                    <span>10.3.</span> La librería jQuery
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/ajax/capitulo_10/otros_frameworks_importantes.html">
+                    <span>10.4.</span> Otros frameworks importantes
+                </a>
+            </li>
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_11.html"><strong>11.</strong> Otras utilidades</a>
+            </li>
+                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_12.html"><strong>12.</strong> Recursos útiles</a>
+            </li>
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_13.html"><strong>13.</strong> Bibliografía</a>
+            </li>
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/ajax/capitulo_14.html"><strong>14.</strong> Ejercicios resueltos</a>
+            </li>
+                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+    </div>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+
+        <div id="footer">
+                    <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-9">
+                        © 2006-2016 LibrosWeb.es
+                        <a href="http://librosweb.es/sitio/contacto">Contacto</a>
+                        <a href="https://plus.google.com/+librosweb">Novedades</a>
+                        <a href="http://librosweb.es/sitio/condiciones">Condiciones</a>
+                        <a href="http://librosweb.es/sitio/privacidad">Privacidad</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 pull-right">
+                        <div class="metric metric--dimmed metric--textright">
+                            <div class="metric__value">3.468</div>
+                            <div class="metric__label">días online</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+                                    <script async="" src="./10.3. La librería jQuery (Introducción a AJAX)_files/app.js"></script>
+                        
+
+</body></html>

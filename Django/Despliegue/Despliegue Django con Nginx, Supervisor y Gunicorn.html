@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/ -->
+<html lang="en" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <title>Despliegue Django con Nginx, Supervisor y Gunicorn</title>
+
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Despliegue Django con Nginx, Supervisor y Gunicorn">
+    <meta name="twitter:description" content="">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Despliegue Django con Nginx, Supervisor y Gunicorn">
+    <meta property="og:description" content="">
+
+    <meta name="twitter:site" content="@codeandoando">
+    
+    <meta name="twitter:creator" content="@erickgnavar">
+    
+    <meta name="google-site-verification" content="">
+    
+    <meta property="fb:admins" content="erickgnavar">
+
+    <link href="https://codeandoando.com/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="https://codeandoando.com/apple-touch-icon-precomposed.png" rel="apple-touch-icon">
+
+    <link href="https://fonts.googleapis.com/" rel="dns-prefetch">
+    <link href="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/css" rel="stylesheet">
+
+    <link rel="stylesheet" href="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/main.min.css">
+
+    <script src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/analytics.js"></script><script id="twitter-wjs" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/widgets.js"></script><script type="text/javascript">
+      var ga_ua = 'UA-63048238-2';
+      
+      var disqus_shortname = 'codeandoando';
+      
+      var enable_pjax = true;
+
+      // Pace Options
+      // ==============
+      window.paceOptions = {
+        catchupTime: 100,
+        minTime: 100,
+        elements: false,
+        restartOnRequestAfter: 500,
+        startOnPageLoad: false
+      }
+
+      // Ghostium Globals
+      // ==============
+      window.GHOSTIUM = {};
+      GHOSTIUM.haveGA = typeof ga_ua !== 'undefined' && ga_ua !== 'UA-XXXXX-X';
+      GHOSTIUM.haveDisqus = typeof disqus_shortname !== 'undefined' && disqus_shortname !== 'example';
+      GHOSTIUM.enablePjax = typeof enable_pjax !== 'undefined' ? enable_pjax : true;
+    </script>
+
+    <script src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/head-scripts.min.js"></script>
+
+    <link rel="canonical" href="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/">
+    
+    <meta property="og:site_name" content="&lt;Codeandoando/&gt;">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Despliegue Django con Nginx, Supervisor y Gunicorn">
+    <meta property="og:description" content="El despliegue de una aplicación es un parte compleja puesto que existen muchas formas de hacer el despliegue, en esta ocasión haremos un despliegue usando Nginx, Supervisor y Gunicorn.   Puedes usar este link para crearte una cuenta en DigitalOcean y...">
+    <meta property="og:url" content="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/">
+    <meta property="article:published_time" content="2015-03-17T01:11:25.305Z">
+    <meta property="article:modified_time" content="2016-05-19T22:00:09.661Z">
+    <meta property="article:tag" content="python">
+    <meta property="article:tag" content="deploy">
+    <meta property="article:tag" content="django">
+    
+    <meta name="twitter:card" content="content">
+    <meta name="twitter:title" content="Despliegue Django con Nginx, Supervisor y Gunicorn">
+    <meta name="twitter:description" content="El despliegue de una aplicación es un parte compleja puesto que existen muchas formas de hacer el despliegue, en esta ocasión haremos un despliegue usando Nginx, Supervisor y Gunicorn.   Puedes usar este link para crearte una cuenta en DigitalOcean y...">
+    <meta name="twitter:url" content="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/">
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "&lt;Codeandoando/&gt;",
+    "author": {
+        "@type": "Person",
+        "name": "Erick Navarro",
+        "image": "https://codeandoando.com/content/images/2014/12/me-square.png",
+        "url": "https://codeandoando.com/author/erickgnavar",
+        "sameAs": "http://erick.navarro.io"
+    },
+    "headline": "Despliegue Django con Nginx, Supervisor y Gunicorn",
+    "url": "https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/",
+    "datePublished": "2015-03-17T01:11:25.305Z",
+    "dateModified": "2016-05-19T22:00:09.661Z",
+    "keywords": "python, deploy, django",
+    "description": "El despliegue de una aplicación es un parte compleja puesto que existen muchas formas de hacer el despliegue, en esta ocasión haremos un despliegue usando Nginx, Supervisor y Gunicorn.   Puedes usar este link para crearte una cuenta en DigitalOcean y"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 0.5">
+    <link rel="alternate" type="application/rss+xml" title="&lt;Codeandoando/&gt;" href="https://codeandoando.com/rss/">
+  <script async="" type="text/javascript" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/embed.js"></script><script async="" type="text/javascript" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/count.js"></script><script type="text/javascript" charset="utf-8" async="" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/button.c9025956238e7d486d74379e14f50282.js"></script><script src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/count-data.js"></script></head>
+  <body class="post-template tag-python tag-deploy tag-django">
+
+    <button data-action="open-drawer" id="drawer-button" class="drawer-button"><i class="fa fa-bars"></i></button>
+    <nav tabindex="-1" class="drawer">
+      <div class="drawer-container">
+        <!--.drawer-search(role="search")-->
+        <ul role="navigation" class="drawer-list">
+          
+          <li class="drawer-list-item">
+            <a href="https://codeandoando.com/" data-pjax="">
+              <i class="fa fa-home"></i>Home
+            </a>
+          </li>
+          <li class="drawer-list-item">
+            <a href="https://codeandoando.com/rss/">
+              <i class="fa fa-rss"></i>Subscribe to Feed
+            </a>
+          </li>
+          <li class="drawer-list-divider"></li>
+          <li class="drawer-list-item drawer-list-title">
+            Follow me
+          </li>
+          <li class="drawer-list-item">
+            <a href="http://twitter.com/erickgnavar" target="_blank">
+              <i class="fa fa-twitter"></i>Twitter
+            </a>
+          </li>
+          <li class="drawer-list-item">
+            <a href="http://github.com/erickgnavar" target="_blank">
+              <i class="fa fa-github"></i>Github
+            </a>
+          </li>
+          <li class="drawer-list-item">
+          	<a href="http://www.linkedin.com/in/erickgnavar" target="_blank">
+          		<i class="fa fa-linkedin"></i>Linkedin
+          	</a>
+          </li>
+          
+        </ul>
+      </div>
+    </nav>
+
+    <div class="drawer-overlay"></div>
+    <main id="container" role="main" class="container">
+      <div class="surface">
+        <div class="surface-container">
+          <div data-pjax-container="" class="content">
+            
+<section class="wrapper wrapper-post">
+  <div class="wrapper-container">
+    <article itemscope="" itemtype="http://schema.org/BlogPosting" role="article" class="post post tag-python tag-deploy tag-django">
+        <section class="post-container">
+          <header class="post-header">
+            <ul class="post-meta-list">
+              <li class="post-meta-item">
+                <time datetime="2015-03-16" itemprop="datePublished">
+                  2 years ago
+                </time>
+              </li>
+                <li class="post-meta-item">
+                    <a itemprop="articleSection" href="https://codeandoando.com/tag/python/" data-pjax="">python</a>, 
+                    <a itemprop="keywords" href="https://codeandoando.com/tag/deploy/" data-pjax="">deploy</a>, 
+                    <a itemprop="keywords" href="https://codeandoando.com/tag/django/" data-pjax="">django</a> 
+                </li>
+              <li class="post-meta-item">
+                <a href="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/#disqus_thread" data-disqus-identifier="32">6 Comments</a>
+              </li>
+            </ul>
+            <h1 itemprop="name headline" class="post-title"><a href="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/" itemprop="url" data-pjax="" title="Despliegue Django con Nginx, Supervisor y Gunicorn">Despliegue Django con Nginx, Supervisor y Gunicorn</a></h1>
+            <!--h2 itemprop="about" class="post-subtitle"></h2-->
+          </header>
+          <aside class="post-side">
+            <div class="post-author">
+                <a href="http://erick.navarro.io/" class="post-author-avatar">
+                  <img src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/me-square.png" alt="Erick Navarro">
+                </a>
+              <div class="post-author-info">
+                <a href="http://erick.navarro.io/" class="post-author-name">
+                  Erick Navarro
+                </a>
+                <p class="post-author-bio">Software Developer</p>
+              </div>
+            </div>
+          </aside>
+          <div itemprop="articleBody" class="post-body">
+            <p>El despliegue de una aplicación es un parte compleja puesto que existen muchas formas de hacer el despliegue, en esta ocasión haremos un despliegue usando Nginx, Supervisor y Gunicorn.</p>
+
+<blockquote>
+  <p>Puedes usar este <a href="https://m.do.co/c/330e2b815378">link</a> para crearte una cuenta en DigitalOcean y obtener $10 de crédito para desplegar tu proyecto en un VPS.</p>
+</blockquote>
+
+<ul>
+<li><a href="http://wiki.nginx.org/Main">Nginx</a> (Servidor web)</li>
+<li><a href="http://supervisord.org/">Supervisor</a> (Administrador de procesos)</li>
+<li><a href="http://gunicorn.org/">Gunicorn</a> (Servidor WSGI)</li>
+</ul>
+
+<blockquote>
+  <p>Estamos asumiendo que tenemos un proyecto en django llamado <code class="  language-markup">intro_django</code> ubicado en el directorio  <code class="  language-markup">/opt/apps/intro_django/</code> y ustamos usando <code class="  language-markup">ubuntu server 14.04</code>.</p>
+</blockquote>
+
+<h3 id="instalaryconfigurarnginxcomoproxyinverso">Instalar y configurar Nginx como proxy inverso</h3>
+
+<blockquote>
+  <p>Para instalar la última versión de nginx debemos ejecutar los siguientes comandos</p>
+</blockquote>
+
+<pre class="  language-bash"><code class=" language-bash language-bash">sudo add<span class="token operator">-</span>apt<span class="token operator">-</span>repository ppa<span class="token punctuation">:</span>nginx<span class="token operator">/</span>stable  
+sudo aptitude update  
+sudo aptitude install nginx  
+</code></pre>
+
+<p>Vamos a configurar el dominio <code class="  language-markup">mydomain.com</code> que mande las peticiones hacia el puerto donde esta corriendo nuestra aplicación en django, para lo que creamos el archivo <code class="  language-markup">mydomain.com.conf</code> en <code class="  language-markup">/etc/nginx/sites-available/</code> con el siguiente contenido:  </p>
+
+<pre class="  language-markup"><code class="  language-markup">server {  
+    listen  80;
+
+    server_name mydomain.com;
+    charset     utf-8;
+
+    location / {
+        proxy_pass          <a class="token url-link" href="http://127.0.0.1:8000;/">http://127.0.0.1:8000;</a>
+        proxy_set_header    Host $host;
+        proxy_set_header    X-Real-IP $remote_addr;
+        proxy_set_header    X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+</code></pre>
+
+<p>Ahora debemos activar nuestro dominio, para lo cual ejecutamos:  </p>
+
+<pre class="  language-markup"><code class="  language-markup">sudo ln -s /etc/nginx/sites-available/mydomain.com.conf /etc/nginx/sites-enabled/  
+</code></pre>
+
+<p>Con esto estamos creando un enlace simbólico del archivo que creamos en el directorio <code class="  language-markup">/etc/nginx/sites-available/</code> en el directorio <code class="  language-markup">/etc/nginx/sites-enabled/</code> para que nginx lo pueda reconocer.</p>
+
+<blockquote>
+  <p>Para validar nuestra configuración de Nginx antes de reiniciar el servicio ejecutamos <code class="  language-markup">sudo nginx -t</code>, en caso haya algún error se mostrará con ese comando.</p>
+</blockquote>
+
+<p>Ahora debemos reiniciar nuestro servidor Nginx con el comando <code class="  language-markup">sudo service nginx restart</code></p>
+
+<p>Ahora cuando ingresemos a <code class="  language-markup">mydomain.com</code> nos saldrá un error 504 ya que Nginx está enviando las peticiones a <code class="  language-markup"><a class="token url-link" href="http://127.0.0.1:8000/">http://127.0.0.1:8000</a></code> y aun no esta corriendo nuestro proyecto.</p>
+
+<h3 id="instalargunicorn">Instalar Gunicorn</h3>
+
+<p>Gunicorn es un paquete de python, asi que podemos instalarlo desde <code class="  language-markup">pip</code> con <code class="  language-markup">pip install gunicorn</code></p>
+
+<blockquote>
+  <p>Una vez instalado Gunicorn en el entorno virtual podemos acceder al binario desde <code class="  language-markup">/opt/apps/intro_django/venv/bin/gunicorn</code></p>
+</blockquote>
+
+<h3 id="instalaryconfigurarsupervisor">Instalar y configurar supervisor</h3>
+
+<p>Para instalar supervisor podemos hacerlo de 2 maneras:</p>
+
+<ul>
+<li>Usando <code class="  language-markup">pip</code> <code class="  language-markup">sudo pip install supervisor</code></li>
+<li>Desde los repositorios de ubuntu <code class="  language-markup">sudo aptitude install supervisor</code>.</li>
+</ul>
+
+<p>Recomiendo hacerlo desde los repositorios de ubuntu ya que instalando de esta forma ya se crean los directorios y archivos de configuración básicos.</p>
+
+<p>Los archivos de configuración se encuentran en <code class="  language-markup">/etc/supervisor/</code>. <br>
+Ahora vamos a crear un archivo llamado <code class="  language-markup">mydomain.conf</code> en <code class="  language-markup">/etc/supervisor/conf.d/</code>, en este archivo vamos a declarar los procesos que se va a ejecutar nuestra aplicación. <br>
+El archivo <code class="  language-markup">mydomain.conf</code> tendrá la siguiente información:  </p>
+
+<pre class="  language-bash"><code class="bash  language-bash"><span class="token punctuation">[</span>program<span class="token punctuation">:</span>mydomain<span class="token operator">-</span>web<span class="token punctuation">]</span>
+command<span class="token operator">=</span><span class="token operator">/</span>opt<span class="token operator">/</span>apps<span class="token operator">/</span>intro_django<span class="token operator">/</span>venv<span class="token operator">/</span>bin<span class="token operator">/</span>gunicorn intro_django<span class="token punctuation">.</span>wsgi<span class="token punctuation">:</span>application  
+environment<span class="token operator">=</span>  
+    SECRET_KEY<span class="token operator">=</span><span class="token string">"fooo"</span><span class="token punctuation">,</span>
+    ANOTHER_VAR<span class="token operator">=</span><span class="token string">""</span>
+directory<span class="token operator">=</span><span class="token operator">/</span>opt<span class="token operator">/</span>apss<span class="token operator">/</span>intro_django<span class="token operator">/</span>  
+user<span class="token operator">=</span>www<span class="token operator">-</span>data  
+autostart<span class="token operator">=</span><span class="token boolean">true</span>  
+autorestart<span class="token operator">=</span><span class="token boolean">true</span>  
+stdout_logfile<span class="token operator">=</span><span class="token operator">/</span>opt<span class="token operator">/</span>apps<span class="token operator">/</span>intro_django<span class="token operator">/</span>logs<span class="token operator">/</span>gunicorn<span class="token punctuation">.</span>log  
+stderr_logfile<span class="token operator">=</span><span class="token operator">/</span>opt<span class="token operator">/</span>apps<span class="token operator">/</span>intro_django<span class="token operator">/</span>logs<span class="token operator">/</span>gunicorn<span class="token punctuation">.</span>error<span class="token punctuation">.</span>log  
+redirect_stderr<span class="token operator">=</span><span class="token boolean">true</span>  
+</code></pre>
+
+<p>Ahora debemos hacer que Supervisor lea la nueva configuración y la ejecute nuestra aplicación, para eso ejecutamos los siguientes comandos:  </p>
+
+<pre class="  language-bash"><code class="bash  language-bash">sudo supervisorctl reread  
+sudo supervisorctl reload  
+</code></pre>
+
+<p>Ahora cuando accedamos a <code class="  language-markup">mydomain.com</code> veremos nuestra aplicación ejecutandose</p>
+
+<blockquote>
+  <p>Las variables de entorno son el lugar donde debemos poner nuestras credenciales de bases de datos, APIs de terceros, etc.</p>
+</blockquote>
+          </div>
+  <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" title="Twitter Follow Button" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/follow_button.c6def25548e9590b13abaa1b3330b811.en.html" style="position: static; visibility: visible; width: 134px; height: 20px;" data-screen-name="erickgnavar"></iframe>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          <footer class="post-footer">
+            <div itemprop="author" itemscope="" itemtype="http://schema.org/Person" class="post-author">
+                <a href="http://erick.navarro.io/" class="post-author-avatar">
+                  <img itemprop="image" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/me-square.png" alt="Erick Navarro">
+                </a>
+              <div class="post-author-info">
+                <h4 class="post-footer-heading">Written By</h4>
+                <a href="http://erick.navarro.io/" itemprop="url" class="post-author-name">
+                  <span itemprop="name">Erick Navarro</span>
+                </a>
+                <p itemprop="description" class="post-author-bio">Software Developer</p>
+                  <p class="post-author-location">Lima, Perú</p>
+                  <p class="post-author-website">
+                    <a href="http://erick.navarro.io/" rel="nofollow">http://erick.navarro.io</a>
+                  </p>
+                <p class="post-info">
+                  <b class="post-info-title">Published on</b>
+                  <time class="post-date">March 16, 2015</time>
+                </p>
+              </div>
+            </div>
+            <div class="post-social">
+              <h4 class="post-footer-heading">Spread the word</h4>
+              <a href="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/#" data-action="share-twitter"><i class="fa fa-fw fa-lg fa-twitter"></i></a>
+              <a href="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/#" data-action="share-facebook"><i class="fa fa-fw fa-lg fa-facebook"></i></a>
+              <a href="https://codeandoando.com/despliegue-django-con-nginx-supervisor-y-gunicorn/#" data-action="share-gplus"><i class="fa fa-fw fa-lg fa-google-plus"></i></a>
+            </div>
+          </footer>
+        </section>
+      <section itemprop="comment" class="post-comments">
+        <div id="disqus_thread"><iframe id="dsq-app1" name="dsq-app1" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/saved_resource.html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 1323px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+      </section>
+    </article>
+
+    <footer role="contentinfo" class="footer">
+      <p><small>© 2016. All Rights Reserved.</small></p>
+      <p><small><a href="http://ghostium.oswaldoacauan.com/" target="_blank">Ghostium Theme</a> by <a href="http://twitter.com/oswaldoacauan" target="_blank">@oswaldoacauan</a></small></p>
+      <p><small>Proudly published with <a href="http://ghost.org/" target="_blank">Ghost</a></small></p>
+    </footer>
+  </div>
+</section>
+
+<script type="text/javascript">
+  if(GHOSTIUM.haveDisqus) {
+    var disqus_identifier = '32';
+
+    if(typeof DISQUS !== 'object') {
+      (function () {
+      var s = document.createElement('script'); s.async = true;
+      s.type = 'text/javascript';
+      s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+      }());
+    }
+  } else {
+    document.querySelector('.post-comments').remove();
+  }
+</script>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/jquery.min.js"></script>
+
+    <script src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/foot-scripts.min.js"></script>
+
+    <script type="text/javascript">
+
+      if(GHOSTIUM.haveGA) {
+        (function(g,h,o,s,t,z){g.GoogleAnalyticsObject=s;g[s]||(g[s]=
+        function(){(g[s].q=g[s].q||[]).push(arguments)});g[s].s=+new Date;
+        t=h.createElement(o);z=h.getElementsByTagName(o)[0];
+        t.src='//www.google-analytics.com/analytics.js';
+        z.parentNode.insertBefore(t,z)}(window,document,'script','ga'));
+        ga('create',ga_ua);ga('send','pageview');
+      }
+
+      if(GHOSTIUM.haveDisqus) {
+        (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+      }
+    </script>
+  
+
+<iframe style="display: none;" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/saved_resource(1).html"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" src="./Despliegue Django con Nginx, Supervisor y Gunicorn_files/saved_resource(2).html"></iframe></body></html>

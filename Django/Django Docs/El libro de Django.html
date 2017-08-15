@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)http://librosweb.es/libro/django_1_0/capitulo_12/utilizando_usuarios.html -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="https://www.facebook.com/2008/fbml" xml:lang="es" lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <title>12.4. Utilizando usuarios (El libro de Django 1.0)</title>
+                                    <link rel="stylesheet" href="./El libro de Django_files/app.css">
+                        <link href="./El libro de Django_files/css" rel="stylesheet" type="text/css">
+        <script src="./El libro de Django_files/ca-pub-1491000300253750.js"></script><script async="" src="./El libro de Django_files/analytics.js"></script><script type="text/javascript">
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-82842-2', 'librosweb.es');
+            ga('require', 'displayfeatures');
+            ga('send', 'pageview');
+        </script>
+                        <link rel="apple-touch-icon" type="image/png" href="http://librosweb.es/apple-touch-icon.png">
+        <link rel="apple-touch-icon-precomposed" type="image/png" href="http://librosweb.es/apple-touch-icon.png">
+        <meta name="apple-mobile-web-app-title" content="LibrosWeb">
+        <link rel="shortcut icon" type="image/png" href="http://librosweb.es/favicon.png">
+        <meta name="site-version" content="a7f65a4">
+                <link rel="publisher" href="http://plus.google.com/112008023125011571577">
+                                                    <link rel="prev" href="http://librosweb.es/libro/django_1_0/capitulo_12/usuarios_e_identificacion.html">
+                    <link rel="next" href="http://librosweb.es/libro/django_1_0/capitulo_12/el_resto_de_detalles_permisos_grupos_mensajes_y_perfiles.html">
+                <link rel="start" href="http://librosweb.es/libro/django_1_0/">
+                <meta name="twitter:site" content="@librosweb">
+                <link rel="search" type="application/opensearchdescription+xml" href="http://librosweb.es/opensearch/documentation.xml" title="LibrosWeb">
+                <meta property="fb:page_id" content="437758756273955">
+                <meta property="fb:app_id" content="437758756273955">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="12.4. Utilizando usuarios (El libro de Django 1.0)">
+        <meta property="og:image" content="http://www.gravatar.com/avatar/9f219b4dfaa677bfd0f47753c02d5126.png?s=200">
+                <meta name="msapplication-TileColor" content="#CC1414">
+        <meta name="application-name" content="LibrosWeb">
+        <meta name="msapplication-tooltip" content="Libros y tutoriales sobre HTML, CSS, JavaScript, PHP y otras tecnologías web.">
+    </head>
+
+    <body id="p-1-2" class="books book_page django_1_0"><script type="text/javascript">
+//<![CDATA[
+try{(function(a){var b="http://",c="librosweb.es",d="/cdn-cgi/cl/",e="img.gif",f=new a;f.src=[b,c,d,e].join("")})(Image)}catch(e){}
+//]]>
+</script>
+        <div id="header">
+                    <div class="container">
+                <div class="navbar navbar-static-top">
+                    <div id="header-brand" class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-menu">
+                            <span class="sr-only">Desplegar menú</span>
+                            <i class="fa fa-menu"></i>
+                        </button>
+                        <a class="navbar-brand" href="http://librosweb.es/" title="LibrosWeb.es">
+                            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 132 32" preserveAspectRatio="xMinYMin meet">
+<g fill="#CC1414" transform="translate(-21.738 -21.148)">
+<path d="m24.062 23.486v28h9.64v-5h-4.04v-23h-5.6"></path>
+<path d="m40.796 23.486h-5.6v28h5.6v-28"></path>
+<path d="m53.932 37.006c1.48-0.56 2.32-1.76 2.32-4.16v-4.16c0-3.48-1.72-5.2-5.2-5.2h-8.24v28h8.32c3.48 0 5.2-1.72 5.2-5.2v-5.68c0-2.04-0.72-3.12-2.4-3.6m-3.24-7.72v4.64c0 0.68-0.32 1-1 1h-1.32v-6.64h1.32c0.68 0 1 0.32 1 1m-2.32 10.32h1.4c0.68 0 1 0.32 1 1v5.08c0 0.68-0.32 1-1 1h-1.4v-7.08"></path>
+<path d="m69.284 38.246c1.52-0.56 2.4-1.76 2.4-4.16v-5.4c0-3.48-1.72-5.2-5.2-5.2h-8.36v28h5.6v-10.6h1.4c0.68 0 1 0.32 1 1v9.6h5.6v-9.64c0-2.04-0.72-3.12-2.44-3.6m-3.2-8.88v5.76c0 0.68-0.32 1-1 1h-1.36v-7.76h1.36c0.68 0 1 0.32 1 1"></path>
+<path d="m87.513 46.526v-18.08c0-3.48-1.72-5.2-5.2-5.2h-3.6c-3.48 0-5.2 1.72-5.2 5.2v18.08c0 3.48 1.72 5.2 5.2 5.2h3.6c3.48 0 5.2-1.72 5.2-5.2m-5.6-17.48v16.88c0 0.68-0.32 1-1 1h-0.8c-0.68 0-1-0.32-1-1v-16.88c0-0.68 0.32-1 1-1h0.8c0.68 0 1 0.32 1 1"></path>
+<path d="m100.57 36.966-4.8-3.56c-0.68-0.48-0.96-0.92-0.96-1.8v-2.64c0-0.68 0.32-1 1-1h0.44c0.68 0 1 0.32 1 1v4.6h5.48v-5.12c0-3.48-1.72-5.2-5.2-5.2h-3.04c-3.48 0-5.2 1.72-5.2 5.2v4.44c0 2 0.52 3.16 2.24 4.4l4.8 3.56c0.68 0.48 0.96 0.92 0.96 1.8v3.36c0 0.68-0.32 1-1 1h-0.52c-0.68 0-1-0.32-1-1v-5.44h-5.48v5.96c0 3.48 1.72 5.2 5.2 5.2h3.12c3.48 0 5.2-1.72 5.2-5.2v-5.16c0-2.08-0.52001-3.16-2.24-4.4"></path>
+<path d="m106.98 51.486h6.16l1.44-12.72 1.44 12.72h6.16l3.4-28h-4.96l-1.44 14.88-1.6-14.88h-5.28l-1.6 14.92-1.44-14.92h-5.68l3.4 28"></path>
+<path d="m126.87 23.486v28h10.48v-5h-4.88v-6.72h4.6v-5h-4.6v-6.28h4.8v-5h-10.4"></path>
+<path d="m150.26 37.006c1.48-0.56 2.32-1.76 2.32-4.16v-4.16c0-3.48-1.72-5.2-5.2-5.2h-8.24v28h8.32c3.48 0 5.2-1.72 5.2-5.2v-5.68c0-2.04-0.72001-3.12-2.4-3.6m-3.24-7.72v4.64c0 0.68-0.32001 1-1 1h-1.32v-6.64h1.32c0.67999 0 1 0.32 1 1m-2.32 10.32h1.4c0.67999 0 1 0.32 1 1v5.08c0 0.68-0.32001 1-1 1h-1.4v-7.08"></path>
+</g>
+</svg>
+                            <span>LibrosWeb</span>
+                        </a>
+
+                        <div id="header-menu" class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav navbar-right">
+                                
+                                                                <li class="">
+                                    <a href="http://librosweb.es/">Inicio</a>
+                                </li>
+                                                                <li class="active">
+                                    <a href="http://librosweb.es/libros/">Libros</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/tutoriales/">Tutoriales</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/eventos/">Eventos</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/foro/">Foro</a>
+                                </li>
+                                                                <li class="">
+                                    <a href="http://librosweb.es/buscar">Buscar</a>
+                                </li>
+                                                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+        <div id="wrapper" class="container">
+                <div id="book-toc-anchor" class="well visible-xs">
+        <a href="http://librosweb.es/libro/django_1_0/capitulo_12/utilizando_usuarios.html#indice">Ver índice de contenidos del libro</a>
+    </div>
+
+    <ol class="hidden-xs breadcrumb">
+        <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://librosweb.es/libros/" itemprop="url"><span itemprop="title">Libros</span></a>
+        </li>
+
+        <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://librosweb.es/libro/django_1_0/" itemprop="url"><span itemprop="title">El libro de Django 1.0</span></a>
+        </li>
+
+            <li class="breadcrumb__item" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <a href="http://librosweb.es/libro/django_1_0/capitulo_12.html" itemprop="url"><span itemprop="title">Capítulo 12. Sesiones, usuario e inscripciones</span></a>
+        </li>
+    
+        <li class="breadcrumb__item">
+            <span>12.4. Utilizando usuarios</span>
+        </li>
+    </ol>
+
+            <div id="content">
+                                    <div class="row">
+                        <div id="main" class="col-md-9">
+                            
+    
+    <h1 id="utilizando_usuarios" class="title">
+        <span>12.4.</span> Utilizando usuarios
+    </h1>
+
+    
+
+<p>Una vez que ya tienes un usuario (normalmente mediante <code>request.user</code>, pero
+también puede ser por otros métodos, que se describirán en breve) dispondrás
+de una serie de campos de datos y métodos asociados al mismo. Los objetos de 
+la clase <code>AnonymousUser</code> emulan <em>parte</em> de esta interfaz, pero no toda, por lo 
+que es preferible comprobar el resultado de <code>user.is_authenticated()</code> antes
+de asumir de buena fe que nos encontramos ante un usuario legítimo.</p>
+
+<p>Campos de los objetos <code>User</code>:</p>
+
+<ul>
+<li><code>username</code> (obligatorio) 30 caracteres como máximo. Sólo acepta caracteres alfanuméricos (letras, dígitos y el carácter subrayado).</li>
+<li><code>first_name</code> (opcional) 30 caracteres como máximo.</li>
+<li><code>last_name</code> (opcional) 30 caracteres como máximo.</li>
+<li><code>email</code>  (opcional). Dirección de correo electrónico.</li>
+<li><code>password</code> (obligatorio). Un código de comprobación (<em>hash</em>), junto con otros metadatos de la contraseña. Django nunca almacena la contraseña en crudo. Véase la sección <em>"Cambia contraseñas"</em> para más información.</li>
+<li><code>is_staff</code> (booleano). Indica que el usuario puede acceder a las secciones de administración.</li>
+<li><code>is_active</code> (booleano). Indica que la cuenta puede ser usada para identificarse. Se puede poner a <code>False</code> para deshabilitar a un usuario sin tener que borrarlo de la tabla.</li>
+<li><code>is_superuser</code> (booleano). Señala que el usuario tiene todos los permisos, aún cuando no se le hayan asignado explícitamente.</li>
+<li><code>last_login</code>. Fecha y hora de la última vez que el usuario se identificó. Se asigna automáticamente a la fecha actual por defecto.</li>
+<li><code>date_joined</code> Fecha y hora en que fue creada esta cuenta de usuario. Se asigna automáticamente a la fecha actual en su momento.</li>
+</ul>
+
+<p>Métodos de los objetos <code>User</code>:</p>
+
+<ul>
+<li><code>is_authenticated()</code>: siempre devuelve <code>True</code> para usuarios reales. Es una forma de determinar si el usuario se ha identificado. esto no implica que posea ningún permiso, y tampoco comprueba que la cuenta esté activa. Sólo indica que el usuario se ha identificado con éxito.</li>
+<li><code>is_anonymous()</code>: devuelve <code>True</code> sólo para usuarios anónimos, y <code>False</code> para usuarios "reales". En general, es preferible usar el método <code>is_authenticated()</code>.</li>
+<li><code>get_full_name()</code>: devuelve la concatenación de los campos <code>first_name</code> y <code>last_name</code>, con un espacio en medio.</li>
+<li><code>set_password(passwd)</code>: cambia la contraseña del usuario a la cadena de texto en claro indicada, realizando internamente las operaciones necesarias para calcular el código de comprobación o <em>hash</em> necesario. Este método <em>no</em> guarda el objeto <code>User</code>.</li>
+<li><code>check_password(passwd)</code>: devuelve <code>True</code> si la cadena de texto en claro que se le pasa coincide con la contraseña del usuario. Realiza internamente las operaciones necesarias para calcular los códigos de comprobación o <em>hash</em> necesarios.</li>
+<li><code>get_group_permissions()</code>: devuelve una lista con los permisos que tiene un usuario, obtenidos a través del grupo o grupos a las que pertenezca.</li>
+<li><code>get_all_permissions()</code>: devuelve una lista con los permisos que tiene concedidos un usuario, ya sea a través de los grupos a los que pertenece o bien asignados directamente.</li>
+<li><code>has_perm(perm)</code>: devuelve <code>True</code> si el usuario tiene el permiso indicado. El valor de <code>perm</code> está en el formato <code>"package.codename"</code>. Si el usuario no está activo, siempre devolverá <code>False</code>.</li>
+<li><code>has_perms(perm_list)</code>: devuelve <code>True</code> si el usuario tiene <em>todos</em> los permisos indicados. Si el usuario no está activo, siempre devolverá <code>False</code>.</li>
+<li><code>has_module_perms(app_label)</code>: devuelve <code>True</code> si el usuario tiene algún permiso en la etiqueta de aplicación indicada, <code>app_label</code>. Si el usuario no está activo, siempre devolverá <code>False</code>.</li>
+<li><code>get_and_delete_messages()</code>: devuelve una lista de mensajes (objetos de la clase <code>Message</code>) de la cola del usuario, y los borra posteriormente.</li>
+<li><code>email_user(subj, msg)</code>: envía un correo electrónico al usuario. El mensaje aparece como enviado desde la dirección indicada en el valor <code>DEFAULT_FROM_EMAIL</code>. Se le puede pasar un tercer parámetro opcional, <code>from_email</code>, para indicar otra dirección de remite distinta.</li>
+<li><code>get_profile()</code>: devuelve un perfil del usuario específico para el sitio. En la sección <em>"Perfiles"</em> se explicará con más detalle este método.</li>
+</ul>
+
+<p>Por último, los objetos de tipo <code>User</code> mantienen dos campos de relaciones
+múltiples o muchos-a-muchos: Grupos y permisos (<code>groups</code> y <code>permissions</code>). Se 
+puede acceder a estos objetos relacionados de la misma manera en que se usan 
+otros campos múltiples:</p>
+
+<div class="code python">
+<pre class="python"><span class="co1"># Set a user's groups:</span>
+myuser.<span class="me1">groups</span> <span class="sy0">=</span> group_list
+&nbsp;
+<span class="co1"># Add a user to some groups:</span>
+myuser.<span class="me1">groups</span>.<span class="me1">add</span><span class="br0">(</span>group1<span class="sy0">,</span> group2<span class="sy0">,</span>...<span class="br0">)</span>
+&nbsp;
+<span class="co1"># Remove a user from some groups:</span>
+myuser.<span class="me1">groups</span>.<span class="me1">remove</span><span class="br0">(</span>group1<span class="sy0">,</span> group2<span class="sy0">,</span>...<span class="br0">)</span>
+&nbsp;
+<span class="co1"># Remove a user from all groups:</span>
+myuser.<span class="me1">groups</span>.<span class="me1">clear</span><span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+<span class="co1"># Permissions work the same way</span>
+myuser.<span class="me1">permissions</span> <span class="sy0">=</span> permission_list
+myuser.<span class="me1">permissions</span>.<span class="me1">add</span><span class="br0">(</span>permission1<span class="sy0">,</span> permission2<span class="sy0">,</span> ...<span class="br0">)</span>
+myuser.<span class="me1">permissions</span>.<span class="me1">remove</span><span class="br0">(</span>permission1<span class="sy0">,</span> permission2<span class="sy0">,</span> ...<span class="br0">)</span>
+myuser.<span class="me1">permissions</span>.<span class="me1">clear</span><span class="br0">(</span><span class="br0">)</span></pre>
+</div>
+
+<h3 id="iniciar_y_cerrar_sesion">12.4.1. Iniciar y cerrar sesión</h3>
+
+<p>Django proporciona vistas predefinidas para  gestionar la entrada
+del usuario, (el momento en que se identifica), y la salida, (es
+decir, cuando cierra la sesión), además de otros trucos ingeniosos. Pero
+antes de entrar en detalles, veremos como hacer que los usuario puedan
+iniciar y cerrar la sesión "a mano". Django incluye dos funciones
+para realizar estas acciones, en el módulo <code>django.contrib.auth</code>:
+<code>authenticate()</code> y <code>login()</code>.</p>
+
+<p>Para autentificar un identificador de usuario y una contraseña, se utiliza
+la función <code>authenticate()</code>. esta función acepta dos parámetros ,
+<code>username</code> y <code>password</code>, y devuelve un objeto de tipo <code>User</code> si la
+contraseña es correcta para el identificador de usuario. Si falla la
+comprobación (ya sea porque sea incorrecta la contraseña o porque sea
+incorrecta la identificación del usuario), la función devolverá <code>None</code>:</p>
+
+<div class="code python">
+<pre class="python"><span class="sy0">&gt;&gt;&gt;</span> <span class="kw1">from</span> django.<span class="me1">contrib</span> <span class="kw1">import</span> auth
+<span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span> <span class="sy0">=</span> auth.<span class="me1">authenticate</span><span class="br0">(</span>username<span class="sy0">=</span><span class="st0">'john'</span><span class="sy0">,</span> password<span class="sy0">=</span><span class="st0">'secret'</span><span class="br0">)</span>
+<span class="sy0">&gt;&gt;&gt;</span> <span class="kw1">if</span> <span class="kw3">user</span> <span class="kw1">is</span> <span class="kw1">not</span> <span class="kw2">None</span>:
+...     <span class="kw1">print</span> <span class="st0">"Correct!"</span>
+... <span class="kw1">else</span>:
+...     <span class="kw1">print</span> <span class="st0">"Oops, that's wrong!"</span></pre>
+</div>
+
+<p>La llamada a <code>authenticate()</code> sólo verifica las credenciales del
+usuario. Todavía hay que realizar una llamada a <code>login()</code> para
+completar el inicio de sesión. La llamada a <code>login()</code> acepta un
+objeto de la clase <code>HttpRequest</code> y un objeto <code>User</code> y almacena
+el identificador del usuario en la sesión, usando el entorno de
+sesiones de Django.</p>
+
+<p>El siguiente ejemplo muestra el uso de ambas funciones, <code>authenticate()</code> y
+<code>login()</code>, dentro de una vista:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django.<span class="me1">contrib</span> <span class="kw1">import</span> auth
+&nbsp;
+<span class="kw1">def</span> login<span class="br0">(</span>request<span class="br0">)</span>:
+    username <span class="sy0">=</span> request.<span class="me1">POST</span><span class="br0">[</span><span class="st0">'username'</span><span class="br0">]</span>
+    password <span class="sy0">=</span> request.<span class="me1">POST</span><span class="br0">[</span><span class="st0">'password'</span><span class="br0">]</span>
+    <span class="kw3">user</span> <span class="sy0">=</span> auth.<span class="me1">authenticate</span><span class="br0">(</span>username<span class="sy0">=</span>username<span class="sy0">,</span> password<span class="sy0">=</span>password<span class="br0">)</span>
+    <span class="kw1">if</span> <span class="kw3">user</span> <span class="kw1">is</span> <span class="kw1">not</span> <span class="kw2">None</span> <span class="kw1">and</span> <span class="kw3">user</span>.<span class="me1">is_active</span>:
+        <span class="co1"># Correct password, and the user is marked "active"</span>
+        auth.<span class="me1">login</span><span class="br0">(</span>request<span class="sy0">,</span> <span class="kw3">user</span><span class="br0">)</span>
+        <span class="co1"># Redirect to a success page.</span>
+        <span class="kw1">return</span> HttpResponseRedirect<span class="br0">(</span><span class="st0">"/account/loggedin/"</span><span class="br0">)</span>
+    <span class="kw1">else</span>:
+        <span class="co1"># Show an error page</span>
+        <span class="kw1">return</span> HttpResponseRedirect<span class="br0">(</span><span class="st0">"/account/invalid/"</span><span class="br0">)</span></pre>
+</div>
+
+<p>Para cerrar la sesión, se puede llamar a <code>django.contrib.auth.logout()</code>
+dentro de una vista. Necesita que se le pase como parámetro un objeto
+de tipo <code>HttpRequest</code>, y no devuelve ningún valor:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django.<span class="me1">contrib</span> <span class="kw1">import</span> auth
+&nbsp;
+<span class="kw1">def</span> logout<span class="br0">(</span>request<span class="br0">)</span>:
+    auth.<span class="me1">logout</span><span class="br0">(</span>request<span class="br0">)</span>
+    <span class="co1"># Redirect to a success page.</span>
+    <span class="kw1">return</span> HttpResponseRedirect<span class="br0">(</span><span class="st0">"/account/loggedout/"</span><span class="br0">)</span></pre>
+</div>
+
+<p>La llamada a <code>logout()</code> no produce ningún error, aun si no hubiera
+ningún usuario conectado.</p>
+
+<p>En la práctica, no es normalmente necesario escribir tus propias
+funciones para realizar estas tareas; el sistema de autentificación
+viene con un conjunto de vistas predefinidas para ello.</p>
+
+<p>El primer paso para utilizar las vistas de autentificación es
+mapearlas en tu URLconf. Necesitas modificar tu código hasta
+tener algo parecido a esto:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django.<span class="me1">contrib</span>.<span class="me1">auth</span>.<span class="me1">views</span> <span class="kw1">import</span> login<span class="sy0">,</span> logout
+&nbsp;
+urlpatterns <span class="sy0">=</span> patterns<span class="br0">(</span><span class="st0">''</span><span class="sy0">,</span>
+    <span class="co1"># existing patterns here...</span>
+    <span class="br0">(</span>r<span class="st0">'^accounts/login/$'</span><span class="sy0">,</span>  login<span class="br0">)</span><span class="sy0">,</span>
+    <span class="br0">(</span>r<span class="st0">'^accounts/logout/$'</span><span class="sy0">,</span> logout<span class="br0">)</span><span class="sy0">,</span>
+<span class="br0">)</span></pre>
+</div>
+
+<p><code>/accounts/login/</code> y <code>/accounts/logout/</code> son las URL por defecto
+que usa Django para estas vistas.</p>
+
+<p>Por defecto, la vista de <code>login</code> utiliza la plantilla definida en
+<code>registration/login.html</code> (puedes cambiar el nombre de la plantilla
+utilizando un parámetro opcional, <code>template_name</code>). El formulario
+necesita contener un campo llamado <code>username</code> y otro llamado
+<code>password</code>. Una plantilla de ejemplo podría ser esta:</p>
+
+<div class="code twig">
+<pre class="twig"><span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">extends</span> <span class="st0">"base.html"</span> <span class="kw6">%<span class="br0">}</span></span>
+&nbsp;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">block</span> <span class="re0">content</span> <span class="kw6">%<span class="br0">}</span></span>
+&nbsp;
+  <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">form</span><span class="re1">.errors</span> <span class="kw6">%<span class="br0">}</span></span>
+    &lt;p class="error"&gt;Sorry, that's not a valid username or password&lt;/p&gt;
+  <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span>
+&nbsp;
+  &lt;form action='.' method='post'&gt;
+    &lt;label for="username"&gt;User name:&lt;/label&gt;
+    &lt;input type="text" name="username" value="" id="username"&gt;
+    &lt;label for="password"&gt;Password:&lt;/label&gt;
+    &lt;input type="password" name="password" value="" id="password"&gt;
+&nbsp;
+    &lt;input type="submit" value="login" /&gt;
+    &lt;input type="hidden" name="next" value="<span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">next</span><span class="sy0">|</span><span class="kw2">escape</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>" /&gt;
+  &lt;form action='.' method='post'&gt;
+&nbsp;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endblock</span> <span class="kw6">%<span class="br0">}</span></span></pre>
+</div>
+
+<p>Si el usuario se identifica correctamente, su navegador será redirigido
+a <code>/accounts/profile/</code>. Puedes indicar una dirección distinta especificando
+un tercer campo (normalmente oculto) que se llame <code>next</code>, cuyo valor
+debe ser la URL a redireccionar después de la identificación. También puedes
+pasar este valor como un parámetro <code>GET</code> a la vista de identificación
+y se añadirá automáticamente su valor al contexto en una variable
+llamada <code>next</code>, que puedes incluir ahora en un campo oculto.</p>
+
+<p>La vista de cierre de sesión se comporta de forma un poco diferente. Por 
+defecto utiliza la plantilla definida en <code>registration/logged_out.html</code> (que 
+normalmente contiene un mensaje del tipo "Ha cerrado su sesión"). No obstante, 
+se puede llamar a esta vista con un parámetro extra, llamado <code>next_page</code>, que
+indicaría la vista a la que se debe redirigir una vez efectuado el cierre de
+la sesión.</p>
+
+<h3 id="limitar_el_acceso_a_los_usuarios_identificados">12.4.2. Limitar el acceso a los usuarios identificados</h3>
+
+<p>Por supuesto, la razón de haber implementado todo este sistema es permitirnos 
+limitar el acceso a determinadas partes de nuestro sitio.</p>
+
+<p>La forma más simple y directa de limitar este acceso es comprobar el resultado 
+de llamar a la función <code>request.user.is_authenticated()</code> y redirigir
+a una página de identificación, si procede:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django.<span class="me1">http</span> <span class="kw1">import</span> HttpResponseRedirect
+&nbsp;
+<span class="kw1">def</span> my_view<span class="br0">(</span>request<span class="br0">)</span>:
+    <span class="kw1">if</span> <span class="kw1">not</span> request.<span class="kw3">user</span>.<span class="me1">is_authenticated</span><span class="br0">(</span><span class="br0">)</span>:
+        <span class="kw1">return</span> HttpResponseRedirect<span class="br0">(</span><span class="st0">'/login/?next=%s'</span> % request.<span class="me1">path</span><span class="br0">)</span>
+    <span class="co1"># ...</span></pre>
+</div>
+
+<p>O quizás mostrar un mensaje de error:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">def</span> my_view<span class="br0">(</span>request<span class="br0">)</span>:
+    <span class="kw1">if</span> <span class="kw1">not</span> request.<span class="kw3">user</span>.<span class="me1">is_authenticated</span><span class="br0">(</span><span class="br0">)</span>:
+        <span class="kw1">return</span> render_to_response<span class="br0">(</span><span class="st0">'myapp/login_error.html'</span><span class="br0">)</span>
+    <span class="co1"># ...</span></pre>
+</div>
+
+<p>Si se desea abreviar, se puede usar el decorador <code>login_required</code>
+sobre las vistas que nos interese proteger:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django.<span class="me1">contrib</span>.<span class="me1">auth</span>.<span class="me1">decorators</span> <span class="kw1">import</span> login_required
+&nbsp;
+<span class="sy0">@</span>login_required
+<span class="kw1">def</span> my_view<span class="br0">(</span>request<span class="br0">)</span>:
+    <span class="co1"># ...</span></pre>
+</div>
+
+<p>Esto es lo que hace el decorador <code>login_required</code>:</p>
+
+<ul>
+<li>Si el usuario no está identificado, redirige a la
+dirección <code>/accounts/login/</code>, incluyendo la
+url actual como un parámetro con el nombre <code>next</code>, por
+ejemplo <code>/accounts/login/?next=/polls/3/</code>.</li>
+<li>Si el usuario está identificado, ejecuta la vista
+sin ningún cambio. La vista puede asumir sin problemas
+que el usuario esta identificado correctamente</li>
+</ul>
+
+<h3 id="limitar_el_acceso_a_usuarios_que_pasan_una_prueba">12.4.3. &nbsp;Limitar el acceso a usuarios que pasan una prueba</h3>
+
+<p>Se puede limitar el acceso basándose en ciertos permisos o en algún otro
+tipo de prueba, o proporcionar una página de identificación
+distinta de la vista por defecto, y las dos cosas se hacen
+de manera similar.</p>
+
+<p>La forma más cruda es ejecutar las pruebas que queremos hacer directamente
+en el código de la vista. Por ejemplo, para comprobar que el usuario está
+identificado y que, además, tenga asignado el permiso <code>polls.can_vote</code>
+(se explicará esto de los permisos con más detalle dentro de poco )
+haríamos:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">def</span> vote<span class="br0">(</span>request<span class="br0">)</span>:
+    <span class="kw1">if</span> request.<span class="kw3">user</span>.<span class="me1">is_authenticated</span><span class="br0">(</span><span class="br0">)</span> <span class="kw1">and</span> request.<span class="kw3">user</span>.<span class="me1">has_perm</span><span class="br0">(</span><span class="st0">'polls.can_vote'</span><span class="br0">)</span><span class="br0">)</span>:
+        <span class="co1"># vote here</span>
+    <span class="kw1">else</span>:
+        <span class="kw1">return</span> HttpResponse<span class="br0">(</span><span class="st0">"You can't vote in this poll."</span><span class="br0">)</span></pre>
+</div>
+
+<p>De nuevo, Django proporciona una forma abreviada llamada
+<code>user_passes_test</code>. Requiere que se la pasen unos argumentos
+y genera un decorador especializado para cada situación en
+particular:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">def</span> user_can_vote<span class="br0">(</span><span class="kw3">user</span><span class="br0">)</span>:
+    <span class="kw1">return</span> <span class="kw3">user</span>.<span class="me1">is_authenticated</span><span class="br0">(</span><span class="br0">)</span> <span class="kw1">and</span> <span class="kw3">user</span>.<span class="me1">has_perm</span><span class="br0">(</span><span class="st0">"polls.can_vote"</span><span class="br0">)</span>
+&nbsp;
+<span class="sy0">@</span>user_passes_test<span class="br0">(</span>user_can_vote<span class="sy0">,</span> login_url<span class="sy0">=</span><span class="st0">"/login/"</span><span class="br0">)</span>
+<span class="kw1">def</span> vote<span class="br0">(</span>request<span class="br0">)</span>:
+    <span class="co1"># Code here can assume a logged-in user with the correct permission.</span>
+    ...</pre>
+</div>
+
+<p>El decorador <code>user_passes_test</code> tiene un parámetro obligatorio: un
+objeto que se pueda llamar (normalmente una función) y que a su vez
+acepte como parámetro un objeto del tipo <code>User</code>, y devuelva <code>True</code>
+si el usuario puede acceder y <code>False</code> en caso contrario. Es importante
+destacar que <code>user_passes_test</code> no comprueba automáticamente que el
+usuario esté identificado; esa es una comprobación que se debe hacer
+explícitamente.</p>
+
+<p>En este ejemplo, hemos usado también un segundo parámetro opcional,
+<code>login_url</code>, que te permite indicar la url de la página que el
+usuario debe utilizar para identificarse (<code>/accounts/login/</code>
+por defecto).</p>
+
+<p>Comprobar si un usuario posee un determinado permiso es una tarea
+muy frecuente, así que Django proporciona una forma abreviada
+para estos casos: El decorador <code>permission_required()</code>. Usando
+este decorador, el ejemplo anterior se podría codificar así:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django.<span class="me1">contrib</span>.<span class="me1">auth</span>.<span class="me1">decorators</span> <span class="kw1">import</span> permission_required
+&nbsp;
+<span class="sy0">@</span>permission_required<span class="br0">(</span><span class="st0">'polls.can_vote'</span><span class="sy0">,</span> login_url<span class="sy0">=</span><span class="st0">"/login/"</span><span class="br0">)</span>
+<span class="kw1">def</span> vote<span class="br0">(</span>request<span class="br0">)</span>:
+    <span class="co1"># ...</span></pre>
+</div>
+
+<p>El decorador <code>permission_required()</code> también acepta el parámetro
+opcional <code>login_url</code>, de nuevo con el valor <code>/accounts/login/</code>
+en caso de omisión.</p>
+
+<div class="admonition caution"><p><strong class="title">Advertencia</strong> Una de las preguntas más frecuentes en la lista de usuarios de
+Django trata de cómo limitar el acceso a una vista genérica. Para
+conseguirlo, tienes que usar un recubrimiento sencillo
+alrededor de la vista que quieres proteger, y apuntar en tu
+URLconf al recubrimiento en vez de a la vista genérica:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> dango.<span class="me1">contrib</span>.<span class="me1">auth</span>.<span class="me1">decorators</span> <span class="kw1">import</span> login_required
+<span class="kw1">from</span> django.<span class="me1">views</span>.<span class="me1">generic</span>.<span class="me1">list_detail</span> <span class="kw1">import</span> object_detail
+&nbsp;
+<span class="sy0">@</span>login_required
+<span class="kw1">def</span> limited_object_detail<span class="br0">(</span>*args<span class="sy0">,</span> **kwargs<span class="br0">)</span>:
+    <span class="kw1">return</span> object_detail<span class="br0">(</span>*args<span class="sy0">,</span> **kwargs<span class="br0">)</span></pre>
+</div>
+
+<p>Puedes cambiar el decorador <code>login_required</code> por cualquier otro
+que quieras usar, como es lógico.</p></div>
+
+<h3 id="gestionar_usuarios_permisos_y_grupos">12.4.4. Gestionar usuarios, permisos y grupos</h3>
+
+<p>La forma más fácil de gestionar el sistema de autentificación es a través
+de la interfaz de administración <code>admin</code>. El Capítulo 6 describe como
+usar esta interfaz para modificar los datos de los usuarios y controlar
+sus permisos y accesos, y la mayor parte del tiempo esa es la forma
+más adecuada de gestión.</p>
+
+<p>A veces, no obstante, hace falta un mayor control, y para eso podemos
+utilizar las llamadas a bajo nivel que describiremos en este capítulo.</p>
+
+<h4 id="crear_usuarios">12.4.4.1. Crear usuarios</h4>
+
+<p>Puedes crear usuarios con el método <code>create_user</code>:</p>
+
+<div class="code python">
+<pre class="python"><span class="sy0">&gt;&gt;&gt;</span> <span class="kw1">from</span> django.<span class="me1">contrib</span>.<span class="me1">auth</span>.<span class="me1">models</span> <span class="kw1">import</span> User
+<span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span> <span class="sy0">=</span> User.<span class="me1">objects</span>.<span class="me1">create_user</span><span class="br0">(</span>username<span class="sy0">=</span><span class="st0">'john'</span><span class="sy0">,</span>
+...                                 <span class="kw3">email</span><span class="sy0">=</span><span class="st0">'jlennon@beatles.com'</span><span class="sy0">,</span>
+...                                 <span class="me1">password</span><span class="sy0">=</span><span class="st0">'glass onion'</span><span class="br0">)</span></pre>
+</div>
+
+<p>En este momento, <code>user</code> es una instancia de la clase <code>User</code>, preparada
+para ser almacenada en la base de datos (<code>create_user()</code> no llama al
+método <code>save()</code>). Este te permite cambiar algunos de sus atributos
+antes de guardarlos, si quieres:</p>
+
+<div class="code python">
+<pre class="python"><span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span>.<span class="me1">is_staff</span> <span class="sy0">=</span> <span class="kw2">True</span>
+<span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span>.<span class="me1">save</span><span class="br0">(</span><span class="br0">)</span></pre>
+</div>
+
+<h4 id="cambia_contrasenas">12.4.4.2. Cambia contraseñas</h4>
+
+<p>Puedes cambiar las contraseña de un usuario llamando a <code>set_password()</code>:</p>
+
+<div class="code python">
+<pre class="python"><span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span> <span class="sy0">=</span> User.<span class="me1">objects</span>.<span class="me1">get</span><span class="br0">(</span>username<span class="sy0">=</span><span class="st0">'john'</span><span class="br0">)</span>
+<span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span>.<span class="me1">set_password</span><span class="br0">(</span><span class="st0">'goo goo goo joob'</span><span class="br0">)</span>
+<span class="sy0">&gt;&gt;&gt;</span> <span class="kw3">user</span>.<span class="me1">save</span><span class="br0">(</span><span class="br0">)</span></pre>
+</div>
+
+<p>No debes modificar directamente el atributo <code>password</code>, a no ser que
+tengas muy claro lo que estás haciendo. La contraseña se almacena en
+la base de datos en forma de código de comprobación (<em>salted hash</em>) y, por 
+tanto, debe ser modificada sólo a través de este método.</p>
+
+<p>Para ser más exactos, el atributo <code>password</code> de un objeto <code>User</code> es una
+cadena de texto con el siguiente formato:</p>
+
+<div class="code code">
+<pre class="code">hashtype$salt$hash</pre>
+</div>
+
+<p>Es decir, el tipo de hash, el grano de sal (<em>salt</em>) y el código hash
+propiamente dicho, separados entre si por el carácter dolar ($).</p>
+
+<p>El valor de <code>hashtype</code> puede ser <code>sha1</code> (por defecto) o <code>md5</code>, el
+algoritmo usado para realizar una transformación <em>hash</em> de un solo sentido
+sobre la contraseña. El grano de sal es una cadena de texto
+aleatoria que se utiliza para aumentar la resistencia de esta codificación
+frente a un ataque por diccionario. Por ejemplo:</p>
+
+<div class="code code">
+<pre class="code">sha1$a1976$a36cc8cbf81742a8fb52e221aaeab48ed7f58ab4</pre>
+</div>
+
+<p>Las funciones <code>User.set_password()</code> y <code>User.check_password()</code> manejan
+todos estos detalles y comprobaciones de forma transparente.</p>
+
+<div class="admonition sidebar"><p><strong class="title"> ¿Tengo que echar sal a mi ordenador?</strong> No, la sal de la que hablamos no tiene nada que ver con ninguna
+receta de cocina; es una forma habitual de aumentar la
+seguridad a la hora de almacenar una contraseña. Una
+función <em>hash</em> es una función criptográfica, que se
+caracteriza por ser de un solo sentido; es decir, es fácil
+calcular el código <em>hash</em> de un determinado valor, pero es prácticamente
+imposible reconstruir el valor original partiendo únicamente del
+código hash.</p>
+
+<p>Si almacenáramos las contraseñas como texto en claro, cualquiera que
+pudiera obtener acceso a la base de datos podría saber sin ninguna
+dificultad todas las contraseñas al instante. Al guardar las
+contraseñas en forma de códigos <em>hash</em> se reduce el peligro en caso
+de que se comprometa la seguridad de la base de datos.</p>
+
+<p>No obstante, un atacante que pudiera acceder a la base de datos
+podría ahora realizar un ataque por fuerza bruta, calculando
+los códigos <em>hash</em> de millones de contraseñas distintas y comparando
+esos códigos con los que están almacenados en la base de datos. Este
+llevará algo de tiempo, pero menos de lo que parece, los ordenadores
+son increíblemente rápidos.</p>
+
+<p>Para empeorar las cosas, hay disponibles públicamente lo que se
+conoce como tablas arco iris (<em>rainbow tables</em>), que consisten en
+valores <em>hash</em> precalculados de millones de contraseñas de uso
+habitual. Usando una tabla arco iris, un atacante puede romper
+la mayoría de las contraseñas en segundos.</p>
+
+<p>Para aumentar la seguridad, se añade un valor inicial aleatorio
+y diferente a cada contraseña antes de obtener el código <em>hash</em>. Este
+valor aleatorio es el "grano de sal". Como cada grano de sal es
+diferente para cada password se evita el uso de tablas arco iris, lo
+que obliga al atacante a volver al sistema de ataque por fuerza
+bruta, que a su vez es más complicado al haber aumentado la entropía
+con el grano de sal. Otra ventaja es que si dos usuarios eligen
+la misma contraseña, al añadir el grano de sal los códigos hash
+resultantes serán diferentes.</p>
+
+<p>Aunque esta técnica no es, en términos absolutos, la más segura
+posible, ofrece un buen compromiso entre seguridad y conveniencia.</p></div>
+
+<h4 id="el_alta_del_usuario">12.4.4.3. El alta del usuario</h4>
+
+<p>Podemos usar estas herramientas de bajo nivel para crear vistas que
+permitan al usuario darse de alta. Prácticamente todos los desarrolladores
+quieren implementar el alta del usuario a su manera, por
+lo que Django da la opción de crearte tu propia vista para ello.
+Afortunadamente, es muy fácil de hacer.</p>
+
+<p>La forma más sencilla es escribir una pequeña vista que pregunte al
+usuario los datos que necesita y con ellos se cree directamente
+el usuario. Django proporciona un formulario prefabricado que se puede
+usar con este fin, como se muestra en el siguiente ejemplo:</p>
+
+<div class="code python">
+<pre class="python"><span class="kw1">from</span> django <span class="kw1">import</span> oldforms <span class="kw1">as</span> forms
+<span class="kw1">from</span> django.<span class="me1">http</span> <span class="kw1">import</span> HttpResponseRedirect
+<span class="kw1">from</span> django.<span class="me1">shortcuts</span> <span class="kw1">import</span> render_to_response
+<span class="kw1">from</span> django.<span class="me1">contrib</span>.<span class="me1">auth</span>.<span class="me1">forms</span> <span class="kw1">import</span> UserCreationForm
+&nbsp;
+<span class="kw1">def</span> register<span class="br0">(</span>request<span class="br0">)</span>:
+    form <span class="sy0">=</span> UserCreationForm<span class="br0">(</span><span class="br0">)</span>
+&nbsp;
+    <span class="kw1">if</span> request.<span class="me1">method</span> <span class="sy0">==</span> <span class="st0">'POST'</span>:
+        data <span class="sy0">=</span> request.<span class="me1">POST</span>.<span class="kw3">copy</span><span class="br0">(</span><span class="br0">)</span>
+        errors <span class="sy0">=</span> form.<span class="me1">get_validation_errors</span><span class="br0">(</span>data<span class="br0">)</span>
+        <span class="kw1">if</span> <span class="kw1">not</span> errors:
+            new_user <span class="sy0">=</span> form.<span class="me1">save</span><span class="br0">(</span>data<span class="br0">)</span>
+            <span class="kw1">return</span> HttpResponseRedirect<span class="br0">(</span><span class="st0">"/books/"</span><span class="br0">)</span>
+    <span class="kw1">else</span>:
+        data<span class="sy0">,</span> errors <span class="sy0">=</span> <span class="br0">{</span><span class="br0">}</span><span class="sy0">,</span> <span class="br0">{</span><span class="br0">}</span>
+&nbsp;
+    <span class="kw1">return</span> render_to_response<span class="br0">(</span><span class="st0">"registration/register.html"</span><span class="sy0">,</span> <span class="br0">{</span>
+        <span class="st0">'form'</span> : forms.<span class="me1">FormWrapper</span><span class="br0">(</span>form<span class="sy0">,</span> data<span class="sy0">,</span> errors<span class="br0">)</span>
+    <span class="br0">}</span><span class="br0">)</span></pre>
+</div>
+
+<p>Este formulario asume que existe una plantilla llamada
+<code>registration/register.html</code>. esa plantilla podría
+consistir en algo parecido a esto:</p>
+
+<div class="code twig">
+<pre class="twig"><span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">extends</span> <span class="st0">"base.html"</span> <span class="kw6">%<span class="br0">}</span></span>
+&nbsp;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">block</span> <span class="kw2">title</span> <span class="kw6">%<span class="br0">}</span></span>Create an account<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endblock</span> <span class="kw6">%<span class="br0">}</span></span>
+&nbsp;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">block</span> <span class="re0">content</span> <span class="kw6">%<span class="br0">}</span></span>
+  &lt;h1&gt;Create an account&lt;/h1&gt;
+  &lt;form action="." method="post"&gt;
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">form</span><span class="re1">.error_dict</span> <span class="kw6">%<span class="br0">}</span></span>
+      &lt;p class="error"&gt;Please correct the errors below.&lt;/p&gt;
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span>
+&nbsp;
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">form</span><span class="re1">.username</span><span class="re1">.errors</span> <span class="kw6">%<span class="br0">}</span></span>
+      <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">form</span><span class="re1">.username</span><span class="re1">.html_error_list</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span>
+    &lt;label for="id_username"&gt;Username:&lt;/label&gt; <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">form</span><span class="re1">.username</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>
+&nbsp;
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">form</span><span class="re1">.password1</span><span class="re1">.errors</span> <span class="kw6">%<span class="br0">}</span></span>
+      <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">form</span><span class="re1">.password1</span><span class="re1">.html_error_list</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span>
+    &lt;label for="id_password1"&gt;Password: <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">form</span><span class="re1">.password1</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>
+&nbsp;
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">form</span><span class="re1">.password2</span><span class="re1">.errors</span> <span class="kw6">%<span class="br0">}</span></span>
+      <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">form</span><span class="re1">.password2</span><span class="re1">.html_error_list</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>
+    <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span>
+    &lt;label for="id_password2"&gt;Password (again): <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">form</span><span class="re1">.password2</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>
+&nbsp;
+    &lt;input type="submit" value="Create the account" /&gt;
+  &lt;/label&gt;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endblock</span> <span class="kw6">%<span class="br0">}</span></span></pre>
+</div>
+
+<h3 id="usar_informacion_de_autentificacion_en_plantillas">12.4.5. Usar información de autentificación en plantillas</h3>
+
+<p>El usuario actual, así como sus permisos, están disponiblesen el contexto de la plantilla cuando usas <code>RequestContext</code> (véase Capítulo 10).</p>
+
+<div class="admonition note"><p><strong class="title">Nota</strong> Técnicamente hablando, estas variables están disponibles en el contexto
+de la plantilla sólo si usas <code>RequestContext</code> <em>y</em> en la configuración
+está incluido el valor <code>"django.core.context_processors.auth"</code> en
+la opción <code>TEMPLATE_CONTEXT_PROCESSORS</code>, que es el valor que viene
+predefinido cuando se crea un proyecto. Como ya se comentó, véase
+el Capítulo 10 para más información.</p></div>
+
+<p>Cuando se usa <code>RequestContext</code>, el usuario actual (ya sea una instancia de
+<code>User</code> o de <code>AnonymousUser</code>) es accesible en la plantilla con el
+nombre <code>{{ user }}</code>:</p>
+
+<div class="code twig">
+<pre class="twig"><span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">user</span><span class="re1">.is_authenticated</span> <span class="kw6">%<span class="br0">}</span></span>
+  &lt;p&gt;Welcome, <span class="kw6"><span class="br0">{</span><span class="br0">{</span></span> <span class="re0">user</span><span class="re1">.username</span> <span class="kw6"><span class="br0">}</span><span class="br0">}</span></span>. Thanks for logging in.&lt;/p&gt;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">else</span> <span class="kw6">%<span class="br0">}</span></span>
+  &lt;p&gt;Welcome, new user. Please log in.&lt;/p&gt;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span></pre>
+</div>
+
+<p>Los permisos del usuario se almacenan en la variable <code>{{ perms }}</code>. En 
+realidad, es una forma simplificada de acceder a un par de métodos sobre los 
+permisos que veremos en breve.</p>
+
+<p>Hay dos formas de usar este objeto <code>perms</code>. Puedes usar <code>{{ perms.polls }}</code> 
+para comprobar si un usuario tienen <em>algún</em> permiso para una determinada 
+aplicación, o se puede usar una forma más específica, como
+<code>{{ perms.polls.can_vote }}</code>, para comprobar si el usuario tiene concedido un 
+permiso en concreto.</p>
+
+<p>Por lo tanto, se pueden usar estas comprobaciones en sentencias <code>{% if %}</code>:</p>
+
+<div class="code twig">
+<pre class="twig"><span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">perms</span><span class="re1">.polls</span> <span class="kw6">%<span class="br0">}</span></span>
+  &lt;p&gt;You have permission to do something in the polls app.&lt;/p&gt;
+  <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">if</span> <span class="re0">perms</span><span class="re1">.polls</span><span class="re1">.can_vote</span> <span class="kw6">%<span class="br0">}</span></span>
+    &lt;p&gt;You can vote!&lt;/p&gt;
+  <span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span>
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">else</span> <span class="kw6">%<span class="br0">}</span></span>
+  &lt;p&gt;You don't have permission to do anything in the polls app.&lt;/p&gt;
+<span class="kw6"><span class="br0">{</span>%</span> <span class="kw1">endif</span> <span class="kw6">%<span class="br0">}</span></span></pre>
+</div>
+
+
+
+                <div class="module module--ad module--ad--responsive module--ad--bottom">
+        <script async="" src="./El libro de Django_files/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display: block; height: 90px;" data-ad-client="ca-pub-1491000300253750" data-ad-slot="3770792827" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_0_expand" style="display:inline-table;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:870px;background-color:transparent"><ins id="aswift_0_anchor" style="display:block;border:none;height:90px;margin:0;padding:0;position:relative;visibility:visible;width:870px;background-color:transparent"><iframe width="870" height="90" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_0" name="aswift_0" style="left:0;position:absolute;top:0;"></iframe></ins></ins></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    
+    <ul class="row pager pager--large">
+        <li class="col-xs-6 previous ">
+                            <a href="http://librosweb.es/libro/django_1_0/capitulo_12/usuarios_e_identificacion.html">
+                    <strong><i class="hidden-xs">←</i> Anterior</strong>
+                    <small>12.3. Usuarios e identificación</small>
+                </a>
+                    </li>
+
+        <li class="col-xs-6 next ">
+                            <a href="http://librosweb.es/libro/django_1_0/capitulo_12/el_resto_de_detalles_permisos_grupos_mensajes_y_perfiles.html">
+                    <strong>Siguiente <i class="hidden-xs">→</i></strong>
+                    <small>12.5. El resto de detalles: permisos, grupos, mensajes y perfiles</small>
+                </a>
+                    </li>
+    </ul>
+
+                            </div>
+
+                        <div id="sidebar" class="col-md-3">
+                            
+                <div class="module module--ad module--ad--responsive module--ad--sidebar">
+        <script async="" src="./El libro de Django_files/adsbygoogle.js"></script>
+        <ins class="adsbygoogle" style="display: block; height: 600px;" data-ad-client="ca-pub-1491000300253750" data-ad-slot="3770792827" data-ad-format="auto" data-adsbygoogle-status="done"><ins id="aswift_1_expand" style="display:inline-table;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><ins id="aswift_1_anchor" style="display:block;border:none;height:600px;margin:0;padding:0;position:relative;visibility:visible;width:270px;background-color:transparent"><iframe width="270" height="600" frameborder="0" marginwidth="0" marginheight="0" vspace="0" hspace="0" allowtransparency="true" scrolling="no" allowfullscreen="true" onload="var i=this.id,s=window.google_iframe_oncopy,H=s&amp;&amp;s.handlers,h=H&amp;&amp;H[i],w=this.contentWindow,d;try{d=w.document}catch(e){}if(h&amp;&amp;d&amp;&amp;(!d.body||!d.body.firstChild)){if(h.call){setTimeout(h,0)}else if(h.match){try{h=s.upd(h,i)}catch(e){}w.location.replace(h)}}" id="aswift_1" name="aswift_1" style="left:0;position:absolute;top:0;"></iframe></ins></ins></ins>
+        <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+    </div>
+
+    
+    <div class="module">
+        <a id="indice"></a>
+
+        <h3>Indice de contenidos</h3>
+        <ul class="book__toc book__toc--compact">
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_1.html"><strong>1.</strong> Introducción a Django</a>
+            </li>
+                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_2.html"><strong>2.</strong> Empezando</a>
+            </li>
+                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_3.html"><strong>3.</strong> Los principios de las páginas Web dinámicas</a>
+            </li>
+                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_4.html"><strong>4.</strong> El sistema de plantillas de Django</a>
+            </li>
+                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_5.html"><strong>5.</strong> Interactuar con una base de datos: Modelos</a>
+            </li>
+                                                                                                                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_6.html"><strong>6.</strong> El sitio de Administración Django</a>
+            </li>
+                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_7.html"><strong>7.</strong> Procesamiento de formularios</a>
+            </li>
+                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_8.html"><strong>8.</strong> Vistas avanzadas y URLconfs</a>
+            </li>
+                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_9.html"><strong>9.</strong> Vistas genéricas</a>
+            </li>
+                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_10.html"><strong>10.</strong> Extender el sistema de plantillas</a>
+            </li>
+                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_11.html"><strong>11.</strong> Generación de contenido no HTML</a>
+            </li>
+                                                                                                                                                            <li class="level-1 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12.html">
+                    <span>Capítulo 12.</span> Sesiones, usuario e inscripciones
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/cookies.html">
+                    <span>12.1.</span> Cookies
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/el_entorno_de_sesiones_de_django.html">
+                    <span>12.2.</span> El entorno de sesiones de Django
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/usuarios_e_identificacion.html">
+                    <span>12.3.</span> Usuarios e identificación
+                </a>
+            </li>
+                                            <li class="level-2 active">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/utilizando_usuarios.html">
+                    <span>12.4.</span> Utilizando usuarios
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/el_resto_de_detalles_permisos_grupos_mensajes_y_perfiles.html">
+                    <span>12.5.</span> El resto de detalles: permisos, grupos, mensajes y perfiles
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/grupos.html">
+                    <span>12.6.</span> Grupos
+                </a>
+            </li>
+                                            <li class="level-2 ">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_12/que_sigue_12.html">
+                    <span>12.7.</span> ¿Qué sigue?
+                </a>
+            </li>
+                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_13.html"><strong>13.</strong> Cache</a>
+            </li>
+                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_14.html"><strong>14.</strong> Otros sub-frameworks contribuidos</a>
+            </li>
+                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_15.html"><strong>15.</strong> Middleware</a>
+            </li>
+                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_16.html"><strong>16.</strong> Integración con Base de datos y Aplicaciones existentes</a>
+            </li>
+                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_17.html"><strong>17.</strong> Extender la Interfaz de Administración de Django</a>
+            </li>
+                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_18.html"><strong>18.</strong> Internacionalización</a>
+            </li>
+                                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_19.html"><strong>19.</strong> Seguridad</a>
+            </li>
+                                                                                                                                                                                                            <li class="level-1">
+                <a href="http://librosweb.es/libro/django_1_0/capitulo_20.html"><strong>20.</strong> Puesta en marcha de Django en un servidor</a>
+            </li>
+                                                                                                                                        </ul>
+    </div>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+
+        <div id="footer">
+                    <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-9">
+                        © 2006-2016 LibrosWeb.es
+                        <a href="http://librosweb.es/sitio/contacto">Contacto</a>
+                        <a href="https://plus.google.com/+librosweb">Novedades</a>
+                        <a href="http://librosweb.es/sitio/condiciones">Condiciones</a>
+                        <a href="http://librosweb.es/sitio/privacidad">Privacidad</a>
+                    </div>
+                    <div class="col-xs-12 col-sm-3 pull-right">
+                        <div class="metric metric--dimmed metric--textright">
+                            <div class="metric__value">3.411</div>
+                            <div class="metric__label">días online</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                </div>
+
+                                    <script src="./El libro de Django_files/app.js"></script>
+                        
+
+</body></html>
